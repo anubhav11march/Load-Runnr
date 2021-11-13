@@ -29,6 +29,7 @@ String? locality_Global;
 File? insurancePhoto_Global;
 File? rcPhoto_Global;
 File? vehiclePhotoFront_Global;
+File? vehiclePhotoBack_Global;
 
 String? accountNumber_Global;
 String? bankName_Global;

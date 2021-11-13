@@ -31,7 +31,7 @@ class _BankDetailsState extends State<BankDetails> {
   bool _saving = false;
   late Timer _timer;
 
-  File? passBookImagePath,changingValue;
+  File? passBookImagePath, changingValue;
   Future<File?> clickImage() async {
     try {
       final image = await ImagePicker().pickImage(source: ImageSource.camera);
@@ -61,7 +61,9 @@ class _BankDetailsState extends State<BankDetails> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: ModalProgressHUD(
-        progressIndicator: CircularProgressIndicator(color: Color(0xfffd6204),),
+        progressIndicator: CircularProgressIndicator(
+          color: Color(0xfffd6204),
+        ),
         inAsyncCall: _saving,
         child: SingleChildScrollView(
           child: SafeArea(
@@ -193,27 +195,30 @@ class _BankDetailsState extends State<BankDetails> {
                               strokeWidth: 1,
                               child: GestureDetector(
                                 child: SizedBox(
-                                  child: passBookImagePath !=null
+                                  child: passBookImagePath != null
                                       ? Stack(
-                                    children: [
-
-                                      Image(
-                                        image: Image.file(
-                                            passBookImagePath!)
-                                            .image,
-                                        fit: BoxFit.fitWidth,
-                                      ),
-                                      Align(
-                                        alignment: Alignment.topRight,
-                                        child: Container(
-                                            decoration:
-                                            BoxDecoration(
-                                                borderRadius: BorderRadius.circular(40),
-                                                color: Colors.white
-                                            ),child: Icon(Icons.find_replace,color: Color(0xfffd6206),)),
-                                      ),
-                                    ],
-                                  )
+                                          children: [
+                                            Image(
+                                              image:
+                                                  Image.file(passBookImagePath!)
+                                                      .image,
+                                              fit: BoxFit.fitWidth,
+                                            ),
+                                            Align(
+                                              alignment: Alignment.topRight,
+                                              child: Container(
+                                                  decoration: BoxDecoration(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              40),
+                                                      color: Colors.white),
+                                                  child: Icon(
+                                                    Icons.find_replace,
+                                                    color: Color(0xfffd6206),
+                                                  )),
+                                            ),
+                                          ],
+                                        )
                                       : Container(
                                           padding: EdgeInsets.all(10),
                                           width: double.infinity,
@@ -233,7 +238,7 @@ class _BankDetailsState extends State<BankDetails> {
                                           ),
                                         ),
                                 ),
-                                onTap: ()  {
+                                onTap: () {
                                   showModalBottomSheet(
                                       context: context,
                                       builder: (BuildContext bc) {
@@ -242,25 +247,31 @@ class _BankDetailsState extends State<BankDetails> {
                                             child: new Wrap(
                                               children: <Widget>[
                                                 new ListTile(
-                                                    leading: new Icon(Icons.photo_library),
-                                                    title: new Text('Photo Library'),
-                                                    onTap: () async{
-                                                      Navigator.of(context).pop();
+                                                    leading: new Icon(
+                                                        Icons.photo_library),
+                                                    title: new Text(
+                                                        'Photo Library'),
+                                                    onTap: () async {
+                                                      Navigator.of(context)
+                                                          .pop();
                                                       changingValue =
-                                                      await pickImageFromGallery();
+                                                          await pickImageFromGallery();
                                                       setState(() {
-                                                        passBookImagePath = changingValue;
+                                                        passBookImagePath =
+                                                            changingValue;
                                                       });
                                                     }),
                                                 new ListTile(
-                                                  leading: new Icon(Icons.photo_camera),
+                                                  leading: new Icon(
+                                                      Icons.photo_camera),
                                                   title: new Text('Camera'),
-                                                  onTap: () async{
+                                                  onTap: () async {
                                                     Navigator.of(context).pop();
                                                     changingValue =
-                                                    await clickImage();
+                                                        await clickImage();
                                                     setState(() {
-                                                      passBookImagePath = changingValue;
+                                                      passBookImagePath =
+                                                          changingValue;
                                                     });
                                                   },
                                                 ),
@@ -268,8 +279,7 @@ class _BankDetailsState extends State<BankDetails> {
                                             ),
                                           ),
                                         );
-                                      }
-                                  );
+                                      });
 
                                   setState(() {
                                     passBookImageAdded = true;
@@ -294,40 +304,47 @@ class _BankDetailsState extends State<BankDetails> {
                           accountNumber_Global = accountNumber.text;
                           ifscCode_Global = ifscCode.text;
                           passBookPhoto_Global = passBookImagePath;
-                          if(accountNumber.text == ""){
+                          if (accountNumber.text == "") {
                             showAlert(context, "Enter Account Number");
-                          }else if(bankName.text == ""){
+                          } else if (bankName.text == "") {
                             showAlert(context, "Enter Bank Name");
-
-                          }else if(ifscCode.text == ""){
+                          } else if (ifscCode.text == "") {
                             showAlert(context, "Enter IFSC Code");
-                          }else if(passBookImageAdded == false){
+                          } else if (passBookImageAdded == false) {
                             showAlert(context, "Add Passbook Image");
-                          }else{
-                            _submit();
-                            var response = await regsiterDetails();
-                            if(response.body != null){
-                              print("Hello");
-                              print(response);
-                            }
-                            print(response.statusCode);
+                          } else {
+                          _submit();
+                          var response = await regsiterDetails();
+                          if (response.body != null) {
                             print(response);
-                            if (response.statusCode == 200) {
-                              setState(() {
-                                _saving = false;
-                              });
-                              var body = await jsonDecode(response.body);
-                              print(body);
-                              if (body['success'] == true) {
-                                Navigator.pushAndRemoveUntil(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => MapScreen("Pending",body['driver']["firstname"].toString(),body['driver']["Phone_No"].toString(),body['token2'].toString(),body["driver"]["lastname"].toString(),body["driver"]["_id"].toString(),body["driver"]["Profile_Photo"].toString())),
-                                        (Route<dynamic> route) => false);}
-
+                          }
+                          print(response.statusCode);
+                          print(response);
+                          if (response.statusCode == 200) {
+                            setState(() {
+                              _saving = false;
+                            });
+                            var body = await jsonDecode(response.body);
+                            print(body);
+                            if (body['success'] == true) {
+                              Navigator.pushAndRemoveUntil(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => MapScreen(
+                                      "Pending",
+                                      body['driver']["firstname"].toString(),
+                                      body['driver']["Phone_No"].toString(),
+                                      body['token2'].toString(),
+                                      body["driver"]["lastname"].toString(),
+                                      body["driver"]["_id"].toString(),
+                                      body["driver"]["Profile_Photo"]
+                                          .toString(),
+                                    ),
+                                  ),
+                                  (Route<dynamic> route) => false);
                             }
                           }
-
+                          }
                         },
                         child: Text(
                           'Proceed',
@@ -356,15 +373,16 @@ class _BankDetailsState extends State<BankDetails> {
       ),
     );
   }
+
   void showAlert(BuildContext context, String text) {
     showDialog(
         context: context,
         builder: (context) => AlertDialog(
-          content: Text(text),
-        ));
+              content: Text(text),
+            ));
   }
-  void _submit() {
 
+  void _submit() {
     setState(() {
       _saving = true;
     });
@@ -377,6 +395,4 @@ class _BankDetailsState extends State<BankDetails> {
     //   });
     // });
   }
-
 }
-

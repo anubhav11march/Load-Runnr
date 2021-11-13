@@ -1344,11 +1344,13 @@ class _DriverDetailsState extends State<DriverDetails> {
                                 } else if (vaccineImagePath == null) {
                                   showAlert(context, "Add Vaccine Certificate");
                                 } else {
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (BuildContext context) =>
-                                              VehicleDetails()));
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (BuildContext context) =>
+                                        VehicleDetails(),
+                                  ),
+                                );
                                 }
                               },
                               child: Text(
