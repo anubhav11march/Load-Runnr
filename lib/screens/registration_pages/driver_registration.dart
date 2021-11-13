@@ -44,7 +44,7 @@ class _DriverDetailsState extends State<DriverDetails> {
   var errorMsg;
   String? isChoose;
   bool isLoading = false;
-  bool? confirmNew ;
+  bool? confirmNew;
   bool isPresent = false;
   bool _saving = false;
   bool isCameraSelected = false, isGallerySelected = false;
@@ -56,13 +56,11 @@ class _DriverDetailsState extends State<DriverDetails> {
       changingValue,
       vaccineImagePath;
 
-
   final _city = [
     'Bangalore',
     'Mysore',
   ];
   String? _chosenCity = 'Bangalore';
-
 
   // _imgFromCamera(final _imageGet) async {
   //   final image = await ImagePicker().pickImage(
@@ -162,25 +160,34 @@ class _DriverDetailsState extends State<DriverDetails> {
                                                   child: new Wrap(
                                                     children: <Widget>[
                                                       new ListTile(
-                                                          leading: new Icon(Icons.photo_library),
-                                                          title: new Text('Photo Library'),
-                                                          onTap: () async{
-                                                            Navigator.of(context).pop();
+                                                          leading: new Icon(Icons
+                                                              .photo_library),
+                                                          title: new Text(
+                                                              'Photo Library'),
+                                                          onTap: () async {
+                                                            Navigator.of(
+                                                                    context)
+                                                                .pop();
                                                             changingValue =
                                                                 await pickImageFromGallery();
                                                             setState(() {
-                                                              profileImagePath = changingValue;
+                                                              profileImagePath =
+                                                                  changingValue;
                                                             });
                                                           }),
                                                       new ListTile(
-                                                        leading: new Icon(Icons.photo_camera),
-                                                        title: new Text('Camera'),
-                                                        onTap: () async{
-                                                          Navigator.of(context).pop();
+                                                        leading: new Icon(
+                                                            Icons.photo_camera),
+                                                        title:
+                                                            new Text('Camera'),
+                                                        onTap: () async {
+                                                          Navigator.of(context)
+                                                              .pop();
                                                           changingValue =
-                                                          await clickImage();
+                                                              await clickImage();
                                                           setState(() {
-                                                            profileImagePath = changingValue;
+                                                            profileImagePath =
+                                                                changingValue;
                                                           });
                                                         },
                                                       ),
@@ -188,10 +195,7 @@ class _DriverDetailsState extends State<DriverDetails> {
                                                   ),
                                                 ),
                                               );
-                                            }
-                                        );
-
-
+                                            });
                                       },
                                     ),
                                   ),
@@ -203,7 +207,6 @@ class _DriverDetailsState extends State<DriverDetails> {
                                           padding:
                                               EdgeInsets.fromLTRB(0, 5, 0, 5),
                                           child: TextFormField(
-                                          
                                             decoration: InputDecoration(
                                               focusedBorder: OutlineInputBorder(
                                                 borderSide: BorderSide(
@@ -238,8 +241,8 @@ class _DriverDetailsState extends State<DriverDetails> {
                                           padding:
                                               EdgeInsets.fromLTRB(0, 5, 0, 5),
                                           child: TextFormField(
-                                            validator: (value){
-                                              if(value == ""){
+                                            validator: (value) {
+                                              if (value == "") {
                                                 return 'Please enter name';
                                               }
                                             },
@@ -270,7 +273,6 @@ class _DriverDetailsState extends State<DriverDetails> {
                                             ),
                                             keyboardType: TextInputType.text,
                                             controller: firstName,
-
                                           ),
                                         ),
                                         Padding(
@@ -552,27 +554,35 @@ class _DriverDetailsState extends State<DriverDetails> {
                                       flex: 1,
                                       child: GestureDetector(
                                         child: SizedBox(
-                                          child: aadharCardFrontImagePath!=null
+                                          child: aadharCardFrontImagePath !=
+                                                  null
                                               ? Stack(
-                                                children: [
-
-                                                  Image(
-                                                    image: Image.file(
-                                                        aadharCardFrontImagePath!)
-                                                        .image,
-                                                    fit: BoxFit.fitWidth,
-                                                  ),
-                                                  Align(
-                                                    alignment: Alignment.topRight,
-                                                    child: Container(
-                                                        decoration:
-                                                        BoxDecoration(
-                                                          borderRadius: BorderRadius.circular(40),
-                                                          color: Colors.white
-                                                        ),child: Icon(Icons.find_replace,color: Color(0xfffd6206),)),
-                                                  ),
-                                                ],
-                                              )
+                                                  children: [
+                                                    Image(
+                                                      image: Image.file(
+                                                              aadharCardFrontImagePath!)
+                                                          .image,
+                                                      fit: BoxFit.fitWidth,
+                                                    ),
+                                                    Align(
+                                                      alignment:
+                                                          Alignment.topRight,
+                                                      child: Container(
+                                                          decoration: BoxDecoration(
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          40),
+                                                              color:
+                                                                  Colors.white),
+                                                          child: Icon(
+                                                            Icons.find_replace,
+                                                            color: Color(
+                                                                0xfffd6206),
+                                                          )),
+                                                    ),
+                                                  ],
+                                                )
                                               : Container(
                                                   padding: EdgeInsets.all(10),
                                                   decoration: BoxDecoration(
@@ -591,7 +601,7 @@ class _DriverDetailsState extends State<DriverDetails> {
                                                   ),
                                                 ),
                                         ),
-                                        onTap: ()  {
+                                        onTap: () {
                                           showModalBottomSheet(
                                               context: context,
                                               builder: (BuildContext bc) {
@@ -600,25 +610,35 @@ class _DriverDetailsState extends State<DriverDetails> {
                                                     child: new Wrap(
                                                       children: <Widget>[
                                                         new ListTile(
-                                                            leading: new Icon(Icons.photo_library),
-                                                            title: new Text('Photo Library'),
-                                                            onTap: () async{
-                                                              Navigator.of(context).pop();
+                                                            leading: new Icon(Icons
+                                                                .photo_library),
+                                                            title: new Text(
+                                                                'Photo Library'),
+                                                            onTap: () async {
+                                                              Navigator.of(
+                                                                      context)
+                                                                  .pop();
                                                               changingValue =
-                                                              await pickImageFromGallery();
+                                                                  await pickImageFromGallery();
                                                               setState(() {
-                                                                aadharCardFrontImagePath = changingValue;
+                                                                aadharCardFrontImagePath =
+                                                                    changingValue;
                                                               });
                                                             }),
                                                         new ListTile(
-                                                          leading: new Icon(Icons.photo_camera),
-                                                          title: new Text('Camera'),
-                                                          onTap: () async{
-                                                            Navigator.of(context).pop();
+                                                          leading: new Icon(Icons
+                                                              .photo_camera),
+                                                          title: new Text(
+                                                              'Camera'),
+                                                          onTap: () async {
+                                                            Navigator.of(
+                                                                    context)
+                                                                .pop();
                                                             changingValue =
-                                                            await clickImage();
+                                                                await clickImage();
                                                             setState(() {
-                                                              aadharCardFrontImagePath = changingValue;
+                                                              aadharCardFrontImagePath =
+                                                                  changingValue;
                                                             });
                                                           },
                                                         ),
@@ -626,8 +646,7 @@ class _DriverDetailsState extends State<DriverDetails> {
                                                     ),
                                                   ),
                                                 );
-                                              }
-                                          );
+                                              });
 
                                           setState(() {
                                             aadharCardFrontImageAdded = true;
@@ -639,27 +658,34 @@ class _DriverDetailsState extends State<DriverDetails> {
                                       flex: 1,
                                       child: GestureDetector(
                                         child: SizedBox(
-                                          child: aadharCardBackImagePath!=null
+                                          child: aadharCardBackImagePath != null
                                               ? Stack(
-                                            children: [
-
-                                              Image(
-                                                image: Image.file(
-                                                    aadharCardBackImagePath!)
-                                                    .image,
-                                                fit: BoxFit.fitWidth,
-                                              ),
-                                              Align(
-                                                alignment: Alignment.topRight,
-                                                child: Container(
-                                                    decoration:
-                                                    BoxDecoration(
-                                                        borderRadius: BorderRadius.circular(40),
-                                                        color: Colors.white
-                                                    ),child: Icon(Icons.find_replace,color: Color(0xfffd6206),)),
-                                              ),
-                                            ],
-                                          )
+                                                  children: [
+                                                    Image(
+                                                      image: Image.file(
+                                                              aadharCardBackImagePath!)
+                                                          .image,
+                                                      fit: BoxFit.fitWidth,
+                                                    ),
+                                                    Align(
+                                                      alignment:
+                                                          Alignment.topRight,
+                                                      child: Container(
+                                                          decoration: BoxDecoration(
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          40),
+                                                              color:
+                                                                  Colors.white),
+                                                          child: Icon(
+                                                            Icons.find_replace,
+                                                            color: Color(
+                                                                0xfffd6206),
+                                                          )),
+                                                    ),
+                                                  ],
+                                                )
                                               : Container(
                                                   padding: EdgeInsets.all(10),
                                                   decoration: BoxDecoration(
@@ -678,7 +704,7 @@ class _DriverDetailsState extends State<DriverDetails> {
                                                   ),
                                                 ),
                                         ),
-                                        onTap: ()  {
+                                        onTap: () {
                                           showModalBottomSheet(
                                               context: context,
                                               builder: (BuildContext bc) {
@@ -687,25 +713,35 @@ class _DriverDetailsState extends State<DriverDetails> {
                                                     child: new Wrap(
                                                       children: <Widget>[
                                                         new ListTile(
-                                                            leading: new Icon(Icons.photo_library),
-                                                            title: new Text('Photo Library'),
-                                                            onTap: () async{
-                                                              Navigator.of(context).pop();
+                                                            leading: new Icon(Icons
+                                                                .photo_library),
+                                                            title: new Text(
+                                                                'Photo Library'),
+                                                            onTap: () async {
+                                                              Navigator.of(
+                                                                      context)
+                                                                  .pop();
                                                               changingValue =
-                                                              await pickImageFromGallery();
+                                                                  await pickImageFromGallery();
                                                               setState(() {
-                                                                aadharCardBackImagePath = changingValue;
+                                                                aadharCardBackImagePath =
+                                                                    changingValue;
                                                               });
                                                             }),
                                                         new ListTile(
-                                                          leading: new Icon(Icons.photo_camera),
-                                                          title: new Text('Camera'),
-                                                          onTap: () async{
-                                                            Navigator.of(context).pop();
+                                                          leading: new Icon(Icons
+                                                              .photo_camera),
+                                                          title: new Text(
+                                                              'Camera'),
+                                                          onTap: () async {
+                                                            Navigator.of(
+                                                                    context)
+                                                                .pop();
                                                             changingValue =
-                                                            await clickImage();
+                                                                await clickImage();
                                                             setState(() {
-                                                              aadharCardBackImagePath = changingValue;
+                                                              aadharCardBackImagePath =
+                                                                  changingValue;
                                                             });
                                                           },
                                                         ),
@@ -713,8 +749,7 @@ class _DriverDetailsState extends State<DriverDetails> {
                                                     ),
                                                   ),
                                                 );
-                                              }
-                                          );
+                                              });
 
                                           setState(() {
                                             aadharCardBackImageAdded = true;
@@ -793,26 +828,30 @@ class _DriverDetailsState extends State<DriverDetails> {
                                   child: GestureDetector(
                                     child: SizedBox(
                                       child: drivingLicenseImagePath != null
-                                          ?Stack(
-                                        children: [
-
-                                          Image(
-                                            image: Image.file(
-                                                drivingLicenseImagePath!)
-                                                .image,
-                                            fit: BoxFit.fitWidth,
-                                          ),
-                                          Align(
-                                            alignment: Alignment.topRight,
-                                            child: Container(
-                                                decoration:
-                                                BoxDecoration(
-                                                    borderRadius: BorderRadius.circular(40),
-                                                    color: Colors.white
-                                                ),child: Icon(Icons.find_replace,color: Color(0xfffd6206),)),
-                                          ),
-                                        ],
-                                      )
+                                          ? Stack(
+                                              children: [
+                                                Image(
+                                                  image: Image.file(
+                                                          drivingLicenseImagePath!)
+                                                      .image,
+                                                  fit: BoxFit.fitWidth,
+                                                ),
+                                                Align(
+                                                  alignment: Alignment.topRight,
+                                                  child: Container(
+                                                      decoration: BoxDecoration(
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(40),
+                                                          color: Colors.white),
+                                                      child: Icon(
+                                                        Icons.find_replace,
+                                                        color:
+                                                            Color(0xfffd6206),
+                                                      )),
+                                                ),
+                                              ],
+                                            )
                                           : Container(
                                               padding: EdgeInsets.all(10),
                                               width: double.infinity,
@@ -832,7 +871,7 @@ class _DriverDetailsState extends State<DriverDetails> {
                                               ),
                                             ),
                                     ),
-                                    onTap: ()  {
+                                    onTap: () {
                                       showModalBottomSheet(
                                           context: context,
                                           builder: (BuildContext bc) {
@@ -841,25 +880,32 @@ class _DriverDetailsState extends State<DriverDetails> {
                                                 child: new Wrap(
                                                   children: <Widget>[
                                                     new ListTile(
-                                                        leading: new Icon(Icons.photo_library),
-                                                        title: new Text('Photo Library'),
-                                                        onTap: () async{
-                                                          Navigator.of(context).pop();
+                                                        leading: new Icon(Icons
+                                                            .photo_library),
+                                                        title: new Text(
+                                                            'Photo Library'),
+                                                        onTap: () async {
+                                                          Navigator.of(context)
+                                                              .pop();
                                                           changingValue =
-                                                          await pickImageFromGallery();
+                                                              await pickImageFromGallery();
                                                           setState(() {
-                                                            drivingLicenseImagePath = changingValue;
+                                                            drivingLicenseImagePath =
+                                                                changingValue;
                                                           });
                                                         }),
                                                     new ListTile(
-                                                      leading: new Icon(Icons.photo_camera),
+                                                      leading: new Icon(
+                                                          Icons.photo_camera),
                                                       title: new Text('Camera'),
-                                                      onTap: () async{
-                                                        Navigator.of(context).pop();
+                                                      onTap: () async {
+                                                        Navigator.of(context)
+                                                            .pop();
                                                         changingValue =
-                                                        await clickImage();
+                                                            await clickImage();
                                                         setState(() {
-                                                          drivingLicenseImagePath = changingValue;
+                                                          drivingLicenseImagePath =
+                                                              changingValue;
                                                         });
                                                       },
                                                     ),
@@ -867,8 +913,7 @@ class _DriverDetailsState extends State<DriverDetails> {
                                                 ),
                                               ),
                                             );
-                                          }
-                                      );
+                                          });
 
                                       setState(() {
                                         drivingLicenseImageAdded = true;
@@ -943,25 +988,29 @@ class _DriverDetailsState extends State<DriverDetails> {
                                     child: SizedBox(
                                       child: panCardImagePath != null
                                           ? Stack(
-                                        children: [
-
-                                          Image(
-                                            image: Image.file(
-                                                panCardImagePath!)
-                                                .image,
-                                            fit: BoxFit.fitWidth,
-                                          ),
-                                          Align(
-                                            alignment: Alignment.topRight,
-                                            child: Container(
-                                                decoration:
-                                                BoxDecoration(
-                                                    borderRadius: BorderRadius.circular(40),
-                                                    color: Colors.white
-                                                ),child: Icon(Icons.find_replace,color: Color(0xfffd6206),)),
-                                          ),
-                                        ],
-                                      )
+                                              children: [
+                                                Image(
+                                                  image: Image.file(
+                                                          panCardImagePath!)
+                                                      .image,
+                                                  fit: BoxFit.fitWidth,
+                                                ),
+                                                Align(
+                                                  alignment: Alignment.topRight,
+                                                  child: Container(
+                                                      decoration: BoxDecoration(
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(40),
+                                                          color: Colors.white),
+                                                      child: Icon(
+                                                        Icons.find_replace,
+                                                        color:
+                                                            Color(0xfffd6206),
+                                                      )),
+                                                ),
+                                              ],
+                                            )
                                           : Container(
                                               padding: EdgeInsets.all(10),
                                               width: double.infinity,
@@ -981,7 +1030,7 @@ class _DriverDetailsState extends State<DriverDetails> {
                                               ),
                                             ),
                                     ),
-                                    onTap: ()  {
+                                    onTap: () {
                                       showModalBottomSheet(
                                           context: context,
                                           builder: (BuildContext bc) {
@@ -990,25 +1039,32 @@ class _DriverDetailsState extends State<DriverDetails> {
                                                 child: new Wrap(
                                                   children: <Widget>[
                                                     new ListTile(
-                                                        leading: new Icon(Icons.photo_library),
-                                                        title: new Text('Photo Library'),
-                                                        onTap: () async{
-                                                          Navigator.of(context).pop();
+                                                        leading: new Icon(Icons
+                                                            .photo_library),
+                                                        title: new Text(
+                                                            'Photo Library'),
+                                                        onTap: () async {
+                                                          Navigator.of(context)
+                                                              .pop();
                                                           changingValue =
-                                                          await pickImageFromGallery();
+                                                              await pickImageFromGallery();
                                                           setState(() {
-                                                            panCardImagePath = changingValue;
+                                                            panCardImagePath =
+                                                                changingValue;
                                                           });
                                                         }),
                                                     new ListTile(
-                                                      leading: new Icon(Icons.photo_camera),
+                                                      leading: new Icon(
+                                                          Icons.photo_camera),
                                                       title: new Text('Camera'),
-                                                      onTap: () async{
-                                                        Navigator.of(context).pop();
+                                                      onTap: () async {
+                                                        Navigator.of(context)
+                                                            .pop();
                                                         changingValue =
-                                                        await clickImage();
+                                                            await clickImage();
                                                         setState(() {
-                                                          panCardImagePath = changingValue;
+                                                          panCardImagePath =
+                                                              changingValue;
                                                         });
                                                       },
                                                     ),
@@ -1016,8 +1072,7 @@ class _DriverDetailsState extends State<DriverDetails> {
                                                 ),
                                               ),
                                             );
-                                          }
-                                      );
+                                          });
 
                                       setState(() {
                                         panCardImageAdded = true;
@@ -1027,7 +1082,6 @@ class _DriverDetailsState extends State<DriverDetails> {
                                 ),
                               ),
                             ),
-
                           ],
                         ),
                       ),
@@ -1096,45 +1150,49 @@ class _DriverDetailsState extends State<DriverDetails> {
                                     child: SizedBox(
                                       child: vaccineImagePath != null
                                           ? Stack(
-                                        children: [
-
-                                          Image(
-                                            image: Image.file(
-                                                vaccineImagePath!)
-                                                .image,
-                                            fit: BoxFit.fitWidth,
-                                          ),
-                                          Align(
-                                            alignment: Alignment.topRight,
-                                            child: Container(
-                                                decoration:
-                                                BoxDecoration(
-                                                    borderRadius: BorderRadius.circular(40),
-                                                    color: Colors.white
-                                                ),child: Icon(Icons.find_replace,color: Color(0xfffd6206),)),
-                                          ),
-                                        ],
-                                      )
+                                              children: [
+                                                Image(
+                                                  image: Image.file(
+                                                          vaccineImagePath!)
+                                                      .image,
+                                                  fit: BoxFit.fitWidth,
+                                                ),
+                                                Align(
+                                                  alignment: Alignment.topRight,
+                                                  child: Container(
+                                                      decoration: BoxDecoration(
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(40),
+                                                          color: Colors.white),
+                                                      child: Icon(
+                                                        Icons.find_replace,
+                                                        color:
+                                                            Color(0xfffd6206),
+                                                      )),
+                                                ),
+                                              ],
+                                            )
                                           : Container(
-                                        padding: EdgeInsets.all(10),
-                                        width: double.infinity,
-                                        decoration: BoxDecoration(
-                                          border: Border.all(
-                                            color: Colors.black,
-                                            width: 1,
-                                          ),
-                                        ),
-                                        child: Column(
-                                          children: const [
-                                            Icon(
-                                              Icons.add_a_photo,
+                                              padding: EdgeInsets.all(10),
+                                              width: double.infinity,
+                                              decoration: BoxDecoration(
+                                                border: Border.all(
+                                                  color: Colors.black,
+                                                  width: 1,
+                                                ),
+                                              ),
+                                              child: Column(
+                                                children: const [
+                                                  Icon(
+                                                    Icons.add_a_photo,
+                                                  ),
+                                                  Text('Vaccine Certificate'),
+                                                ],
+                                              ),
                                             ),
-                                            Text('Vaccine Certificate'),
-                                          ],
-                                        ),
-                                      ),
                                     ),
-                                    onTap: ()  {
+                                    onTap: () {
                                       showModalBottomSheet(
                                           context: context,
                                           builder: (BuildContext bc) {
@@ -1143,25 +1201,32 @@ class _DriverDetailsState extends State<DriverDetails> {
                                                 child: new Wrap(
                                                   children: <Widget>[
                                                     new ListTile(
-                                                        leading: new Icon(Icons.photo_library),
-                                                        title: new Text('Photo Library'),
-                                                        onTap: () async{
-                                                          Navigator.of(context).pop();
+                                                        leading: new Icon(Icons
+                                                            .photo_library),
+                                                        title: new Text(
+                                                            'Photo Library'),
+                                                        onTap: () async {
+                                                          Navigator.of(context)
+                                                              .pop();
                                                           changingValue =
-                                                          await pickImageFromGallery();
+                                                              await pickImageFromGallery();
                                                           setState(() {
-                                                            vaccineImagePath = changingValue;
+                                                            vaccineImagePath =
+                                                                changingValue;
                                                           });
                                                         }),
                                                     new ListTile(
-                                                      leading: new Icon(Icons.photo_camera),
+                                                      leading: new Icon(
+                                                          Icons.photo_camera),
                                                       title: new Text('Camera'),
-                                                      onTap: () async{
-                                                        Navigator.of(context).pop();
+                                                      onTap: () async {
+                                                        Navigator.of(context)
+                                                            .pop();
                                                         changingValue =
-                                                        await clickImage();
+                                                            await clickImage();
                                                         setState(() {
-                                                          vaccineImagePath = changingValue;
+                                                          vaccineImagePath =
+                                                              changingValue;
                                                         });
                                                       },
                                                     ),
@@ -1169,8 +1234,7 @@ class _DriverDetailsState extends State<DriverDetails> {
                                                 ),
                                               ),
                                             );
-                                          }
-                                      );
+                                          });
 
                                       setState(() {
                                         drivingLicenseImageAdded = true;
@@ -1185,8 +1249,6 @@ class _DriverDetailsState extends State<DriverDetails> {
                       ),
                     ),
                   ),
-
-
                   Row(
                     children: [
                       Expanded(
@@ -1244,53 +1306,50 @@ class _DriverDetailsState extends State<DriverDetails> {
                                 drivingLicensePhoto_Global =
                                     drivingLicenseImagePath;
                                 panCardPhoto_Global = panCardImagePath;
-                                VaccinationCertificate_Global = vaccineImagePath;
+                                VaccinationCertificate_Global =
+                                    vaccineImagePath;
                                 city = _chosenCity;
                                 locality_Global = locality.text;
-                                if(firstName.text == ""){
+                                if (firstName.text == "") {
                                   showAlert(context, "Enter First name");
-                                }else if( lastName.text == ""){
+                                } else if (lastName.text == "") {
                                   showAlert(context, "Enter Last Name");
-                                }
-                                else if(alternateNumber.text == ""){
+                                } else if (alternateNumber.text == "") {
                                   showAlert(context, "Enter Alternate number");
-                                }else if(emergencyNumber.text == ""){
+                                } else if (emergencyNumber.text == "") {
                                   showAlert(context, "Enter Emergency number");
-                                }else if(locality.text == ""){
+                                } else if (locality.text == "") {
                                   showAlert(context, "Enter Locality");
-                                }else if(aadharNumber.text == ""){
+                                } else if (aadharNumber.text == "") {
                                   showAlert(context, "Enter Aadhaar Number");
-                                }else if(aadharNumber.text.length != 12){
-                                  showAlert(context, "Enter Valid Aadhaar Number");
-                                }
-                                else if(aadharCardFrontImageAdded == false){
+                                } else if (aadharNumber.text.length != 12) {
+                                  showAlert(
+                                      context, "Enter Valid Aadhaar Number");
+                                } else if (aadharCardFrontImageAdded == false) {
                                   showAlert(context, "Add Aadhaar Front Image");
-                                }else if(aadharCardBackImageAdded == false){
+                                } else if (aadharCardBackImageAdded == false) {
                                   showAlert(context, "Add Aadhaar Back Image");
-                                }else if(drivingLicenseNumber.text == ""){
-                                  showAlert(context, "Add Driving License Number");
-                                }else if(drivingLicenseNumber.text.length != 16){
-                                  showAlert(context, "Enter Valid Licence Number");
-                                }
-                                else if(drivingLicenseImageAdded == false){
-                                  showAlert(context, "Add Driving License Image");
-                                }else if(profileImagePath == null){
+                                } else if (drivingLicenseNumber.text == "") {
+                                  showAlert(
+                                      context, "Add Driving License Number");
+                                } else if (drivingLicenseNumber.text.length !=
+                                    16) {
+                                  showAlert(
+                                      context, "Enter Valid Licence Number");
+                                } else if (drivingLicenseImageAdded == false) {
+                                  showAlert(
+                                      context, "Add Driving License Image");
+                                } else if (profileImagePath == null) {
                                   showAlert(context, "Add Profile Image");
-                                }else if(vaccineImagePath == null){
+                                } else if (vaccineImagePath == null) {
                                   showAlert(context, "Add Vaccine Certificate");
-
-                                }else{
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (BuildContext context) =>
-                                                VehicleDetails()));
-
-                                  }
-
-
-
-
+                                } else {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (BuildContext context) =>
+                                              VehicleDetails()));
+                                }
                               },
                               child: Text(
                                 'Save Details',
@@ -1321,13 +1380,15 @@ class _DriverDetailsState extends State<DriverDetails> {
       },
     );
   }
+
   void showAlert(BuildContext context, String text) {
     showDialog(
         context: context,
         builder: (context) => AlertDialog(
-          content: Text(text),
-        ));
+              content: Text(text),
+            ));
   }
+
   void _showPicker(context) {
     showModalBottomSheet(
         context: context,
@@ -1341,7 +1402,7 @@ class _DriverDetailsState extends State<DriverDetails> {
                       title: new Text('Photo Library'),
                       onTap: () {
                         setState(() {
-                          isCameraSelected=true;
+                          isCameraSelected = true;
                           isChoose = "Library";
                         });
                         Navigator.of(context).pop();
@@ -1352,7 +1413,6 @@ class _DriverDetailsState extends State<DriverDetails> {
                     onTap: () {
                       setState(() {
                         isChoose = "Camera";
-
                       });
                       isCameraSelected = true;
                       Navigator.of(context).pop();
@@ -1362,35 +1422,36 @@ class _DriverDetailsState extends State<DriverDetails> {
               ),
             ),
           );
-        }
-    );
+        });
   }
-  Future checkDetails(String adhaar,license,pan) async{
+
+  Future checkDetails(String adhaar, license, pan) async {
     String url = "https://loadrunner12.herokuapp.com/api/alldriversDetails";
     var jsonResponse;
-    final msg = jsonEncode({"Adhar_no": adhaar, "License_no": license, "Pan_no": pan});
-    var response = await http.get(Uri.parse(url),headers: {
+    final msg =
+        jsonEncode({"Adhar_no": adhaar, "License_no": license, "Pan_no": pan});
+    var response = await http.get(Uri.parse(url), headers: {
       "Content-Type": "application/json",
       'Accept': 'application/json',
     });
 
-    if(response.statusCode == 200){
+    if (response.statusCode == 200) {
       jsonResponse = json.decode(response.body);
       print(confirmNew);
-      if (jsonResponse['status'] == true){
+      if (jsonResponse['status'] == true) {
         setState(() {
           isLoading = false;
         });
         showAlert(context, "Number Already Present");
       }
     }
-    if(response.statusCode == 200 ) {
+    if (response.statusCode == 200) {
       jsonResponse = json.decode(response.body);
       if (jsonResponse != null) {
-        if (jsonResponse['status'] == false){
+        if (jsonResponse['status'] == false) {
           // }
           setState(() {
-            confirmNew= true;
+            confirmNew = true;
           });
         }
 
@@ -1402,8 +1463,8 @@ class _DriverDetailsState extends State<DriverDetails> {
         }
       }
     }
-
   }
+
   Future<File?> clickImage() async {
     try {
       final image = await ImagePicker().pickImage(source: ImageSource.camera);
@@ -1418,14 +1479,13 @@ class _DriverDetailsState extends State<DriverDetails> {
 
   Future<File?> pickImageFromGallery() async {
     try {
-        final image = await ImagePicker().pickImage(source: ImageSource.gallery);
-        if (image == null) return null;
+      final image = await ImagePicker().pickImage(source: ImageSource.gallery);
+      if (image == null) return null;
 
-        final imagePathTemporary = File(image.path);
-        return imagePathTemporary;
-
-
+      final imagePathTemporary = File(image.path);
+      return imagePathTemporary;
     } on PlatformException catch (e) {
       print('Failed to pick image: $e');
     }
-  }}
+  }
+}

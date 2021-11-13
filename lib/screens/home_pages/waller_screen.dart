@@ -2,12 +2,13 @@
 
 import 'dart:async';
 import 'dart:convert';
-
+import 'package:load_runner/main.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:load_runner/model/paymentHistoryModel.dart';
 import 'package:load_runner/screens/home_pages/pPay.dart';
+import 'package:load_runner/screens/ride_pages/pickup_page.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 import 'package:http/http.dart' as http;
 
@@ -33,6 +34,7 @@ class _Wallet2State extends State<Wallet2> {
   @override
   void initState() {
     getPayment();
+    test();
     super.initState();
     // Future.delayed(Duration.zero, () => showDialog1(context: context));
   }
@@ -103,7 +105,10 @@ class _Wallet2State extends State<Wallet2> {
                             });
                             if (title == "Recharge") {
                               setState(() {
-                                // walletBalance == 0? walletBalance = walletRecharge : walletBalance = walletBalance+walletRecharge;
+                                // walletBalance == 0
+                                //     ? walletBalance = walletRecharge
+                                //     : walletBalance =
+                                //         walletBalance + walletRecharge;
                                 // _pPayment();
                                 Navigator.of(context)
                                     .push(
@@ -153,7 +158,7 @@ class _Wallet2State extends State<Wallet2> {
       appBar: AppBar(
         leading: InkWell(
           onTap: () {
-            Navigator.of(context).pop();
+            Navigator.pushNamedAndRemoveUntil(context, '/', (_) => false);
           },
           child: const Icon(
             Icons.arrow_back,
@@ -273,10 +278,10 @@ class _Wallet2State extends State<Wallet2> {
                 itemCount: _list.length,
                 itemBuilder: (BuildContext context, int index) {
                   return ListTile(
-                    leading: Text(_list[index].amount.toString()),
-                      subtitle:Text(_list[index].status!),
+                      leading: Text(_list[index].amount.toString()),
+                      subtitle: Text(_list[index].status!),
                       trailing: Text(
-                        _list[index].startDate.toString().substring(0,11),
+                        _list[index].startDate.toString().substring(0, 11),
                         style: TextStyle(color: Colors.green, fontSize: 15),
                       ),
                       title: Text(_list[index].transactionType!));
@@ -307,6 +312,42 @@ class _Wallet2State extends State<Wallet2> {
     );
   }
 
+  Future test() async {
+    try {
+      var jsonResponse;
+      var response = await http.get(
+          Uri.parse(
+              "https://loadrunner12.herokuapp.com/api/payment/getBalance"),
+          headers: {
+            "Content-Type": "application/json",
+            'Accept': 'application/json',
+          });
+      print("jsonResponse20");
+      print(response.statusCode);
+      if (response.statusCode == 200) {
+        print("jsonResponse3");
+        print(response.body);
+        print("jsonResponse14");
+
+        var cookies = response.headers['set-cookie'];
+        if (cookies != null) {
+          print("helloworld");
+          print(cookies);
+          jsonResponse = json.decode(response.body);
+          setState(() {
+            walletBalance = jsonResponse['balance'];
+          });
+          print("jsonResponse4");
+          print(jsonResponse);
+        }
+      } else {
+        return null;
+      }
+    } on TimeoutException catch (_) {
+      // print("Hello");
+    }
+  }
+
   Future getPayment() async {
     String url = "https://loadrunner12.herokuapp.com/api/payment/getBalance";
     try {
@@ -332,23 +373,23 @@ class _Wallet2State extends State<Wallet2> {
 
         _list = (jsonResponse1 as List)
             .map((data) => PaymentHistoryModel.fromJson(data))
-            .toList();}
+            .toList();
+      }
       if (response.statusCode == 200) {
-        print("jsonResponse1");
+        print("jsonResponse1000");
         print(response.body);
-        print("jsonResponse1");
         var cookies = response.headers['set-cookie'];
         if (cookies != null) {
           print(cookies);
         }
         jsonResponse = json.decode(response.body);
         print("jsonResponse1");
+        print("helloworld");
         print(jsonResponse);
 
         setState(() {
           walletBalance = jsonResponse['balance'];
         });
-
       } else {
         return null;
       }
@@ -356,7 +397,6 @@ class _Wallet2State extends State<Wallet2> {
       // print("Hello");
     }
   }
-
   // Future getHistory() async {
   //   try {
   //     var jsonResponse1;

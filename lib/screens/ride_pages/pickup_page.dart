@@ -16,6 +16,7 @@ import 'package:load_runner/order_screen.dart';
 import 'package:load_runner/screens/home_pages/home_page.dart';
 import 'package:load_runner/screens/home_pages/waller_screen.dart';
 import 'package:load_runner/screens/registration_pages/signin_page.dart';
+import 'package:load_runner/screens/ride_pages/wallet_page.dart';
 import 'package:load_runner/screens/support_page.dart';
 import 'package:location/location.dart';
 import 'package:load_runner/screens/ride_pages/localWidgets/rolling_switch.dart';
@@ -77,6 +78,7 @@ class _MapScreenState extends State<MapScreen> {
     });
     setState(() {});
   }
+
   String? isStatus;
   final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
       FlutterLocalNotificationsPlugin();
@@ -95,12 +97,12 @@ class _MapScreenState extends State<MapScreen> {
 
   @override
   void initState() {
-isStatus = widget.status;
-timer = Timer.periodic(Duration(seconds: 1), (Timer t) => getStatus());
-getPayment();
+    isStatus = widget.status;
+    timer = Timer.periodic(Duration(seconds: 1), (Timer t) => getStatus());
+    getPayment();
     getDriverDetails();
 
-FirebaseMessaging.onBackgroundMessage(_messageHandler);
+    FirebaseMessaging.onBackgroundMessage(_messageHandler);
     messaging = FirebaseMessaging.instance;
     messaging.getToken().then((value) {
       print("Hello");
@@ -116,15 +118,12 @@ FirebaseMessaging.onBackgroundMessage(_messageHandler);
     }); // getLocation();
     getLoc();
     setcustomMarket();
-
   }
-
 
   bool sliderBool = false;
   @override
   void dispose() {
     timer?.cancel();
-    // TODO: implement dispose
     super.dispose();
   }
 
@@ -132,8 +131,9 @@ FirebaseMessaging.onBackgroundMessage(_messageHandler);
   Widget build(BuildContext context) {
     WidgetsBinding.instance!.addPostFrameCallback((_) {
       if (widget.status == "Pending") {
-        _showCupertinoDialog(  'Your Account is in Review Will be approved within 24hrs');
-      }// Add Your Code here.
+        _showCupertinoDialog(
+            'Your Account is in Review will be approved within 24hrs');
+      }
     });
 
     return Scaffold(
@@ -238,9 +238,7 @@ FirebaseMessaging.onBackgroundMessage(_messageHandler);
                 'Home',
                 style: TextStyle(color: Color(0xfffd6206)),
               ),
-              onTap: () => {
-                Navigator.pop(context)
-              },
+              onTap: () => {Navigator.pop(context)},
             ),
             ListTile(
               leading:
@@ -278,7 +276,10 @@ FirebaseMessaging.onBackgroundMessage(_messageHandler);
                     context,
                     MaterialPageRoute(
                         builder: (context) => Wallet2(
-                            widget.name!, widget.number!, widget.token!)))
+                              widget.name!,
+                              widget.number!,
+                              widget.token!,
+                            )))
               },
             ),
             ListTile(
@@ -470,18 +471,24 @@ FirebaseMessaging.onBackgroundMessage(_messageHandler);
                             ),
                             child: Center(
                                 child: InkWell(
-                                  onTap:(){
-                                    Navigator.push(context,
-                                        MaterialPageRoute(builder: (context) => SupportPage()));
-                                  },
-                                  child: Image.asset(
-                                      "assets/images/customer-service.png",width: 27,height: 27,),
-                                )),
+                              onTap: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => SupportPage()));
+                              },
+                              child: Image.asset(
+                                "assets/images/customer-service.png",
+                                width: 27,
+                                height: 27,
+                              ),
+                            )),
                           ),
                         ),
-                        Text("SUPPORT",style: TextStyle(
-                          fontSize: 8
-                        ),),
+                        Text(
+                          "SUPPORT",
+                          style: TextStyle(fontSize: 8),
+                        ),
                         SizedBox(
                           height: 5,
                         ),
@@ -522,16 +529,16 @@ FirebaseMessaging.onBackgroundMessage(_messageHandler);
           return CupertinoAlertDialog(
             title: Text('ALERT'),
             content: Text(
-                  text.toUpperCase(),
+              text.toUpperCase(),
               textAlign: TextAlign.center,
               style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
+                  fontSize: 15,
+                  //fontWeight: FontWeight.bold,
                   color: Colors.black.withOpacity(0.7)),
             ),
             actions: <Widget>[
               TextButton(
-                  onPressed: ()async {
+                  onPressed: () async {
                     final prefs = await SharedPreferences.getInstance();
                     prefs.remove('status');
                     prefs.remove('Phone_No');
@@ -556,6 +563,7 @@ FirebaseMessaging.onBackgroundMessage(_messageHandler);
           );
         });
   }
+
   void _showCupertinoDialog1(String text) {
     showDialog(
         barrierDismissible: true,
@@ -574,39 +582,14 @@ FirebaseMessaging.onBackgroundMessage(_messageHandler);
             ),
             actions: <Widget>[
               TextButton(
-                  onPressed: ()async {
-                    timer!.cancel();
-                    final prefs = await SharedPreferences.getInstance();
-                    // prefs.setString('status', body["driver"]["status"].toString());
-                    // prefs.setString('firstname', body["driver"]["firstname"].toString());
-                    // prefs.setString('Phone_No', body["driver"]["Phone_No"].toString());
-                    // prefs.setString('token2', body["token2"].toString());
-                    // prefs.setString('lastname', body["driver"]["lastname"].toString());
-                    // prefs.setString('_id', body["driver"]["_id"].toString());
-                    // prefs.setString('Profile_Photo',     body["driver"]["Profile_Photo"].toString());
-                    prefs.remove('status');
-                    prefs.remove('Phone_No');
-                    prefs.remove('firstname');
-                    prefs.remove('token2');
-                    prefs.remove('lastname');
-                    prefs.remove('_id');
-                    prefs.remove('Profile_Photo');
-
-                    Navigator.of(context).pushAndRemoveUntil(
-                      // the new route
-                      MaterialPageRoute(
-                        builder: (BuildContext context) => SignInPage(),
-                      ),
-
-                      // this function should return true when we're done removing routes
-                      // but because we want to remove all other screens, we make it
-                      // always return false
-                          (Route route) => false,
-                    );
+                  onPressed: () async {
+                    Navigator.pushNamedAndRemoveUntil(
+                        context, '/', (_) => false);
                   },
-                  child: Text('Ok',style: TextStyle(
-                     color: Color(0xfffd6206)
-                  ),)),
+                  child: Text(
+                    'Ok',
+                    style: TextStyle(color: Color(0xfffd6206)),
+                  )),
               // TextButton(
               //   onPressed: () {
               //     print('HelloWorld!');
@@ -617,6 +600,55 @@ FirebaseMessaging.onBackgroundMessage(_messageHandler);
           );
         });
   }
+
+  void _showCupertinoDialog3(String text) {
+    showDialog(
+        barrierDismissible: false,
+        barrierColor: Colors.transparent,
+        context: context,
+        builder: (context) {
+          return CupertinoAlertDialog(
+            title: Text('ALERT'),
+            content: Text(
+              text.toUpperCase(),
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black.withOpacity(0.7)),
+            ),
+            actions: <Widget>[
+              TextButton(
+                  onPressed: () async {
+                    final prefs = await SharedPreferences.getInstance();
+                    prefs.remove('status');
+                    prefs.remove('Phone_No');
+                    prefs.remove('firstname');
+                    prefs.remove('token2');
+                    prefs.remove('lastname');
+                    prefs.remove('_id');
+                    prefs.remove('Profile_Photo');
+                    Navigator.of(context).pushAndRemoveUntil(
+                        MaterialPageRoute(
+                            builder: (BuildContext context) => Wallet2(
+                                  widget.name.toString(),
+                                  widget.number.toString(),
+                                  widget.token.toString(),
+                                )),
+                        (Route<dynamic> route) => false);
+                  },
+                  child: Text('ADD MONEY')),
+              // TextButton(
+              //   onPressed: () {
+              //     print('HelloWorld!');
+              //   },
+              //   child: Text('HelloWorld!'),
+              // )
+            ],
+          );
+        });
+  }
+
   void _showCupertinoDialog2(String text) {
     showDialog(
         barrierDismissible: true,
@@ -635,12 +667,13 @@ FirebaseMessaging.onBackgroundMessage(_messageHandler);
             ),
             actions: <Widget>[
               TextButton(
-                  onPressed: ()async {
-                   Navigator.pop(context);
+                  onPressed: () async {
+                    Navigator.pop(context);
                   },
-                  child: Text('Ok',style: TextStyle(
-                      color: Color(0xfffd6206)
-                  ),)),
+                  child: Text(
+                    'Ok',
+                    style: TextStyle(color: Color(0xfffd6206)),
+                  )),
               // TextButton(
               //   onPressed: () {
               //     print('HelloWorld!');
@@ -651,6 +684,7 @@ FirebaseMessaging.onBackgroundMessage(_messageHandler);
           );
         });
   }
+
   drawerMenu() {
     return Drawer(
       child: ListView(
@@ -740,9 +774,6 @@ FirebaseMessaging.onBackgroundMessage(_messageHandler);
   }
 
   Future getDriverDetails() async {
-    // if (isStatus == "Active") {
-    //   _showCupertinoDialog(  'Your Account is in Review Will be approved within 24hrs');
-    // }
     String url = "https://loadrunner12.herokuapp.com/api/payment/getBalance";
     try {
       var jsonResponse;
@@ -755,7 +786,6 @@ FirebaseMessaging.onBackgroundMessage(_messageHandler);
             'Cookie': "token2=${widget.token}"
           });
       if (response.statusCode == 200) {
-
         print(response.body);
         jsonResponse = json.decode(response.body);
         setState(() {
@@ -772,6 +802,7 @@ FirebaseMessaging.onBackgroundMessage(_messageHandler);
       // print("Hello");
     }
   }
+
   Future getPayment() async {
     String url = "https://loadrunner12.herokuapp.com/api/payment/getBalance";
     try {
@@ -793,13 +824,12 @@ FirebaseMessaging.onBackgroundMessage(_messageHandler);
           print(cookies);
         }
         jsonResponse = json.decode(response.body);
-        if(jsonResponse["balance"] < 10){
-          _showCupertinoDialog2("Recharge your wallet");
+        if (jsonResponse["balance"] <= 10) {
+          _showCupertinoDialog3("Recharge your wallet to accept orders");
         }
         setState(() {
           walletBalance = jsonResponse['balance'];
         });
-
       } else {
         return null;
       }
@@ -807,15 +837,16 @@ FirebaseMessaging.onBackgroundMessage(_messageHandler);
       // print("Hello");
     }
   }
+
   Future getStatus() async {
     try {
       var jsonResponse;
-      final msg = jsonEncode(
-          {"Phone_No":widget.number});
+      final msg = jsonEncode({"Phone_No": widget.number});
 
       var response = await http.post(
           Uri.parse(
-              "https://loadrunner12.herokuapp.com/api/checkApproved/driver/"),body: msg,
+              "https://loadrunner12.herokuapp.com/api/checkApproved/driver/"),
+          body: msg,
           headers: {
             "Content-Type": "application/json",
             'Accept': 'application/json',
@@ -823,21 +854,24 @@ FirebaseMessaging.onBackgroundMessage(_messageHandler);
       if (response.statusCode == 200) {
         jsonResponse = json.decode(response.body);
         print(jsonResponse);
-        if(widget.status == "Pending"){
-          if(jsonResponse["status"] == "Active"){
-            _showCupertinoDialog1("Your Account Has Verified");
+        if (widget.status == "Pending") {
+          if (jsonResponse["status"] == "Active") {
+            Navigator.pop(context);
+            _showCupertinoDialog1("Your Account Has Been Approved");
             timer!.cancel();
+            FirebaseMessaging.onMessage.listen((RemoteMessage event) {
+              print("message recieved");
+              print(event.notification!.body);
+            });
           }
         }
-
       } else {
         return null;
       }
-    } on TimeoutException catch (_) {
-      // print("Hello");
-    }
+    } on TimeoutException catch (_) {}
   }
-  Widget selT(){
+
+  Widget selT() {
     return Container();
   }
 }
