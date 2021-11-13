@@ -299,7 +299,6 @@ class _Wallet2State extends State<Wallet2> {
     } else {
       Itype = "Minimum Recharge Balance";
     }
-
     return Itype;
   }
 
@@ -351,8 +350,7 @@ class _Wallet2State extends State<Wallet2> {
   Future getPayment() async {
     String url = "https://loadrunner12.herokuapp.com/api/payment/getBalance";
     try {
-      var jsonResponse;
-      var response = await http.get(
+      var balanceResponse = await http.get(
           Uri.parse(
               "https://loadrunner12.herokuapp.com/api/payment/getBalance"),
           headers: {
@@ -360,38 +358,33 @@ class _Wallet2State extends State<Wallet2> {
             'Accept': 'application/json',
             'Cookie': "token2=${widget.token}"
           });
-      var jsonResponse1;
-      var response1 = await http.get(
+      var paymentHistoryResponse = await http.get(
           Uri.parse("https://loadrunner12.herokuapp.com/api/payment/history"),
           headers: {
             "Content-Type": "application/json",
             'Accept': 'application/json',
             'Cookie': "token2=${widget.token}"
           });
-      if (response1.statusCode == 200) {
-        jsonResponse1 = json.decode(response1.body);
 
-        _list = (jsonResponse1 as List)
-            .map((data) => PaymentHistoryModel.fromJson(data))
-            .toList();
-      }
-      if (response.statusCode == 200) {
-        print("jsonResponse1000");
-        print(response.body);
-        var cookies = response.headers['set-cookie'];
+      if (balanceResponse.statusCode == 200) {
+        print(balanceResponse.body);
+        var cookies = balanceResponse.headers['set-cookie'];
         if (cookies != null) {
           print(cookies);
         }
-        jsonResponse = json.decode(response.body);
-        print("jsonResponse1");
-        print("helloworld");
-        print(jsonResponse);
-
+        var jsonResponse = json.decode(balanceResponse.body);
         setState(() {
           walletBalance = jsonResponse['balance'];
         });
       } else {
         return null;
+      }
+      if (paymentHistoryResponse.statusCode == 200) {
+        var jsonResponse1 = json.decode(paymentHistoryResponse.body);
+
+        _list = (jsonResponse1 as List)
+            .map((data) => PaymentHistoryModel.fromJson(data))
+            .toList();
       }
     } on TimeoutException catch (_) {
       // print("Hello");
