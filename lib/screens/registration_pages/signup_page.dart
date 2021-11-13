@@ -36,18 +36,17 @@ class _SignUpPageState extends State<SignUpPage> {
   TextEditingController password = TextEditingController();
   TextEditingController confirmPassword = TextEditingController();
   bool otpVerified = true, otpSend = true;
-  bool? confirmNew= false;
+  bool? confirmNew = false;
 
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey();
 
-  Future <void> signInWithPhoneAuthCredential(
+  Future<void> signInWithPhoneAuthCredential(
       AuthCredential phoneAuthCredential) async {
     setState(() {
       isLoading = true;
     });
 
     try {
-
       final authCredential =
           await _auth!.signInWithCredential(phoneAuthCredential);
       setState(() {
@@ -64,11 +63,11 @@ class _SignUpPageState extends State<SignUpPage> {
       print("FirebaseException");
       print(_scaffoldKey);
       print(e);
-      if(e.toString().contains("invalid.")){
+      if (e.toString().contains("invalid.")) {
         buildErrorSnackbar(context, "OTP IS INVALID");
         // showAlert(context, "OTP IS INVALID");
-      }else{
-        buildErrorSnackbar(context,  "OTP Is TimedOut");
+      } else {
+        buildErrorSnackbar(context, "OTP Is TimedOut");
 
         // showAlert(context, "OTP Is TimedOut");
       }
@@ -76,15 +75,13 @@ class _SignUpPageState extends State<SignUpPage> {
       setState(() {
         isLoading = false;
       });
-      if(_scaffoldKey.currentState != null){
+      if (_scaffoldKey.currentState != null) {
         _scaffoldKey.currentState!
             .showSnackBar(SnackBar(content: Text(e.message!)));
         print(_scaffoldKey.currentState);
       }
-
     }
   }
-
 
   @override
   void initState() {
@@ -175,14 +172,13 @@ class _SignUpPageState extends State<SignUpPage> {
                                     child: ElevatedButton(
                                       onPressed: () async {
                                         checkPhone(phoneNumber.text);
-
-                                        print(confirmNew);
-                                        print("confirmNew");
-
-                                        if(phoneNumber.text.length == 10 && !confirmNew!){
+                                        if (phoneNumber.text.length == 10 &&
+                                            !confirmNew!) {
                                           await _auth!.verifyPhoneNumber(
-                                            timeout: Duration(milliseconds: 59000),
-                                            phoneNumber: "+91" + phoneNumber.text,
+                                            timeout:
+                                                Duration(milliseconds: 59000),
+                                            phoneNumber:
+                                                "+91" + phoneNumber.text,
                                             verificationCompleted:
                                                 (phoneAuthCredential) async {
                                               setState(() {
@@ -195,29 +191,26 @@ class _SignUpPageState extends State<SignUpPage> {
                                                 isLoading = false;
                                               });
                                               _scaffoldKey.currentState!
-                                                  .showSnackBar(SnackBar(
+                                                  .showSnackBar(
+                                                SnackBar(
                                                   content: Text(
                                                       verificationFailed
-                                                          .message!)));
-                                              print("hello");
-
+                                                          .message!),
+                                                ),
+                                              );
                                             },
                                             codeSent: (verificationId,
                                                 [resendingToken]) async {
-
                                               setState(() {
                                                 isLoading = false;
                                                 this.verificationId =
                                                     verificationId;
                                               });
-
                                             },
                                             codeAutoRetrievalTimeout:
                                                 (verificationId) async {},
                                           );
                                         }
-
-
                                       },
                                       child: Text(
                                         'Send OTP',
@@ -248,7 +241,8 @@ class _SignUpPageState extends State<SignUpPage> {
                                       obscureText: !_otpVisible!,
                                       decoration: InputDecoration(
                                         focusedBorder: OutlineInputBorder(
-                                          borderSide: BorderSide(color: Color(0xfffd6204)),
+                                          borderSide: BorderSide(
+                                              color: Color(0xfffd6204)),
                                         ),
                                         suffixIcon: IconButton(
                                           icon: Icon(
@@ -294,20 +288,20 @@ class _SignUpPageState extends State<SignUpPage> {
                                       child: SizedBox(
                                         child: ElevatedButton(
                                           onPressed: () async {
-                                            if(otp.text.isEmpty){
+                                            if (otp.text.isEmpty) {
                                               showAlert(context, "Enter Otp");
-                                            }else{
+                                            } else {
                                               AuthCredential
-                                              phoneAuthCredential =
-                                              PhoneAuthProvider.credential(
-                                                  verificationId:
-                                                  verificationId.toString(),
-                                                  smsCode: otp.text);
+                                                  phoneAuthCredential =
+                                                  PhoneAuthProvider.credential(
+                                                      verificationId:
+                                                          verificationId
+                                                              .toString(),
+                                                      smsCode: otp.text);
 
                                               signInWithPhoneAuthCredential(
                                                   phoneAuthCredential);
                                             }
-
                                           },
                                           child: Text(
                                             'Verify OTP',
@@ -347,19 +341,19 @@ class _SignUpPageState extends State<SignUpPage> {
                               Padding(
                                 padding: EdgeInsets.fromLTRB(10, 0, 10, 10),
                                 child: TextFormField(
-                                  validator: (value){
+                                  validator: (value) {
                                     if (value!.isEmpty) {
                                       return 'Please enter password';
                                     }
                                     if (value.length < 6) {
                                       return 'Must be more than 6 charater';
                                     }
-
                                   },
                                   obscureText: !_passwordVisible!,
                                   decoration: InputDecoration(
                                     focusedBorder: OutlineInputBorder(
-                                      borderSide: BorderSide(color: Color(0xfffd6204)),
+                                      borderSide:
+                                          BorderSide(color: Color(0xfffd6204)),
                                     ),
                                     suffixIcon: IconButton(
                                       icon: Icon(
@@ -395,26 +389,24 @@ class _SignUpPageState extends State<SignUpPage> {
                                   ),
                                   keyboardType: TextInputType.text,
                                   controller: password,
-
                                 ),
                               ),
-
                               Padding(
                                 padding: EdgeInsets.fromLTRB(10, 0, 10, 10),
                                 child: TextFormField(
-                                  validator: (value){
+                                  validator: (value) {
                                     if (value!.isEmpty) {
                                       return 'Please enter password';
                                     }
                                     if (value.length < 6) {
                                       return 'Must be more than 6 charater';
                                     }
-
-                                  } ,
+                                  },
                                   obscureText: !_confirmPasswordVisible!,
                                   decoration: InputDecoration(
                                     focusedBorder: OutlineInputBorder(
-                                      borderSide: BorderSide(color: Color(0xfffd6204)),
+                                      borderSide:
+                                          BorderSide(color: Color(0xfffd6204)),
                                     ),
                                     suffixIcon: IconButton(
                                       icon: Icon(
@@ -461,29 +453,33 @@ class _SignUpPageState extends State<SignUpPage> {
                                       onPressed: () {
                                         password_Global = password.text;
                                         phoneNumber_Global = phoneNumber.text;
-                                        if(password.text == ""){
-
-                                          showAlert(context,"Password is empty");
-
-                                        }if(password.text .length < 6 && password.text.isNotEmpty){
-
-                                          showAlert(context,"Password length should be more than 6");
-
-
-                                        }if(password.text != confirmPassword.text){
-                                          buildErrorSnackbar(context, "Password and Confirm Password don't match");
+                                        if (password.text == "") {
+                                          showAlert(
+                                              context, "Password is empty");
+                                        }
+                                        if (password.text.length < 6 &&
+                                            password.text.isNotEmpty) {
+                                          showAlert(context,
+                                              "Password length should be more than 6");
+                                        }
+                                        if (password.text !=
+                                            confirmPassword.text) {
+                                          buildErrorSnackbar(context,
+                                              "Password and Confirm Password don't match");
 
                                           // showAlert(context, "Password and Confirm Password don't match");
                                         }
-                                        if(password.text.length >=6 && password.text.isNotEmpty && password.text == confirmPassword.text){
+                                        if (password.text.length >= 6 &&
+                                            password.text.isNotEmpty &&
+                                            password.text ==
+                                                confirmPassword.text) {
                                           Navigator.push(
                                               context,
                                               MaterialPageRoute(
                                                   builder:
                                                       (BuildContext context) =>
-                                                      DriverDetails()));
+                                                          DriverDetails()));
                                         }
-
                                       },
                                       child: Text(
                                         'Sign Up',
@@ -531,35 +527,45 @@ class _SignUpPageState extends State<SignUpPage> {
                         ),
                       ],
                     ),
-                    SizedBox(height: MediaQuery.of(context).size.height*0.35,),
-                    Column(children: [
-                      Text("By Signing Up You Agree To Accept The",style: TextStyle(
-                          fontWeight: FontWeight.bold
-                      ),),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          InkWell(onTap:(){
-                            Navigator.of(context)
-                                .push(
-                              MaterialPageRoute(
-                                  builder: (_) => TermsAndPrivacy(terms,"Terms and Conditions")),
-                            );
-                          },child: Text("Terms & Conditions",style: TextStyle(
-                              color: Color(0xfffd6206)
-                          ),)),
-                          Text("\ And\ "),
-                          InkWell(onTap:(){
-                            Navigator.of(context)
-                                .push(
-                              MaterialPageRoute(
-                                  builder: (_) => TermsAndPrivacy(privacy,"Privacy and Policy")),
-                            );
-                          },child: Text("Privacy Policy",style: TextStyle(
-                              color: Color(0xfffd6206)
-                          )))
-                        ],),
-                    ],),
+                    SizedBox(
+                      height: MediaQuery.of(context).size.height * 0.35,
+                    ),
+                    Column(
+                      children: [
+                        Text(
+                          "By Signing Up You Agree To Accept The",
+                          style: TextStyle(fontWeight: FontWeight.bold),
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            InkWell(
+                                onTap: () {
+                                  Navigator.of(context).push(
+                                    MaterialPageRoute(
+                                        builder: (_) => TermsAndPrivacy(
+                                            terms, "Terms and Conditions")),
+                                  );
+                                },
+                                child: Text(
+                                  "Terms & Conditions",
+                                  style: TextStyle(color: Color(0xfffd6206)),
+                                )),
+                            Text("\ And\ "),
+                            InkWell(
+                                onTap: () {
+                                  Navigator.of(context).push(
+                                    MaterialPageRoute(
+                                        builder: (_) => TermsAndPrivacy(
+                                            privacy, "Privacy and Policy")),
+                                  );
+                                },
+                                child: Text("Privacy Policy",
+                                    style: TextStyle(color: Color(0xfffd6206))))
+                          ],
+                        ),
+                      ],
+                    ),
                   ],
                 ),
               )
@@ -574,26 +580,26 @@ class _SignUpPageState extends State<SignUpPage> {
     showDialog(
         context: context,
         builder: (context) => AlertDialog(
-          content: Text(text),
-        ));
+              content: Text(text),
+            ));
   }
-  Future checkPhone(String Number) async{
 
+  Future checkPhone(String Number) async {
     print(Number);
     String url = "https://loadrunner12.herokuapp.com/api/checkNumber";
     var jsonResponse;
-    final msg = jsonEncode({"Phone_no":Number});
-    var response = await http.get(Uri.parse(url + "/" + Number),headers: {
+    final msg = jsonEncode({"Phone_no": Number});
+    var response = await http.get(Uri.parse(url + "/" + Number), headers: {
       "Content-Type": "application/json",
       'Accept': 'application/json',
     });
-    if(Number.length != 10){
+    if (Number.length != 10) {
       buildErrorSnackbar(context, "Enter Valid Number");
     }
-    if(response.statusCode == 409 && Number.length == 10 ){
+    if (response.statusCode == 409 && Number.length == 10) {
       jsonResponse = json.decode(response.body);
       print(confirmNew);
-      if (jsonResponse['status'] == true){
+      if (jsonResponse['status'] == true) {
         setState(() {
           otpSend = true;
           isLoading = false;
@@ -601,13 +607,13 @@ class _SignUpPageState extends State<SignUpPage> {
         buildErrorSnackbar(context, "Number Already Present");
       }
     }
-    if(response.statusCode == 200 && Number.length == 10) {
+    if (response.statusCode == 200 && Number.length == 10) {
       jsonResponse = json.decode(response.body);
       if (jsonResponse != null) {
-        if (jsonResponse['status'] == false){
+        if (jsonResponse['status'] == false) {
           // }
           setState(() {
-            confirmNew= true;
+            confirmNew = true;
             isNotPresent = true;
           });
           setState(() {
@@ -630,8 +636,8 @@ class _SignUpPageState extends State<SignUpPage> {
     //   errorMsg = response.body;
     //   print("The error message is: ${response.body}");
     // }
-
   }
+
   buildErrorSnackbar(BuildContext context, String message) {
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       padding: EdgeInsets.fromLTRB(0, 0, 0, 50),
@@ -643,10 +649,13 @@ class _SignUpPageState extends State<SignUpPage> {
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10),
           color: Colors.grey,
-
         ),
         height: 40,
-        child: Center(child: Text(message,textAlign: TextAlign.center,)),
+        child: Center(
+            child: Text(
+          message,
+          textAlign: TextAlign.center,
+        )),
       ),
       backgroundColor: (Colors.white.withOpacity(0)),
       // action: SnackBarAction(

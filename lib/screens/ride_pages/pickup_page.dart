@@ -768,7 +768,6 @@ class _MapScreenState extends State<MapScreen> {
         ));
       });
       print(myIcon.toString());
-
       DateTime now = DateTime.now();
     });
   }
