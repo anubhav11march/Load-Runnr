@@ -104,11 +104,7 @@ class _MapScreenState extends State<MapScreen> {
 
     FirebaseMessaging.onBackgroundMessage(_messageHandler);
     messaging = FirebaseMessaging.instance;
-    messaging.getToken().then((value) {
-      print("Hello");
-      print(value);
-      print("Token");
-    });
+    messaging.getToken().then((value) {});
     FirebaseMessaging.onMessage.listen((RemoteMessage event) {
       print("message recieved");
       print(event.notification!.body);
@@ -118,9 +114,17 @@ class _MapScreenState extends State<MapScreen> {
     }); // getLocation();
     getLoc();
     setcustomMarket();
-    // WidgetsBinding.instance!.addPostFrameCallback((timeStamp) {
-    //   _showBothDialogs();
-    // });
+    showPendingDialog();
+  }
+
+  Future showPendingDialog() async {
+    final prefs = await SharedPreferences.getInstance();
+    WidgetsBinding.instance!.addPostFrameCallback((timeStamp) {
+      if (prefs.getString('status') == "Pending") {
+        _showCupertinoDialog(
+            'Your Account is in Review will be approved within 24hrs');
+      }
+    });
   }
 
   bool sliderBool = false;
@@ -132,13 +136,6 @@ class _MapScreenState extends State<MapScreen> {
 
   @override
   Widget build(BuildContext context) {
-    WidgetsBinding.instance!.addPostFrameCallback((_) {
-      if (widget.status == "Pending") {
-        _showCupertinoDialog(
-            'Your Account is in Review will be approved within 24hrs');
-      }
-    });
-
     return Scaffold(
       key: _scaffoldKey,
 
@@ -284,16 +281,18 @@ class _MapScreenState extends State<MapScreen> {
                               widget.token!,
                             ))).whenComplete(() {
                   Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => MapScreen(
-                              widget.status,
-                              widget.name,
-                              widget.number,
-                              widget.token,
-                              widget.lastname,
-                              widget.id,
-                              widget.profilePic)));
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => MapScreen(
+                          isStatus,
+                          widget.name,
+                          widget.number,
+                          widget.token,
+                          widget.lastname,
+                          widget.id,
+                          widget.profilePic),
+                    ),
+                  );
                 });
               },
             ),
@@ -598,10 +597,15 @@ class _MapScreenState extends State<MapScreen> {
             actions: <Widget>[
               TextButton(
                   onPressed: () async {
+                    final prefs = await SharedPreferences.getInstance();
                     Navigator.of(context).pop();
                     Navigator.of(context).pop();
-                    // Navigator.pushNamedAndRemoveUntil(
-                    //     context, '/', (_) => false);
+                    setState(() {
+                      isStatus = "Active";
+                      prefs.setString('status', "Active");
+                    });
+                    Navigator.pushNamedAndRemoveUntil(
+                        context, '/', (_) => false);
                   },
                   child: Text(
                     'Ok',
@@ -648,12 +652,6 @@ class _MapScreenState extends State<MapScreen> {
                             )));
                   },
                   child: Text('ADD MONEY')),
-              // TextButton(
-              //   onPressed: () {
-              //     print('HelloWorld!');
-              //   },
-              //   child: Text('HelloWorld!'),
-              // )
             ],
           );
         });
@@ -777,7 +775,6 @@ class _MapScreenState extends State<MapScreen> {
           icon: myIcon!,
         ));
       });
-      print(myIcon.toString());
       DateTime now = DateTime.now();
     });
   }
@@ -795,21 +792,15 @@ class _MapScreenState extends State<MapScreen> {
             'Cookie': "token2=${widget.token}"
           });
       if (response.statusCode == 200) {
-        print(response.body);
         jsonResponse = json.decode(response.body);
         setState(() {
           vehicleNumber = jsonResponse["Vehicle_Number"];
           vehicleType = jsonResponse["VehicleType"];
         });
-
-        print("jsonResponse1");
-        print(jsonResponse);
       } else {
         return null;
       }
-    } on TimeoutException catch (_) {
-      // print("Hello");
-    }
+    } on TimeoutException catch (_) {}
   }
 
   Future getPayment() async {
@@ -825,13 +816,7 @@ class _MapScreenState extends State<MapScreen> {
             'Cookie': "token2=${widget.token}"
           });
       if (response.statusCode == 200) {
-        print("jsonResponse1");
-        print(response.body);
-        print("jsonResponse1");
         var cookies = response.headers['set-cookie'];
-        if (cookies != null) {
-          print(cookies);
-        }
         jsonResponse = json.decode(response.body);
         if (jsonResponse['balance'] <= 10) {
           _showCupertinoDialog3("Recharge your wallet to accept orders");
@@ -842,12 +827,11 @@ class _MapScreenState extends State<MapScreen> {
       } else {
         return null;
       }
-    } on TimeoutException catch (_) {
-      // print("Hello");
-    }
+    } on TimeoutException catch (_) {}
   }
 
   Future getStatus() async {
+    final prefs = await SharedPreferences.getInstance();
     try {
       var jsonResponse;
       final msg = jsonEncode({"Phone_No": widget.number});
@@ -862,16 +846,17 @@ class _MapScreenState extends State<MapScreen> {
           });
       if (response.statusCode == 200) {
         jsonResponse = json.decode(response.body);
-        print(jsonResponse);
-        if (widget.status == "Pending") {
+        if (prefs.getString('status') == "Pending") {
           if (jsonResponse["status"] == "Active") {
-            Navigator.pop(context);
             _showCupertinoDialog1("Your Account Has Been Approved");
-            Navigator.of(context, rootNavigator: true).pop();
+            // Navigator.of(context, rootNavigator: true).pop();
             timer!.cancel();
             FirebaseMessaging.onMessage.listen((RemoteMessage event) {
-              print("message recieved");
               print(event.notification!.body);
+            });
+            setState(() {
+              prefs.setString('status', "Active");
+              isStatus = "Active";
             });
           }
         }
