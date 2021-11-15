@@ -639,14 +639,13 @@ class _MapScreenState extends State<MapScreen> {
                     prefs.remove('lastname');
                     prefs.remove('_id');
                     prefs.remove('Profile_Photo');
-                    Navigator.of(context).pushAndRemoveUntil(
-                        MaterialPageRoute(
-                            builder: (BuildContext context) => Wallet2(
-                                  widget.name.toString(),
-                                  widget.number.toString(),
-                                  widget.token.toString(),
-                                )),
-                        (Route<dynamic> route) => false);
+                    Navigator.pop(context);
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: (BuildContext context) => Wallet2(
+                              widget.name.toString(),
+                              widget.number.toString(),
+                              widget.token.toString(),
+                            )));
                   },
                   child: Text('ADD MONEY')),
               // TextButton(
