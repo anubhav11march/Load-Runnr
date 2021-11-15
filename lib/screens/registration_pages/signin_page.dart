@@ -40,30 +40,33 @@ class _SignInPageState extends State<SignInPage> {
     // TODO: implement initState
     super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
       resizeToAvoidBottomInset: true,
-
       body: ModalProgressHUD(
-        progressIndicator: CircularProgressIndicator(color: Color(0xfffd6204),),
+        progressIndicator: CircularProgressIndicator(
+          color: Color(0xfffd6204),
+        ),
         inAsyncCall: _saving,
         child: Padding(
-          padding: const EdgeInsets.fromLTRB(0,25,0,0),
+          padding: const EdgeInsets.fromLTRB(0, 25, 0, 0),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Flexible(
-                child: Image.asset("assets/images/SignIn.png")
-              ),
-              Center(child: Text("DELIVERY PARTNER",style: TextStyle(
-                color: Color(0xfffd6206),
-                decoration: TextDecoration.underline,
-                fontWeight: FontWeight.bold,
-                fontSize: 20
-              ),)),
+              Flexible(child: Image.asset("assets/images/SignIn.png")),
+              Center(
+                  child: Text(
+                "DELIVERY PARTNER",
+                style: TextStyle(
+                    color: Color(0xfffd6206),
+                    decoration: TextDecoration.underline,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 20),
+              )),
               Expanded(
                 flex: 2,
                 child: Container(
@@ -84,10 +87,12 @@ class _SignInPageState extends State<SignInPage> {
                         padding: EdgeInsets.fromLTRB(10, 20, 10, 0),
                         child: TextField(
                           decoration: InputDecoration(
-                           focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: Color(0xfffd6204)),
-                        ),
-                            errorText: validatePhone == true ? 'Enter Phone Number' : null,
+                            focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(color: Color(0xfffd6204)),
+                            ),
+                            errorText: validatePhone == true
+                                ? 'Enter Phone Number'
+                                : null,
                             prefixIcon: Padding(
                               padding: const EdgeInsets.all(15.0),
                               child: Text(
@@ -122,17 +127,20 @@ class _SignInPageState extends State<SignInPage> {
                           controller: phoneNumber,
                         ),
                       ),
-                      SizedBox(height: 5,),
+                      SizedBox(
+                        height: 5,
+                      ),
                       Padding(
                         padding: EdgeInsets.fromLTRB(10, 0, 10, 10),
                         child: TextField(
-
                           obscureText: !_passwordVisible!,
                           decoration: InputDecoration(
                             focusedBorder: OutlineInputBorder(
                               borderSide: BorderSide(color: Color(0xfffd6204)),
                             ),
-                            errorText: validatePassword == true ? 'Enter Password' : null,
+                            errorText: validatePassword == true
+                                ? 'Enter Password'
+                                : null,
                             suffixIcon: IconButton(
                               icon: Icon(
                                 _passwordVisible!
@@ -202,71 +210,95 @@ class _SignInPageState extends State<SignInPage> {
                                 width: double.infinity,
                                 child: ElevatedButton(
                                   onPressed: () async {
-                                    if(phoneNumber.text.isEmpty){
+                                    if (phoneNumber.text.isEmpty) {
                                       setState(() {
                                         validatePhone = true;
                                       });
-                                    }else{
+                                    } else {
                                       setState(() {
                                         validatePhone = false;
                                       });
                                     }
-                                    if(password.text.isEmpty){
+                                    if (password.text.isEmpty) {
                                       validatePassword = true;
-                                    }else{
+                                    } else {
                                       validatePassword = false;
                                     }
-                                    if(phoneNumber.text.length != 10 && phoneNumber.text.isNotEmpty){
-                                      buildErrorSnackbar(context, "Enter Valid Phone Number");
+                                    if (phoneNumber.text.length != 10 &&
+                                        phoneNumber.text.isNotEmpty) {
+                                      buildErrorSnackbar(
+                                          context, "Enter Valid Phone Number");
                                     }
 
-
-
-                                    if (phoneNumber.text.isNotEmpty && password.text.isNotEmpty && phoneNumber.text.length == 10 ) {
+                                    if (phoneNumber.text.isNotEmpty &&
+                                        password.text.isNotEmpty &&
+                                        phoneNumber.text.length == 10) {
                                       _submit();
                                       var response = await loginDetails(
                                           phoneNumber.text, password.text);
-                                      if(response!.statusCode == 401){
+                                      if (response!.statusCode == 401) {
                                         print(response.statusCode);
-                                        var body =
-                                        jsonDecode(response.body);
+                                        var body = jsonDecode(response.body);
                                         print(body);
                                         print("hello");
                                         print(body["status"]);
-                                        if(body['status'] == "false"){
+                                        if (body['status'] == "false") {
                                           setState(() {
                                             _saving = false;
                                           });
-                                          buildErrorSnackbar(context, "Phone Number and Password Does Not Match");
+                                          buildErrorSnackbar(context,
+                                              "Phone Number and Password Does Not Match");
                                         }
-                                        if(body['errorCode'] == "INVALID_LOGIN"){
+                                        if (body['errorCode'] ==
+                                            "INVALID_LOGIN") {
                                           setState(() {
                                             _saving = false;
                                           });
                                           // var isPresent = SignUpPage().createState().checkPhone(phoneNumber.text);
-                                          buildErrorSnackbar(context, "Phone Number Not Present! SignUp");
+                                          buildErrorSnackbar(context,
+                                              "Phone Number Not Present! SignUp");
                                         }
                                       }
-                                      if(response.statusCode == 200){
-
+                                      if (response.statusCode == 200) {
                                         print(response.body);
-                                        var body =
-                                        jsonDecode(response.body);
+                                        var body = jsonDecode(response.body);
                                         print(body);
                                         print("hello");
                                         print(body["status"]);
-                                        SharedPreferences prefs = await SharedPreferences.getInstance();
+                                        SharedPreferences prefs =
+                                            await SharedPreferences
+                                                .getInstance();
 
                                         if (body['success'] == true) {
-                                          final prefs = await SharedPreferences.getInstance();
-                                          final prefsType = await SharedPreferences.getInstance();
-                                          prefs.setString('status', body["driver"]["status"].toString());
-                                          prefs.setString('firstname', body["driver"]["firstname"].toString());
-                                          prefs.setString('Phone_No', body["driver"]["Phone_No"].toString());
-                                          prefs.setString('token2', body["token2"].toString());
-                                          prefs.setString('lastname', body["driver"]["lastname"].toString());
-                                          prefs.setString('_id', body["driver"]["_id"].toString());
-                                          prefs.setString('Profile_Photo',     body["driver"]["Profile_Photo"].toString());
+                                          final prefs = await SharedPreferences
+                                              .getInstance();
+                                          final prefsType =
+                                              await SharedPreferences
+                                                  .getInstance();
+                                          prefs.setString(
+                                              'status',
+                                              body["driver"]["status"]
+                                                  .toString());
+                                          prefs.setString(
+                                              'firstname',
+                                              body["driver"]["firstname"]
+                                                  .toString());
+                                          prefs.setString(
+                                              'Phone_No',
+                                              body["driver"]["Phone_No"]
+                                                  .toString());
+                                          prefs.setString('token2',
+                                              body["token2"].toString());
+                                          prefs.setString(
+                                              'lastname',
+                                              body["driver"]["lastname"]
+                                                  .toString());
+                                          prefs.setString('_id',
+                                              body["driver"]["_id"].toString());
+                                          prefs.setString(
+                                              'Profile_Photo',
+                                              body["driver"]["Profile_Photo"]
+                                                  .toString());
 
                                           setState(() {
                                             _saving = false;
@@ -275,14 +307,31 @@ class _SignInPageState extends State<SignInPage> {
                                           Navigator.pushReplacement(
                                               context,
                                               MaterialPageRoute(
-                                                  builder: (BuildContext context) =>
-                                                      MapScreen(body["driver"]["status"].toString(),body["driver"]["firstname"].toString(),body["driver"]["Phone_No"].toString(),body["token2"].toString(),body["driver"]["lastname"].toString(),body["driver"]["_id"].toString(),body["driver"]["Profile_Photo"].toString())));
+                                                  builder: (BuildContext
+                                                          context) =>
+                                                      MapScreen(
+                                                          body["driver"]
+                                                                  ["status"]
+                                                              .toString(),
+                                                          body["driver"]
+                                                                  ["firstname"]
+                                                              .toString(),
+                                                          body["driver"]
+                                                                  ["Phone_No"]
+                                                              .toString(),
+                                                          body["token2"]
+                                                              .toString(),
+                                                          body["driver"]
+                                                                  ["lastname"]
+                                                              .toString(),
+                                                          body["driver"]["_id"]
+                                                              .toString(),
+                                                          body["driver"][
+                                                                  "Profile_Photo"]
+                                                              .toString())));
                                         }
                                       }
-
-
                                     }
-
                                   },
                                   child: Text(
                                     'Sign In',
@@ -292,7 +341,8 @@ class _SignInPageState extends State<SignInPage> {
                                     ),
                                   ),
                                   style: ElevatedButton.styleFrom(
-                                    padding: EdgeInsets.fromLTRB(15, 10, 15, 10),
+                                    padding:
+                                        EdgeInsets.fromLTRB(15, 10, 15, 10),
                                     primary: HexColor('#FD6204'),
                                     elevation: 2,
                                     shape: RoundedRectangleBorder(
@@ -305,17 +355,19 @@ class _SignInPageState extends State<SignInPage> {
                           ),
                         ],
                       ),
-                      SizedBox(height: 30,),
+                      SizedBox(
+                        height: 30,
+                      ),
                       Center(
                         child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                        padding: EdgeInsets.fromLTRB(15, 10, 15, 10),
-                  primary: HexColor('#FD6204'),
-                  elevation: 2,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(30),
-                  ),
-                ),
+                          style: ElevatedButton.styleFrom(
+                            padding: EdgeInsets.fromLTRB(15, 10, 15, 10),
+                            primary: HexColor('#FD6204'),
+                            elevation: 2,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(30),
+                            ),
+                          ),
                           onPressed: () {
                             Navigator.push(
                                 context,
@@ -332,39 +384,46 @@ class _SignInPageState extends State<SignInPage> {
                           ),
                         ),
                       ),
-                      SizedBox(height: 70,),
-
-                      Column(children: [
-                        Text("By Signing Up You Agree To Accept The",style: TextStyle(
-                          fontWeight: FontWeight.bold
-                        ),),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            InkWell(onTap:(){
-                              Navigator.of(context)
-                                  .push(
-                                MaterialPageRoute(
-                                    builder: (_) => TermsAndPrivacy(terms,"Terms and Conditions")),
-                              );
-                            },child: Text("Terms & Conditions",style: TextStyle(
-                              color: Color(0xfffd6206)
-                            ),)),
-                            Text("\ And\ "),
-                            InkWell(onTap:(){
-                              Navigator.of(context)
-                                  .push(
-                                MaterialPageRoute(
-                                    builder: (_) => TermsAndPrivacy(privacy,"Privacy and Policy")),
-                              );
-                            },child: Text("Privacy Policy",style: TextStyle(
-                                color: Color(0xfffd6206)
-                            )))
-                          ],),
-                      ],),
-
-
-
+                      SizedBox(
+                        height: 70,
+                      ),
+                      Column(
+                        children: [
+                          Text(
+                            "By Signing Up You Agree To Accept The",
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              InkWell(
+                                  onTap: () {
+                                    Navigator.of(context).push(
+                                      MaterialPageRoute(
+                                          builder: (_) => TermsAndPrivacy(
+                                              terms, "Terms and Conditions")),
+                                    );
+                                  },
+                                  child: Text(
+                                    "Terms & Conditions",
+                                    style: TextStyle(color: Color(0xfffd6206)),
+                                  )),
+                              Text("\ And\ "),
+                              InkWell(
+                                  onTap: () {
+                                    Navigator.of(context).push(
+                                      MaterialPageRoute(
+                                          builder: (_) => TermsAndPrivacy(
+                                              privacy, "Privacy and Policy")),
+                                    );
+                                  },
+                                  child: Text("Privacy Policy",
+                                      style:
+                                          TextStyle(color: Color(0xfffd6206))))
+                            ],
+                          ),
+                        ],
+                      ),
                     ],
                   ),
                 ),
@@ -375,12 +434,13 @@ class _SignInPageState extends State<SignInPage> {
       ),
     );
   }
+
   void showAlert(BuildContext context, String text) {
     showDialog(
         context: context,
         builder: (context) => AlertDialog(
-          content: Text(text),
-        ));
+              content: Text(text),
+            ));
   }
 
   buildErrorSnackbar(BuildContext context, String message) {
@@ -394,10 +454,13 @@ class _SignInPageState extends State<SignInPage> {
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10),
           color: Colors.grey,
-
         ),
         height: 40,
-        child: Center(child: Text(message,textAlign: TextAlign.center,)),
+        child: Center(
+            child: Text(
+          message,
+          textAlign: TextAlign.center,
+        )),
       ),
       backgroundColor: (Colors.white.withOpacity(0)),
       // action: SnackBarAction(
@@ -407,17 +470,14 @@ class _SignInPageState extends State<SignInPage> {
       // ),
     ));
   }
-  void _submit() {
 
+  void _submit() {
     setState(() {
       _saving = true;
     });
     print('submitting to backend...');
-
   }
-
-
-  }
+}
 
 // Future check(String text1,text2) async{
  //    var response = await loginDetails(

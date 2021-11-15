@@ -118,6 +118,9 @@ class _MapScreenState extends State<MapScreen> {
     }); // getLocation();
     getLoc();
     setcustomMarket();
+    // WidgetsBinding.instance!.addPostFrameCallback((timeStamp) {
+    //   _showBothDialogs();
+    // });
   }
 
   bool sliderBool = false;
@@ -273,13 +276,15 @@ class _MapScreenState extends State<MapScreen> {
               ),
               onTap: () => {
                 Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => Wallet2(
-                              widget.name!,
-                              widget.number!,
-                              widget.token!,
-                            )))
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => Wallet2(
+                      widget.name!,
+                      widget.number!,
+                      widget.token!,
+                    ),
+                  ),
+                ),
               },
             ),
             ListTile(
@@ -583,6 +588,8 @@ class _MapScreenState extends State<MapScreen> {
             actions: <Widget>[
               TextButton(
                   onPressed: () async {
+                    Navigator.of(context).pop();
+                    Navigator.of(context).pop();
                     Navigator.pushNamedAndRemoveUntil(
                         context, '/', (_) => false);
                   },
@@ -872,5 +879,13 @@ class _MapScreenState extends State<MapScreen> {
 
   Widget selT() {
     return Container();
+  }
+
+  _showBothDialogs() {
+    _showCupertinoDialog(
+        'Your Account is in Review will be approved within 24hrs');
+    Future.delayed(Duration(seconds: 3), () {
+      _showCupertinoDialog1("Your Account Has Been Approved");
+    });
   }
 }
