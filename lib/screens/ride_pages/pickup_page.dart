@@ -590,8 +590,8 @@ class _MapScreenState extends State<MapScreen> {
                   onPressed: () async {
                     Navigator.of(context).pop();
                     Navigator.of(context).pop();
-                    Navigator.pushNamedAndRemoveUntil(
-                        context, '/', (_) => false);
+                    // Navigator.pushNamedAndRemoveUntil(
+                    //     context, '/', (_) => false);
                   },
                   child: Text(
                     'Ok',
