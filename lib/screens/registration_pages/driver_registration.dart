@@ -61,27 +61,6 @@ class _DriverDetailsState extends State<DriverDetails> {
     'Mysore',
   ];
   String? _chosenCity = 'Bangalore';
-
-  // _imgFromCamera(final _imageGet) async {
-  //   final image = await ImagePicker().pickImage(
-  //       source: ImageSource.camera
-  //   );
-  //
-  //   setState(() {
-  //     _image = image;
-  //   });
-  // }
-  //
-  // _imgFromGallery() async {
-  //   File image = await  ImagePicker.pickImage(
-  //       source: ImageSource.gallery, imageQuality: 50
-  //   );
-  //
-  //   setState(() {
-  //     _image = image;
-  //   });
-  // }
-
   @override
   Widget build(BuildContext context) {
     return RelativeBuilder(
@@ -1344,13 +1323,13 @@ class _DriverDetailsState extends State<DriverDetails> {
                                 } else if (vaccineImagePath == null) {
                                   showAlert(context, "Add Vaccine Certificate");
                                 } else {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (BuildContext context) =>
-                                        VehicleDetails(),
-                                  ),
-                                );
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (BuildContext context) =>
+                                          VehicleDetails(),
+                                    ),
+                                  );
                                 }
                               },
                               child: Text(
