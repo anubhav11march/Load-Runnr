@@ -271,15 +271,27 @@ class _MapScreenState extends State<MapScreen> {
                 'Wallet',
                 style: TextStyle(color: Color(0xfffd6206)),
               ),
-              onTap: () => {
-                Navigator.push(
+              onTap: () async {
+                await Navigator.push(
                     context,
                     MaterialPageRoute(
                         builder: (context) => Wallet2(
                               widget.name!,
                               widget.number!,
                               widget.token!,
-                            )))
+                            ))).whenComplete(() {
+                  Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => MapScreen(
+                              widget.status,
+                              widget.name,
+                              widget.number,
+                              widget.token,
+                              widget.lastname,
+                              widget.id,
+                              widget.profilePic)));
+                });
               },
             ),
             ListTile(
@@ -583,19 +595,15 @@ class _MapScreenState extends State<MapScreen> {
             actions: <Widget>[
               TextButton(
                   onPressed: () async {
-                    Navigator.pushNamedAndRemoveUntil(
-                        context, '/', (_) => false);
+                    Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                            builder: (BuildContext context) => super.widget));
                   },
                   child: Text(
                     'Ok',
                     style: TextStyle(color: Color(0xfffd6206)),
                   )),
-              // TextButton(
-              //   onPressed: () {
-              //     print('HelloWorld!');
-              //   },
-              //   child: Text('HelloWorld!'),
-              // )
             ],
           );
         });
@@ -823,7 +831,7 @@ class _MapScreenState extends State<MapScreen> {
           print(cookies);
         }
         jsonResponse = json.decode(response.body);
-        if (jsonResponse["balance"] <= 10) {
+        if (jsonResponse['balance'] <= 10) {
           _showCupertinoDialog3("Recharge your wallet to accept orders");
         }
         setState(() {
@@ -857,6 +865,7 @@ class _MapScreenState extends State<MapScreen> {
           if (jsonResponse["status"] == "Active") {
             Navigator.pop(context);
             _showCupertinoDialog1("Your Account Has Been Approved");
+            Navigator.of(context, rootNavigator: true).pop();
             timer!.cancel();
             FirebaseMessaging.onMessage.listen((RemoteMessage event) {
               print("message recieved");

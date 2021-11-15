@@ -158,7 +158,7 @@ class _Wallet2State extends State<Wallet2> {
       appBar: AppBar(
         leading: InkWell(
           onTap: () {
-            Navigator.pushNamedAndRemoveUntil(context, '/', (_) => false);
+            Navigator.pop(context);
           },
           child: const Icon(
             Icons.arrow_back,
