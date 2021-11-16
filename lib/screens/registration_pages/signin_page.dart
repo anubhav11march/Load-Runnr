@@ -265,27 +265,27 @@ class _SignInPageState extends State<SignInPage> {
                                         if (body['success'] == true) {
                                           final prefs = await SharedPreferences
                                               .getInstance();
-                                          prefs.setString(
+                                          await prefs.setString(
                                               'status',
                                               body["driver"]["status"]
                                                   .toString());
-                                          prefs.setString(
+                                          await prefs.setString(
                                               'firstname',
                                               body["driver"]["firstname"]
                                                   .toString());
-                                          prefs.setString(
+                                          await prefs.setString(
                                               'Phone_No',
                                               body["driver"]["Phone_No"]
                                                   .toString());
-                                          prefs.setString('token2',
+                                          await prefs.setString('token2',
                                               body["token2"].toString());
-                                          prefs.setString(
+                                          await prefs.setString(
                                               'lastname',
                                               body["driver"]["lastname"]
                                                   .toString());
-                                          prefs.setString('_id',
+                                          await prefs.setString('_id',
                                               body["driver"]["_id"].toString());
-                                          prefs.setString(
+                                          await prefs.setString(
                                               'Profile_Photo',
                                               body["driver"]["Profile_Photo"]
                                                   .toString());

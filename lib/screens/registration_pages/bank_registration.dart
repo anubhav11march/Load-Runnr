@@ -330,6 +330,18 @@ class _BankDetailsState extends State<BankDetails> {
                               var body = await jsonDecode(response.body);
                               if (body['success'] == true) {
                                 await prefs.setString('status', "Pending");
+                                await prefs.setString('firstname',
+                                    body["driver"]["firstname"].toString());
+                                await prefs.setString('Phone_No',
+                                    body["driver"]["Phone_No"].toString());
+                                await prefs.setString(
+                                    'token2', body["token2"].toString());
+                                await prefs.setString('lastname',
+                                    body["driver"]["lastname"].toString());
+                                await prefs.setString(
+                                    '_id', body["driver"]["_id"].toString());
+                                await prefs.setString('Profile_Photo',
+                                    body["driver"]["Profile_Photo"].toString());
                                 Navigator.pushAndRemoveUntil(
                                     context,
                                     MaterialPageRoute(

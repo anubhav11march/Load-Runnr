@@ -341,21 +341,21 @@ class _MapScreenState extends State<MapScreen> {
                 ),
                 onTap: () async {
                   final prefs = await SharedPreferences.getInstance();
-                  // prefs.setString('status', body["driver"]["status"].toString());
-                  // prefs.setString('firstname', body["driver"]["firstname"].toString());
-                  // prefs.setString('Phone_No', body["driver"]["Phone_No"].toString());
-                  // prefs.setString('token2', body["token2"].toString());
-                  // prefs.setString('lastname', body["driver"]["lastname"].toString());
-                  // prefs.setString('_id', body["driver"]["_id"].toString());
-                  // prefs.setString('Profile_Photo',     body["driver"]["Profile_Photo"].toString());
-                  prefs.remove('status');
-                  prefs.remove('Phone_No');
-                  prefs.remove('firstname');
-                  prefs.remove('token2');
-                  prefs.remove('lastname');
-                  prefs.remove('_id');
-                  prefs.remove('Profile_Photo');
-
+                  // // prefs.setString('status', body["driver"]["status"].toString());
+                  // // prefs.setString('firstname', body["driver"]["firstname"].toString());
+                  // // prefs.setString('Phone_No', body["driver"]["Phone_No"].toString());
+                  // // prefs.setString('token2', body["token2"].toString());
+                  // // prefs.setString('lastname', body["driver"]["lastname"].toString());
+                  // // prefs.setString('_id', body["driver"]["_id"].toString());
+                  // // prefs.setString('Profile_Photo',     body["driver"]["Profile_Photo"].toString());
+                  // prefs.remove('status');
+                  // prefs.remove('Phone_No');
+                  // prefs.remove('firstname');
+                  // prefs.remove('token2');
+                  // prefs.remove('lastname');
+                  // prefs.remove('_id');
+                  // prefs.remove('Profile_Photo');
+                  await prefs.clear();
                   Navigator.of(context).pushAndRemoveUntil(
                     // the new route
                     MaterialPageRoute(
