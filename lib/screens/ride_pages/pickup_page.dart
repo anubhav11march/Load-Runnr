@@ -635,21 +635,32 @@ class _MapScreenState extends State<MapScreen> {
             actions: <Widget>[
               TextButton(
                   onPressed: () async {
-                    final prefs = await SharedPreferences.getInstance();
-                    prefs.remove('status');
-                    prefs.remove('Phone_No');
-                    prefs.remove('firstname');
-                    prefs.remove('token2');
-                    prefs.remove('lastname');
-                    prefs.remove('_id');
-                    prefs.remove('Profile_Photo');
                     Navigator.pop(context);
-                    Navigator.of(context).push(MaterialPageRoute(
+                    await Navigator.of(context)
+                        .push(
+                      MaterialPageRoute(
                         builder: (BuildContext context) => Wallet2(
-                              widget.name.toString(),
-                              widget.number.toString(),
-                              widget.token.toString(),
-                            )));
+                          widget.name.toString(),
+                          widget.number.toString(),
+                          widget.token.toString(),
+                        ),
+                      ),
+                    )
+                        .whenComplete(() {
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => MapScreen(
+                              isStatus,
+                              widget.name,
+                              widget.number,
+                              widget.token,
+                              widget.lastname,
+                              widget.id,
+                              widget.profilePic),
+                        ),
+                      );
+                    });
                   },
                   child: Text('ADD MONEY')),
             ],
