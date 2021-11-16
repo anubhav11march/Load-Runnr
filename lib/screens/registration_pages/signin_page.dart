@@ -262,19 +262,9 @@ class _SignInPageState extends State<SignInPage> {
                                       if (response.statusCode == 200) {
                                         print(response.body);
                                         var body = jsonDecode(response.body);
-                                        print(body);
-                                        print("hello");
-                                        print(body["status"]);
-                                        SharedPreferences prefs =
-                                            await SharedPreferences
-                                                .getInstance();
-
                                         if (body['success'] == true) {
                                           final prefs = await SharedPreferences
                                               .getInstance();
-                                          final prefsType =
-                                              await SharedPreferences
-                                                  .getInstance();
                                           prefs.setString(
                                               'status',
                                               body["driver"]["status"]

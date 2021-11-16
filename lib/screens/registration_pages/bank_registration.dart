@@ -13,6 +13,7 @@ import 'package:load_runner/screens/registration_pages/signin_page.dart';
 import 'package:load_runner/screens/review_screen/review_screen.dart';
 import 'package:load_runner/screens/ride_pages/pickup_page.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../../model/global_data.dart';
 
 class BankDetails extends StatefulWidget {
@@ -313,37 +314,39 @@ class _BankDetailsState extends State<BankDetails> {
                           } else if (passBookImageAdded == false) {
                             showAlert(context, "Add Passbook Image");
                           } else {
-                          _submit();
-                          var response = await regsiterDetails();
-                          if (response.body != null) {
-                            print(response);
-                          }
-                          print(response.statusCode);
-                          print(response);
-                          if (response.statusCode == 200) {
-                            setState(() {
-                              _saving = false;
-                            });
-                            var body = await jsonDecode(response.body);
-                            print(body);
-                            if (body['success'] == true) {
-                              Navigator.pushAndRemoveUntil(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => MapScreen(
-                                      "Pending",
-                                      body['driver']["firstname"].toString(),
-                                      body['driver']["Phone_No"].toString(),
-                                      body['token2'].toString(),
-                                      body["driver"]["lastname"].toString(),
-                                      body["driver"]["_id"].toString(),
-                                      body["driver"]["Profile_Photo"]
-                                          .toString(),
-                                    ),
-                                  ),
-                                  (Route<dynamic> route) => false);
+                            _submit();
+                            var response = await regsiterDetails();
+                            if (response.body != null) {
+                              print(response);
                             }
-                          }
+                            print(response.statusCode);
+                            print(response);
+                            if (response.statusCode == 200) {
+                              setState(() {
+                                _saving = false;
+                              });
+                              final prefs =
+                                  await SharedPreferences.getInstance();
+                              var body = await jsonDecode(response.body);
+                              if (body['success'] == true) {
+                                await prefs.setString('status', "Pending");
+                                Navigator.pushAndRemoveUntil(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => MapScreen(
+                                        "Pending",
+                                        body['driver']["firstname"].toString(),
+                                        body['driver']["Phone_No"].toString(),
+                                        body['token2'].toString(),
+                                        body["driver"]["lastname"].toString(),
+                                        body["driver"]["_id"].toString(),
+                                        body["driver"]["Profile_Photo"]
+                                            .toString(),
+                                      ),
+                                    ),
+                                    (Route<dynamic> route) => false);
+                              }
+                            }
                           }
                         },
                         child: Text(
