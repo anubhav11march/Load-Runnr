@@ -1,0 +1,52 @@
+import 'dart:convert';
+
+import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+
+const String groupKey = 'com.android.example.WORK_EMAIL';
+FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+    FlutterLocalNotificationsPlugin();
+const AndroidInitializationSettings initializationSettingsAndroid =
+    AndroidInitializationSettings('@mipmap/ic_launcher');
+
+final IOSInitializationSettings initializationSettingsIOS =
+    IOSInitializationSettings(
+        requestSoundPermission: false,
+        requestBadgePermission: false,
+        requestAlertPermission: false,
+        onDidReceiveLocalNotification: (i, j, k, l) {
+          print("hello world");
+          return;
+        });
+
+const AndroidNotificationDetails firstNotificationAndroidSpecifics =
+    AndroidNotificationDetails('1', "channel_name",
+        importance: Importance.max,
+        priority: Priority.high,
+        groupKey: groupKey);
+const NotificationDetails firstNotificationPlatformSpecifics =
+    NotificationDetails(android: firstNotificationAndroidSpecifics);
+
+final InitializationSettings initializationSettings = InitializationSettings(
+  android: initializationSettingsAndroid,
+  iOS: initializationSettingsIOS,
+);
+
+class LocalNotification {
+  Future<void> initializeLocalNotificationSettings() async {
+    await flutterLocalNotificationsPlugin.initialize(initializationSettings,
+        onSelectNotification: selectNotification);
+  }
+
+  void selectNotification(String? payload) async {
+    if (payload != null) {
+      debugPrint('notification payload: $payload');
+    }
+  }
+
+  showNotification(Map<String, dynamic> payload) async {
+    await flutterLocalNotificationsPlugin.show(0, payload["name"],
+        payload["message"], firstNotificationPlatformSpecifics,
+        payload: jsonEncode(payload));
+  }
+}

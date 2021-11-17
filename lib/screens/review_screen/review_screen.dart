@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:load_runner/main.dart';
 import 'package:load_runner/screens/registration_pages/signin_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -32,6 +33,7 @@ class _ReviewScreenState extends State<ReviewScreen> {
               GestureDetector(
                   onTap: () async {
                     final prefs = await SharedPreferences.getInstance();
+                    await firebaseMessaging.deleteToken();
                     await prefs.clear();
                     Navigator.pushReplacement(
                       context,

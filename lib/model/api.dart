@@ -1,6 +1,7 @@
 // ignore_for_file: unused_import, unused_local_variable, avoid_print
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:http/http.dart' as http;
+import 'package:load_runner/main.dart';
 import 'package:load_runner/model/firebase_api.dart';
 import 'dart:convert';
 import 'dart:io';
@@ -28,6 +29,7 @@ Future regsiterDetails() async {
   var vehiclePhoto = vehiclePhotoFront_Global;
   var vehiclePhotoBack = vehiclePhotoBack_Global;
   var passbookPhoto = passBookPhoto_Global;
+  String? token = await firebaseMessaging.getToken();
 
   const url = urlDriver + '/register';
   Uri uri = Uri.parse(url);
@@ -91,7 +93,8 @@ Future regsiterDetails() async {
   map['Bank_Name'] = bankName_Global!.trim();
   map['IFSC_CODE'] = ifscCode_Global!.trim();
   map['type'] = vehicleType!.trim();
-  print(map);
+  map['fcm_token'] = token;
+  print("FCM token: $token");
   response = await http.post(
     uri,
     body: map,
@@ -100,6 +103,8 @@ Future regsiterDetails() async {
 }
 
 Future<http.Response?> loginDetails(String phoneNumber, String password) async {
+  String? token = await firebaseMessaging.getToken();
+  print("FCM token: $token");
   const url = urlDriver + '/login';
   Uri uri = Uri.parse(url);
   http.Response response;
@@ -107,6 +112,7 @@ Future<http.Response?> loginDetails(String phoneNumber, String password) async {
     var map = <String, dynamic>{};
     map['Phone_No'] = phoneNumber;
     map['password'] = password;
+    map['fcm_token'] = token;
     http.Response response = await http.post(
       uri,
       body: map,

@@ -1,5 +1,3 @@
-// ignore_for_file: use_key_in_widget_constructors, must_call_super, avoid_unnecessary_containers, prefer_const_constructors, unused_import, avoid_print, sized_box_for_whitespace
-
 import 'dart:async';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
@@ -8,22 +6,15 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:flutter_polyline_points/flutter_polyline_points.dart';
-import 'package:dio/dio.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:load_runner/invite_friends.dart';
+import 'package:load_runner/main.dart';
 import 'package:load_runner/order_screen.dart';
-import 'package:load_runner/screens/home_pages/home_page.dart';
 import 'package:load_runner/screens/home_pages/waller_screen.dart';
 import 'package:load_runner/screens/registration_pages/signin_page.dart';
-import 'package:load_runner/screens/ride_pages/wallet_page.dart';
 import 'package:load_runner/screens/support_page.dart';
 import 'package:location/location.dart';
-import 'package:load_runner/screens/ride_pages/localWidgets/rolling_switch.dart';
 import 'package:rolling_switch/rolling_switch.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:webview_flutter/webview_flutter.dart';
-import 'package:slide_to_confirm/slide_to_confirm.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
@@ -47,8 +38,6 @@ class _MapScreenState extends State<MapScreen> {
       playSound: true);
   BitmapDescriptor? myIcon;
   final Set<Marker> _markers = {};
-  final FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
-  final String _message = '';
   late LocationData _currentPosition;
   late GoogleMapController mapController;
   Location location = Location();
@@ -60,7 +49,6 @@ class _MapScreenState extends State<MapScreen> {
   int walletBalance = 0;
   double longitude = 0.0;
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
-  Location _location = Location();
 
   void setcustomMarket() async {
     myIcon = await BitmapDescriptor.fromAssetImage(
@@ -320,19 +308,6 @@ class _MapScreenState extends State<MapScreen> {
                     MaterialPageRoute(builder: (context) => InviteFriends()))
               },
             ),
-            // ListTile(
-            //   leading: Icon(Icons.settings,color:  Color(0xfffd6206)),
-            //   title: Text('Pickup',style: TextStyle(
-            //       color:  Color(0xfffd6206)
-            //   ),),
-            //   onTap: () => { Navigator.push(
-            //       context, MaterialPageRoute(builder: (context) => MyHomePageState()))},
-            // ),
-            // ListTile(
-            //   leading: Icon(Icons.border_color),
-            //   title: Text('Feedback'),
-            //   onTap: () => {Navigator.of(context).pop()},
-            // ),
             ListTile(
                 leading: Icon(Icons.exit_to_app, color: Color(0xfffd6206)),
                 title: Text(
@@ -341,20 +316,7 @@ class _MapScreenState extends State<MapScreen> {
                 ),
                 onTap: () async {
                   final prefs = await SharedPreferences.getInstance();
-                  // // prefs.setString('status', body["driver"]["status"].toString());
-                  // // prefs.setString('firstname', body["driver"]["firstname"].toString());
-                  // // prefs.setString('Phone_No', body["driver"]["Phone_No"].toString());
-                  // // prefs.setString('token2', body["token2"].toString());
-                  // // prefs.setString('lastname', body["driver"]["lastname"].toString());
-                  // // prefs.setString('_id', body["driver"]["_id"].toString());
-                  // // prefs.setString('Profile_Photo',     body["driver"]["Profile_Photo"].toString());
-                  // prefs.remove('status');
-                  // prefs.remove('Phone_No');
-                  // prefs.remove('firstname');
-                  // prefs.remove('token2');
-                  // prefs.remove('lastname');
-                  // prefs.remove('_id');
-                  // prefs.remove('Profile_Photo');
+                  await firebaseMessaging.deleteToken();
                   await prefs.clear();
                   Navigator.of(context).pushAndRemoveUntil(
                     // the new route
@@ -561,6 +523,7 @@ class _MapScreenState extends State<MapScreen> {
                     prefs.remove('lastname');
                     prefs.remove('_id');
                     prefs.remove('Profile_Photo');
+                    await firebaseMessaging.deleteToken();
                     Navigator.of(context).pushAndRemoveUntil(
                         MaterialPageRoute(
                             builder: (BuildContext context) => SignInPage()),

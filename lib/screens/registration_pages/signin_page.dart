@@ -1,23 +1,14 @@
-// ignore_for_file: prefer_const_constructors
-
 import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:load_runner/model/api.dart';
 import 'package:load_runner/model/hexcolor.dart';
-import 'package:load_runner/screens/home_pages/home_page.dart';
-import 'package:load_runner/screens/home_pages/s2.dart';
 import 'package:load_runner/screens/home_pages/terms_privacy.dart';
-import 'package:load_runner/screens/home_pages/waller_screen.dart';
 import 'package:load_runner/screens/registration_pages/signup_page.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:load_runner/screens/review_screen/review_screen.dart';
 import 'package:load_runner/screens/ride_pages/pickup_page.dart';
-import 'package:load_runner/screens/ride_pages/wallet_page.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:webview_flutter/webview_flutter.dart';
 
 class SignInPage extends StatefulWidget {
   const SignInPage({Key? key}) : super(key: key);
@@ -35,11 +26,13 @@ class _SignInPageState extends State<SignInPage> {
   bool _saving = false;
   String terms = "https://loadrunnr.in/terms-and-conditions.php";
   String privacy = "https://loadrunnr.in/privacy-policy.php";
+
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
   }
+
+
 
   @override
   Widget build(BuildContext context) {
