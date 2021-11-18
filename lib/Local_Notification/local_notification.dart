@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
@@ -44,9 +45,9 @@ class LocalNotification {
     }
   }
 
-  showNotification(Map<String, dynamic> payload) async {
-    await flutterLocalNotificationsPlugin.show(0, payload["name"],
-        payload["message"], firstNotificationPlatformSpecifics,
-        payload: jsonEncode(payload));
+  showNotification(RemoteNotification? _notification) async {
+    await flutterLocalNotificationsPlugin.show(0, _notification!.title,
+        _notification.body, firstNotificationPlatformSpecifics,
+        payload: jsonEncode({"Data": "Got it."}));
   }
 }

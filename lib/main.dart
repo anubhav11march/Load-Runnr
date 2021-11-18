@@ -44,7 +44,7 @@ void main() async {
 void _notificationHandler() {
   FirebaseMessaging.onMessage.listen((snapshot) async {
     //Calls when the app is in foreground and notification is received.
-    localNotification.showNotification(snapshot.data);
+    localNotification.showNotification(snapshot.notification);
   });
   FirebaseMessaging.onMessageOpenedApp.listen((snapshot) {
     //Calls when the notification is been clicked.
