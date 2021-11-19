@@ -778,6 +778,7 @@ class _MapScreenState extends State<MapScreen> {
   }
 
   Future getPayment() async {
+    final prefs = await SharedPreferences.getInstance();
     String url = "https://loadrunner12.herokuapp.com/api/payment/getBalance";
     try {
       var jsonResponse;
@@ -793,7 +794,9 @@ class _MapScreenState extends State<MapScreen> {
         var cookies = response.headers['set-cookie'];
         jsonResponse = json.decode(response.body);
         if (jsonResponse['balance'] <= 10) {
-          _showCupertinoDialog3("Recharge your wallet to accept orders");
+          if (prefs.getString('status') == "Active") {
+            _showCupertinoDialog3("Recharge your wallet to accept orders");
+          }
         }
         setState(() {
           walletBalance = jsonResponse['balance'];
