@@ -9,6 +9,7 @@ import 'package:load_runner/screens/registration_pages/signup_page.dart';
 import 'package:load_runner/screens/ride_pages/pickup_page.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'forgot_password.dart';
 
 class SignInPage extends StatefulWidget {
   const SignInPage({Key? key}) : super(key: key);
@@ -31,8 +32,6 @@ class _SignInPageState extends State<SignInPage> {
   void initState() {
     super.initState();
   }
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -185,13 +184,22 @@ class _SignInPageState extends State<SignInPage> {
                                       padding: EdgeInsets.zero,
                                       minimumSize: Size(50, 30),
                                       alignment: Alignment.centerLeft),
-                                  child: Text(
-                                    'Forgot Password ?',
-                                    style: TextStyle(
-                                      decoration: TextDecoration.underline,
-                                      color: Colors.black,
-                                      fontSize: 20,
+                                  child: FlatButton(
+                                    child: Text(
+                                      'Forgot Password ?',
+                                      style: TextStyle(
+                                        decoration: TextDecoration.underline,
+                                        color: Colors.black,
+                                        fontSize: 20,
+                                      ),
                                     ),
+                                    onPressed: () {
+                                      Navigator.push(
+                                          context,
+                                          new MaterialPageRoute(
+                                              builder: (context) =>
+                                                  ForgetPasswordScreen()));
+                                    },
                                   ),
                                 ),
                               )),
@@ -463,21 +471,21 @@ class _SignInPageState extends State<SignInPage> {
 }
 
 // Future check(String text1,text2) async{
- //    var response = await loginDetails(
- //        phoneNumber.text, password.text);
- //    check( phoneNumber.text,password.text);
- //    if (response!.statusCode == 200) {
- //      print(response.body);
- //      var body =
- //      jsonDecode(response.body);
- //      print(body);
- //      print("hello");
- //      print(body["status"]);
- //      if (body['success'] == true) {
- //        print(body);
- //      }
- //    }
- //  }
+//    var response = await loginDetails(
+//        phoneNumber.text, password.text);
+//    check( phoneNumber.text,password.text);
+//    if (response!.statusCode == 200) {
+//      print(response.body);
+//      var body =
+//      jsonDecode(response.body);
+//      print(body);
+//      print("hello");
+//      print(body["status"]);
+//      if (body['success'] == true) {
+//        print(body);
+//      }
+//    }
+//  }
 // class CustomWidgets {
 //   CustomWidgets._();
 //   static buildErrorSnackbar(BuildContext context, String message) {

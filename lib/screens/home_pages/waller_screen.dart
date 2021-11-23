@@ -2,6 +2,7 @@
 
 import 'dart:async';
 import 'dart:convert';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:load_runner/main.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -72,7 +73,7 @@ class _Wallet2State extends State<Wallet2> {
                         focusedBorder: OutlineInputBorder(
                           borderSide: BorderSide(color: Color(0xfffd6204)),
                         ),
-                        labelText: 'Rs. ',
+                        labelText: '₹',
                         labelStyle: TextStyle(
                             color: Colors.black,
                             fontSize: 30,
@@ -103,34 +104,30 @@ class _Wallet2State extends State<Wallet2> {
                               walletWithdraw =
                                   int.parse(_textEditingController.text);
                             });
-                            if (title == "Recharge") {
-                              setState(() {
-                                // walletBalance == 0
-                                //     ? walletBalance = walletRecharge
-                                //     : walletBalance =
-                                //         walletBalance + walletRecharge;
-                                // _pPayment();
-                                Navigator.of(context)
-                                    .push(
-                                      MaterialPageRoute(
-                                          builder: (_) => pPay(
-                                              _textEditingController.text,
-                                              widget.name,
-                                              widget.number)),
-                                    )
-                                    .then((val) => val ? getPayment() : null);
-                              });
-                            } else {
-                              // Navigator.push(
-                              //     context,
-                              //     MaterialPageRoute(
-                              //         builder: (BuildContext context) =>
-                              //             pPay(_textEditingController.text, widget.name, widget.number)));
 
+                            if (title == "Recharge") {
+                              if (int.parse(_textEditingController.text) >
+                                  299) {
+                                setState(() {
+                                  Navigator.of(context)
+                                      .push(
+                                        MaterialPageRoute(
+                                            builder: (_) => pPay(
+                                                _textEditingController.text,
+                                                widget.name,
+                                                widget.number)),
+                                      )
+                                      .then((val) => val ? getPayment() : null);
+                                });
+                              } else {
+                                _showCupertinoDialog1(
+                                    'Please make a minimum recharge of ₹300');
+                              }
                             }
-                            // if(_textEditingController.text.isNotEmpty && title == "Recharge"){
-                            //   _pPayment();
-                            // }
+                            if (title == "Withdraw") {
+                              _showCupertinoDialog2(
+                                  'Withdraw Request has been Submitted');
+                            }
                           },
                           child: Text(
                             title == "Withdraw" ? 'SUBMIT' : "NEXT",
@@ -201,7 +198,7 @@ class _Wallet2State extends State<Wallet2> {
                 ),
                 Center(
                   child: Text(
-                    'RS.' + walletBalance.toString(),
+                    '₹ ' + walletBalance.toString(),
                     textAlign: TextAlign.center,
                     style: TextStyle(
                         color: Colors.black,
@@ -212,8 +209,8 @@ class _Wallet2State extends State<Wallet2> {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text('Minimum Recharge amount Rs:  '),
-                    Text(' **Minimum Withdraw Above Rs:  '),
+                    Text('Minimum Recharge amount ₹ 300 '),
+                    Text(' Minimum Withdraw Above ₹ 300  '),
                     const SizedBox(
                       height: 20,
                     ),
@@ -242,7 +239,11 @@ class _Wallet2State extends State<Wallet2> {
                         ),
                         GestureDetector(
                           onTap: () {
-                            showDialog1(context: context, title: "Withdraw");
+                            if (walletBalance > 299) {
+                              showDialog1(context: context, title: "Withdraw");
+                            } else
+                              _showCupertinoDialog1(
+                                  'Your Wallet Balance is below minimum');
                           },
                           child: Container(
                             padding: EdgeInsets.only(
@@ -295,9 +296,9 @@ class _Wallet2State extends State<Wallet2> {
   String xy(String text) {
     final String Itype;
     if (text == "Withdraw") {
-      Itype = "Minimum Withdraw Balance";
+      Itype = "Minimum Withdraw Balance:300";
     } else {
-      Itype = "Minimum Recharge Balance";
+      Itype = "Minimum Recharge Balance:300";
     }
     return Itype;
   }
@@ -390,27 +391,70 @@ class _Wallet2State extends State<Wallet2> {
       // print("Hello");
     }
   }
-  // Future getHistory() async {
-  //   try {
-  //     var jsonResponse1;
-  //     var response1 = await http.get(
-  //         Uri.parse("https://loadrunner12.herokuapp.com/api/payment/history"),
-  //         headers: {
-  //           "Content-Type": "application/json",
-  //           'Accept': 'application/json',
-  //           'Cookie': "token2=${widget.token}"
-  //         });
-  //     if (response1.statusCode == 200) {
-  //       jsonResponse1 = json.decode(response1.body);
-  //
-  //       _list = (jsonResponse1 as List)
-  //           .map((data) => PaymentHistoryModel.fromJson(data))
-  //           .toList();
-  //     } else {
-  //       return null;
-  //     }
-  //   } on TimeoutException catch (_) {
-  //     // print("Hello");
-  //   }
-  // }
+
+  void _showCupertinoDialog1(String text) {
+    showDialog(
+        barrierDismissible: true,
+        barrierColor: Colors.transparent,
+        context: context,
+        builder: (context) {
+          return CupertinoAlertDialog(
+            title: Icon(
+              Icons.error,
+              color: Colors.red,
+            ),
+            content: Text(
+              text.toUpperCase(),
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black.withOpacity(0.7)),
+            ),
+            actions: <Widget>[
+              TextButton(
+                  onPressed: () async {
+                    Navigator.of(context).pop();
+                  },
+                  child: Text(
+                    'OK',
+                    style: TextStyle(color: Color(0xfffd6206)),
+                  )),
+            ],
+          );
+        });
+  }
+
+  void _showCupertinoDialog2(String text) {
+    showDialog(
+        barrierDismissible: true,
+        barrierColor: Colors.transparent,
+        context: context,
+        builder: (context) {
+          return CupertinoAlertDialog(
+            title: Icon(
+              CupertinoIcons.checkmark_seal_fill,
+              color: Colors.green,
+            ),
+            content: Text(
+              text.toUpperCase(),
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black.withOpacity(0.7)),
+            ),
+            actions: <Widget>[
+              TextButton(
+                  onPressed: () async {
+                    Navigator.of(context).pop();
+                  },
+                  child: Text(
+                    'OK',
+                    style: TextStyle(color: Color(0xfffd6206)),
+                  )),
+            ],
+          );
+        });
+  }
 }

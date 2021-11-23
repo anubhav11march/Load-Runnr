@@ -548,7 +548,10 @@ class _MapScreenState extends State<MapScreen> {
         context: context,
         builder: (context) {
           return CupertinoAlertDialog(
-            title: Text('ALERT'),
+            title: Icon(
+              CupertinoIcons.checkmark_seal_fill,
+              color: Colors.green,
+            ),
             content: Text(
               text.toUpperCase(),
               textAlign: TextAlign.center,
@@ -571,7 +574,7 @@ class _MapScreenState extends State<MapScreen> {
                         context, '/', (_) => false);
                   },
                   child: Text(
-                    'Ok',
+                    'OK',
                     style: TextStyle(color: Color(0xfffd6206)),
                   )),
             ],
@@ -586,13 +589,18 @@ class _MapScreenState extends State<MapScreen> {
         context: context,
         builder: (context) {
           return CupertinoAlertDialog(
-            title: Text('ALERT'),
+            title: Image(
+              image: AssetImage('assets/images/wallet.png'),
+              width: 40,
+              height: 40,
+              fit: BoxFit.contain,
+            ),
             content: Text(
               text.toUpperCase(),
               textAlign: TextAlign.center,
               style: TextStyle(
                   fontSize: 18,
-                  fontWeight: FontWeight.bold,
+                  //fontWeight: FontWeight.bold,
                   color: Colors.black.withOpacity(0.7)),
             ),
             actions: <Widget>[
