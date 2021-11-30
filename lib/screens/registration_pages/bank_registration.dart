@@ -4,6 +4,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 import 'package:dotted_border/dotted_border.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
@@ -315,6 +316,8 @@ class _BankDetailsState extends State<BankDetails> {
                             showAlert(context, "Add Passbook Image");
                           } else {
                             _submit();
+                            _showCupertinoDialog2(
+                                'Please wait while we upload your documents. It might take upto "4 minutes".');
                             var response = await regsiterDetails();
                             if (response.body != null) {
                               print(response);
@@ -409,5 +412,42 @@ class _BankDetailsState extends State<BankDetails> {
     //     _saving = false;
     //   });
     // });
+  }
+
+  void _showCupertinoDialog2(String text) {
+    showDialog(
+        barrierDismissible: true,
+        barrierColor: Colors.transparent,
+        context: context,
+        builder: (context) {
+          return CupertinoAlertDialog(
+            title: Icon(Icons.cloud_upload),
+            content: Container(
+              width: MediaQuery.of(context).size.width,
+              child: Text(
+                text.toUpperCase(),
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                    fontSize: 15, color: Colors.black.withOpacity(0.7)),
+              ),
+            ),
+            actions: <Widget>[
+              TextButton(
+                  onPressed: () async {
+                    Navigator.pop(context);
+                  },
+                  child: Text(
+                    'Ok',
+                    style: TextStyle(color: Color(0xfffd6206)),
+                  )),
+              // TextButton(
+              //   onPressed: () {
+              //     print('HelloWorld!');
+              //   },
+              //   child: Text('HelloWorld!'),
+              // )
+            ],
+          );
+        });
   }
 }
