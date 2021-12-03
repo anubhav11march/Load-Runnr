@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
 
+import '../bar_chart_graph.dart';
+
 class Earnings extends StatefulWidget {
   const Earnings({Key? key}) : super(key: key);
 
@@ -55,45 +57,56 @@ class _EarningsState extends State<Earnings> {
       appBar: AppBar(
         backgroundColor: Colors.white,
         foregroundColor: Colors.black,
-        title: const Text("Earnings",style: TextStyle(
-          color: Color(0xfffd6206)
-
-        ),),
+        title: const Text(
+          "Earnings",
+          style: TextStyle(color: Color(0xfffd6206)),
+        ),
       ),
       body: Column(
-        children:  [
+        children: [
           Container(
             child: Padding(
-              padding: const EdgeInsets.fromLTRB(0,50,0,0),
+              padding: const EdgeInsets.fromLTRB(0, 50, 0, 0),
               child: Column(
                 children: const [
-                  Text("Total Earnings",style: TextStyle(
-                    fontSize: 15,
-                    color: Color(0xfffd6206)
-                  ),),
-                  Text("Rs\ 1832.5",style: TextStyle(
-                    fontSize: 25
-                  ),),
+                  Text(
+                    "Total Earnings",
+                    style: TextStyle(fontSize: 15, color: Color(0xfffd6206)),
+                  ),
+                  Text(
+                    "Rs\ 0.0",
+                    style: TextStyle(fontSize: 25),
+                  ),
                 ],
               ),
             ),
           ),
-          const SizedBox(height: 40,),
+          const SizedBox(
+            height: 40,
+          ),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: const [
-              Text("0\nRIDES",textAlign: TextAlign.center,style: TextStyle(
-                color: Color(0xfffd6206)
-              ),),
-              Text("0\nCANCELLED",textAlign: TextAlign.center,style: TextStyle(
-                color: Color(0xfffd6206)
-              ),),
-              Text("0\nUPCOMING",textAlign: TextAlign.center,style: TextStyle(
-                color: Color(0xfffd6206)
-              ),),
+              Text(
+                "0\nRIDES",
+                textAlign: TextAlign.center,
+                style: TextStyle(color: Color(0xfffd6206)),
+              ),
+              Text(
+                "0\nCANCELLED",
+                textAlign: TextAlign.center,
+                style: TextStyle(color: Color(0xfffd6206)),
+              ),
+              Text(
+                "0\nUPCOMING",
+                textAlign: TextAlign.center,
+                style: TextStyle(color: Color(0xfffd6206)),
+              ),
             ],
           ),
-          const SizedBox(height: 30,),
+          const SizedBox(
+            height: 30,
+          ),
           // Container(
           //   height: 100,
           //   child: DatePicker(
@@ -117,38 +130,48 @@ class _EarningsState extends State<Earnings> {
           //     },
           //   ),
           // ),
-          const SizedBox(height: 10,),
-          TableCalendar(focusedDay: DateTime.now(), firstDay: DateTime(2020), lastDay: DateTime(2200),calendarFormat: CalendarFormat.week,),
-          const SizedBox(height: 10,),
+          const SizedBox(
+            height: 10,
+          ),
+          TableCalendar(
+            focusedDay: DateTime.now(),
+            firstDay: DateTime(2020),
+            lastDay: DateTime(2200),
+            calendarFormat: CalendarFormat.week,
+          ),
+          const SizedBox(
+            height: 10,
+          ),
           Container(
             height: 200,
           ),
-          const SizedBox(height: 10,),
+          const SizedBox(
+            height: 10,
+          ),
 
-
-          Container(
-            height: 206,
-            color: Colors.white,
-            child: Column(
-              children: [
-                Flexible(
-                  // color: Colors.white,
-                  child: ListView.builder(
-                      itemCount: 5,
-                      itemBuilder: (BuildContext context,int index){
-                        return const ListTile(
-                            trailing: Text("Bookings",
-                              style: TextStyle(
-                                  color: Colors.green,fontSize: 15),),
-                            title:Text("Oct 22, 2021"),
-                          subtitle: Text("Rs 10.0"),
-                        );
-                      }
-                  ),
-                ),
-              ],
-            ),
-          )
+          // Container(
+          //   height: 206,
+          //   color: Colors.white,
+          //   child: Column(
+          //     children: [
+          //       Flexible(
+          //         // color: Colors.white,
+          //         child: ListView.builder(
+          //             itemCount: 5,
+          //             itemBuilder: (BuildContext context, int index) {
+          //               return const ListTile(
+          //                 trailing: Text(
+          //                   "Bookings",
+          //                   style: TextStyle(color: Colors.green, fontSize: 15),
+          //                 ),
+          //                 title: Text("Oct 22, 2021"),
+          //                 subtitle: Text("Rs 10.0"),
+          //               );
+          //             }),
+          //       ),
+          //     ],
+          //   ),
+          // )
 
           // Center(
           //   child: EarningChart(
@@ -158,5 +181,4 @@ class _EarningsState extends State<Earnings> {
       ),
     );
   }
-
 }

@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors, avoid_print, unused_field, must_be_immutable
 
 import 'package:dotted_border/dotted_border.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
@@ -147,36 +148,56 @@ class _VehicleDetailsState extends State<VehicleDetails> {
                                   width: double.infinity,
                                   child: FormField<String>(
                                     builder: (FormFieldState<String> state) {
-                                      return InputDecorator(
-                                        decoration: InputDecoration(
-                                            errorStyle: TextStyle(
-                                                color: Colors.redAccent,
-                                                fontSize: 16.0),
-                                            labelText: 'Type',
-                                            border: OutlineInputBorder(
-                                                borderRadius:
-                                                    BorderRadius.circular(
-                                                        5.0))),
-                                        isEmpty: _chosenType == '',
-                                        child: DropdownButtonHideUnderline(
-                                          child: DropdownButton<String>(
-                                            value: _chosenType,
-                                            isDense: true,
-                                            onChanged: (String? newValue) {
-                                              setState(() {
-                                                _chosenType = newValue;
-                                                state.didChange(newValue);
-                                              });
-                                            },
-                                            items: _type.map((String value) {
-                                              return DropdownMenuItem<String>(
-                                                value: value,
-                                                child: Text(value),
-                                              );
-                                            }).toList(),
+                                      if (_chosenVehicle == "Scooter" ||
+                                          _chosenVehicle == "Motorcycle") {
+                                        return Container(
+                                          decoration: BoxDecoration(
+                                            border: Border.all(
+                                                color: Colors.black, width: 1),
                                           ),
-                                        ),
-                                      );
+                                          width: MediaQuery.of(context)
+                                                  .size
+                                                  .width -
+                                              20,
+                                          height: 50,
+                                          child: Text(
+                                            "  Open",
+                                            // textAlign: TextAlign.center,
+                                            style: TextStyle(fontSize: 15),
+                                          ),
+                                        );
+                                      } else {
+                                        return InputDecorator(
+                                          decoration: InputDecoration(
+                                              errorStyle: TextStyle(
+                                                  color: Colors.redAccent,
+                                                  fontSize: 16.0),
+                                              labelText: 'Type',
+                                              border: OutlineInputBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          5.0))),
+                                          isEmpty: _chosenType == '',
+                                          child: DropdownButtonHideUnderline(
+                                            child: DropdownButton<String>(
+                                              value: _chosenType,
+                                              isDense: true,
+                                              items: _type.map((String value) {
+                                                return DropdownMenuItem<String>(
+                                                  value: value,
+                                                  child: Text(value),
+                                                );
+                                              }).toList(),
+                                              onChanged: (String? newValue) {
+                                                setState(() {
+                                                  _chosenType = newValue;
+                                                  state.didChange(newValue);
+                                                });
+                                              },
+                                            ),
+                                          ),
+                                        );
+                                      }
                                     },
                                   )),
                             ),
@@ -808,12 +829,12 @@ class _VehicleDetailsState extends State<VehicleDetails> {
                       } else if (insuranceImageAdded == false) {
                         showAlert(context, "Add Insurance Image");
                       } else {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (BuildContext context) => BankDetails(),
-                        ),
-                      );
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (BuildContext context) => BankDetails(),
+                          ),
+                        );
                       }
                     },
                     child: Text(
