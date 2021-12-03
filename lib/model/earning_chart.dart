@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 // import 'package:charts_flutter/flutter.dart' as charts;
 
-import 'earning_class.dart';
 class EarningChart extends StatelessWidget {
   // final List<SubscriberSeries> data;
 

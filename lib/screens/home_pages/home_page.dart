@@ -2,9 +2,7 @@
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:load_runner/screens/home_pages/waller_screen.dart';
 import 'package:load_runner/screens/registration_pages/signin_page.dart';
-import 'package:load_runner/screens/ride_pages/pickup_page.dart';
 import 'package:rolling_switch/rolling_switch.dart';
 
 class MyHomePageState extends StatefulWidget {

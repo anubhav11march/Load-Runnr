@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:date_picker_timeline/date_picker_timeline.dart';
-import 'package:load_runner/model/bar_chart_model.dart';
 import 'package:table_calendar/table_calendar.dart';
 
-import '../bar_chart_graph.dart';
 class Earnings extends StatefulWidget {
   const Earnings({Key? key}) : super(key: key);
 
@@ -12,7 +9,6 @@ class Earnings extends StatefulWidget {
 }
 
 class _EarningsState extends State<Earnings> {
-  final DatePickerController _controller = DatePickerController();
   // final List<BarChartModel> data = [
   //   BarChartModel(
   //     year: "2014",
@@ -52,7 +48,6 @@ class _EarningsState extends State<Earnings> {
   // ];
   //
 
-  DateTime _selectedValue = DateTime.now();
 
   @override
   Widget build(BuildContext context) {

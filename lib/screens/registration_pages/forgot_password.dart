@@ -1,5 +1,7 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:load_runner/screens/registration_pages/create_new_password_screen.dart';
 
 class ForgetPasswordScreen extends StatefulWidget {
   @override
@@ -7,6 +9,16 @@ class ForgetPasswordScreen extends StatefulWidget {
 }
 
 class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
+  TextEditingController _phoneNumberController = TextEditingController();
+  TextEditingController _newPasswordController = TextEditingController();
+  TextEditingController _reEnterPasswordController = TextEditingController();
+  TextEditingController otp = TextEditingController();
+  FirebaseAuth _auth = FirebaseAuth.instance;
+  String? verificationId;
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey();
+
+  bool _showCreateNewPassFields = false;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -16,7 +28,7 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
           child: Column(
             children: <Widget>[
               _topImage(),
-              _welcomeText(),
+              _forgotPasswordText(),
               SizedBox(
                 height: 20,
               ),
@@ -24,7 +36,11 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
               SizedBox(
                 height: 40,
               ),
-              _emailIdWidget(),
+              _phoneNumberdWidget(),
+              SizedBox(
+                height: 30,
+              ),
+              _otpWidget(),
               SizedBox(
                 height: 30,
               ),
@@ -47,7 +63,7 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
     );
   }
 
-  _welcomeText() {
+  _forgotPasswordText() {
     return RichText(
       text: TextSpan(
         text:
@@ -75,7 +91,7 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
     );
   }
 
-  _emailIdWidget() {
+  _phoneNumberdWidget() {
     return Container(
       margin: EdgeInsets.only(left: 30, right: 30),
       decoration: BoxDecoration(
@@ -89,6 +105,7 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
         ),
         keyboardType: TextInputType.number,
         maxLength: 10,
+        controller: _phoneNumberController,
         decoration: InputDecoration(
           suffixIcon: Icon(Icons.call),
           border: InputBorder.none,
@@ -109,6 +126,43 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
     );
   }
 
+  _otpWidget() {
+    return Visibility(
+      visible: verificationId != null,
+      child: Container(
+        margin: EdgeInsets.only(left: 30, right: 30),
+        decoration: BoxDecoration(
+          color: Colors.grey.shade200,
+          shape: BoxShape.rectangle,
+          borderRadius: BorderRadius.circular(20),
+        ),
+        child: TextField(
+          style: TextStyle(
+            color: Colors.black,
+          ),
+          keyboardType: TextInputType.number,
+          controller: otp,
+          maxLength: 6,
+          decoration: InputDecoration(
+            border: InputBorder.none,
+            focusedBorder: InputBorder.none,
+            enabledBorder: InputBorder.none,
+            errorBorder: InputBorder.none,
+            disabledBorder: InputBorder.none,
+            contentPadding:
+                EdgeInsets.only(left: 15, bottom: 10, top: 10, right: 15),
+            hintText: "Enter OTP",
+            hintStyle: GoogleFonts.lato(
+              textStyle: TextStyle(
+                color: Colors.grey.shade500,
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
   _loginButton() {
     return Row(
       children: <Widget>[
@@ -118,11 +172,13 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(18),
                 side: BorderSide(color: Colors.pinkAccent)),
-            onPressed: () {},
+            onPressed: () {
+              verificationId == null ? getOtp() : _verifyOTP();
+            },
             color: Colors.pinkAccent,
             textColor: Colors.white,
             child: Text(
-              "Get Your Password",
+              verificationId == null ? "Generate OTP" : "Verify OTP",
               style: GoogleFonts.lato(
                 textStyle: TextStyle(fontSize: 14),
               ),
@@ -130,6 +186,35 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
           ),
         ),
       ],
+    );
+  }
+
+  getOtp() async {
+    await _auth.verifyPhoneNumber(
+      timeout: Duration(milliseconds: 59000),
+      phoneNumber: "+91" + _phoneNumberController.text,
+      verificationCompleted: (phoneAuthCredential) async {
+        setState(() {
+          // isLoading = false;
+        });
+      },
+      verificationFailed: (verificationFailed) async {
+        setState(() {
+          // isLoading = false;
+        });
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(verificationFailed.message!),
+          ),
+        );
+      },
+      codeSent: (verificationId, [resendingToken]) async {
+        setState(() {
+          // isLoading = false;
+          this.verificationId = verificationId;
+        });
+      },
+      codeAutoRetrievalTimeout: (verificationId) async {},
     );
   }
 
@@ -145,6 +230,125 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
               'Forgot Password',
               style: GoogleFonts.lato(
                 textStyle: TextStyle(fontSize: 30, color: Colors.pink.shade100),
+              ),
+            ),
+          ),
+        )
+      ],
+    );
+  }
+
+  _verifyOTP() {
+    if (otp.text.isEmpty || otp.text == "") {
+              ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text("Enter OTP"),
+          ),
+        );
+    } else {
+      AuthCredential phoneAuthCredential = PhoneAuthProvider.credential(
+          verificationId: verificationId.toString(), smsCode: otp.text);
+      signInWithPhoneAuthCredential(phoneAuthCredential);
+    }
+  }
+
+  Future<void> signInWithPhoneAuthCredential(
+      AuthCredential phoneAuthCredential) async {
+    try {
+      final authCredential =
+          await _auth.signInWithCredential(phoneAuthCredential);
+
+      if (authCredential.user != null) {
+        print("User entered right otp");
+        setState(() {
+          _showCreateNewPassFields = true;
+        });
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => CreateNewPasswordScreen(
+              phoneNumber: _phoneNumberController.text,
+            ),
+          ),
+        );
+      } else {
+                      ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text("Please Enter Correct OTP"),
+          ),
+        );
+      }
+    } catch (e) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text("Please Enter Correct OTP"),
+          ),
+        );
+    }
+  }
+
+  Widget passwordFormFields() {
+    return ListView(
+      children: [
+        Container(
+          margin: EdgeInsets.only(left: 30, right: 30),
+          decoration: BoxDecoration(
+            color: Colors.grey.shade200,
+            shape: BoxShape.rectangle,
+            borderRadius: BorderRadius.circular(20),
+          ),
+          child: TextField(
+            style: TextStyle(
+              color: Colors.black,
+            ),
+            controller: _newPasswordController,
+            decoration: InputDecoration(
+              suffixIcon: Icon(Icons.call),
+              border: InputBorder.none,
+              focusedBorder: InputBorder.none,
+              enabledBorder: InputBorder.none,
+              errorBorder: InputBorder.none,
+              disabledBorder: InputBorder.none,
+              contentPadding:
+                  EdgeInsets.only(left: 15, bottom: 10, top: 10, right: 15),
+              hintText: "Enter New Password",
+              hintStyle: GoogleFonts.lato(
+                textStyle: TextStyle(
+                  color: Colors.grey.shade500,
+                ),
+              ),
+            ),
+          ),
+        ),
+        SizedBox(
+          height: 30,
+        ),
+        Container(
+          margin: EdgeInsets.only(left: 30, right: 30),
+          decoration: BoxDecoration(
+            color: Colors.grey.shade200,
+            shape: BoxShape.rectangle,
+            borderRadius: BorderRadius.circular(20),
+          ),
+          child: TextField(
+            style: TextStyle(
+              color: Colors.black,
+            ),
+            controller: _reEnterPasswordController,
+            decoration: InputDecoration(
+              suffixIcon: Icon(Icons.call),
+              border: InputBorder.none,
+              focusedBorder: InputBorder.none,
+              enabledBorder: InputBorder.none,
+              errorBorder: InputBorder.none,
+              disabledBorder: InputBorder.none,
+              contentPadding:
+                  EdgeInsets.only(left: 15, bottom: 10, top: 10, right: 15),
+              hintText: "Re Enter Password",
+              hintStyle: GoogleFonts.lato(
+                textStyle: TextStyle(
+                  color: Colors.grey.shade500,
+                ),
               ),
             ),
           ),

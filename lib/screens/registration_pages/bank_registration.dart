@@ -9,8 +9,6 @@ import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:load_runner/model/api.dart';
 import 'package:load_runner/model/hexcolor.dart';
-import 'package:load_runner/screens/registration_pages/signin_page.dart';
-import 'package:load_runner/screens/review_screen/review_screen.dart';
 import 'package:load_runner/screens/ride_pages/pickup_page.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:shared_preferences/shared_preferences.dart';
