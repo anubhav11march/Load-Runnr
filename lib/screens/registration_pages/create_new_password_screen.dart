@@ -202,12 +202,11 @@ class _CreateNewPasswordScreenState extends State<CreateNewPasswordScreen> {
                 if (_newPassword.text == _confirmPassword.text) {
                   _resetPasswordMethod();
                 } else {
-
-                                      ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text("Password does not match"),
-          ),
-        );
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text("Password does not match"),
+                    ),
+                  );
                 }
               }
             },
@@ -236,11 +235,11 @@ class _CreateNewPasswordScreenState extends State<CreateNewPasswordScreen> {
         });
     var jsonResponse = json.decode(_response.body);
     if (_response.statusCode == 200 || _response.statusCode == 201) {
-                   ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(jsonResponse["message"]),
-          ),
-        );
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(jsonResponse["message"]),
+        ),
+      );
       Future.delayed(Duration(seconds: 1), () {
         Navigator.pushAndRemoveUntil(
             context,
@@ -250,12 +249,11 @@ class _CreateNewPasswordScreenState extends State<CreateNewPasswordScreen> {
             (Route<dynamic> route) => false);
       });
     } else {
-
-                          ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(jsonResponse["message"]),
-          ),
-        );
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(jsonResponse["message"]),
+        ),
+      );
     }
   }
 
