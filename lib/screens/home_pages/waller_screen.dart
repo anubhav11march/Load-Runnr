@@ -209,7 +209,7 @@ class _Wallet2State extends State<Wallet2> {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text('Minimum Recharge amount ₹ 300 '),
+                    Text(' Minimum Recharge amount ₹ 300 '),
                     Text(' Minimum Withdraw Above ₹ 300  '),
                     const SizedBox(
                       height: 20,
@@ -278,14 +278,26 @@ class _Wallet2State extends State<Wallet2> {
             child: ListView.builder(
                 itemCount: _list.length,
                 itemBuilder: (BuildContext context, int index) {
-                  return ListTile(
+                  return Visibility(
+                    visible: _list[index].status! != "Failed",
+                    child: ListTile(
                       leading: Text(_list[index].amount.toString()),
                       subtitle: Text(_list[index].status!),
                       trailing: Text(
                         _list[index].startDate.toString().substring(0, 11),
                         style: TextStyle(color: Colors.green, fontSize: 15),
                       ),
-                      title: Text(_list[index].transactionType!));
+                      title: Text(
+                        _list[index].transactionType!,
+                        style: TextStyle(
+                            color:
+                                _list[index].transactionType!.toLowerCase() ==
+                                        "debited"
+                                    ? Colors.red
+                                    : Colors.black),
+                      ),
+                    ),
+                  );
                 }),
           ),
         ],

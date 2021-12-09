@@ -291,6 +291,11 @@ class _SignInPageState extends State<SignInPage> {
                                               body["driver"]["Profile_Photo"]
                                                   .toString());
 
+                                          await prefs.setString(
+                                              'driver_format_index',
+                                              body["driver"]["Driver_Id"]
+                                                  .toString());
+
                                           setState(() {
                                             _saving = false;
                                           });

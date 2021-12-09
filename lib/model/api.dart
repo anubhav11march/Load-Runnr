@@ -76,6 +76,7 @@ Future regsiterDetails() async {
   map['Referral_No'] = referralNumber_Global!.trim();
   map['Phone_No'] = phoneNumber_Global!.trim();
   map['Emergency_No'] = emergencyNumber_Global!.trim();
+  map["Alternate_No"] = alternateNumber_Global!.trim();
   map['Aadhar_No'] = aadharNumber_Global!.trim();
   map['Driving_License_No'] = drivingLicenseNumber_Global!.trim();
   map['PAN_No'] = panCardNumber_Global!.trim();
@@ -95,6 +96,7 @@ Future regsiterDetails() async {
   map['type'] = vehicleType!.trim();
   map['fcm_token'] = token;
   print("FCM token: $token");
+  print("Map :$map");
   response = await http.post(
     uri,
     body: map,

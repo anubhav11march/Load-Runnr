@@ -20,11 +20,14 @@ final FirebaseMessaging firebaseMessaging = FirebaseMessaging.instance;
 
 LocalNotification localNotification = LocalNotification();
 
+late SharedPreferences globalSharedPref;
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   FirebaseMessaging.onBackgroundMessage(_messageHandler);
   SharedPreferences prefs = await SharedPreferences.getInstance();
+  globalSharedPref = await SharedPreferences.getInstance();
   localNotification.initializeLocalNotificationSettings();
   _notificationHandler();
   var status = prefs.getString('status');
@@ -34,11 +37,22 @@ void main() async {
   var lastname = prefs.getString('lastname');
   var _id = prefs.getString('_id');
   var Profile_Photo = prefs.getString('Profile_Photo');
-  runApp(MaterialApp(
+  runApp(
+    MaterialApp(
       home: _id == null
           ? SignInPage()
-          : MapScreen(status, firstname, Phone_No, token2, lastname, _id,
-              Profile_Photo)));
+          : MapScreen(
+              status,
+              firstname,
+              Phone_No,
+              token2,
+              lastname,
+              _id,
+              Profile_Photo,
+            ),
+      debugShowCheckedModeBanner: false,
+    ),
+  );
 }
 
 void _notificationHandler() {

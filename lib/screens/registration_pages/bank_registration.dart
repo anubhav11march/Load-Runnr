@@ -343,6 +343,8 @@ class _BankDetailsState extends State<BankDetails> {
                                     '_id', body["driver"]["_id"].toString());
                                 await prefs.setString('Profile_Photo',
                                     body["driver"]["Profile_Photo"].toString());
+                                await prefs.setString('driver_format_index',
+                                    body["driver"]["Driver_Id"].toString());
                                 Navigator.pushAndRemoveUntil(
                                     context,
                                     MaterialPageRoute(

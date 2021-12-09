@@ -29,29 +29,31 @@ class _CreateNewPasswordScreenState extends State<CreateNewPasswordScreen> {
     return Scaffold(
       resizeToAvoidBottomInset: true,
       key: _scaffoldKey,
-      body: Container(
-        child: SingleChildScrollView(
-          child: Column(
-            children: <Widget>[
-              _topImage(),
-              _forgotPasswordText(),
-              SizedBox(
-                height: 20,
-              ),
-              _resetPasswordText(),
-              SizedBox(
-                height: 40,
-              ),
-              _newPasswordField(),
-              SizedBox(
-                height: 30,
-              ),
-              _confirmPasswordField(),
-              SizedBox(
-                height: 30,
-              ),
-              _resetPasswordWidget(),
-            ],
+      body: SafeArea(
+        child: Container(
+          child: SingleChildScrollView(
+            child: Column(
+              children: <Widget>[
+                _topImage(),
+                _forgotPasswordText(),
+                SizedBox(
+                  height: 20,
+                ),
+                _resetPasswordText(),
+                SizedBox(
+                  height: 40,
+                ),
+                _newPasswordField(),
+                SizedBox(
+                  height: 30,
+                ),
+                _confirmPasswordField(),
+                SizedBox(
+                  height: 30,
+                ),
+                _resetPasswordWidget(),
+              ],
+            ),
           ),
         ),
       ),
@@ -69,12 +71,19 @@ class _CreateNewPasswordScreenState extends State<CreateNewPasswordScreen> {
   }
 
   _forgotPasswordText() {
-    return RichText(
-      text: TextSpan(
-        text:
-            "Your phone number is now authenticated, Please create a new password",
-        style: GoogleFonts.lato(
-            textStyle: TextStyle(color: Colors.pink, fontSize: 16)),
+    return Padding(
+      padding: const EdgeInsets.only(left: 10.0, top: 10),
+      child: ListTile(
+        leading: Icon(
+          Icons.check,
+          color: Colors.green,
+        ),
+        contentPadding: EdgeInsets.all(0),
+        title: Text(
+          "OTP has been verified, Please Create Password.",
+          style: GoogleFonts.lato(
+              textStyle: TextStyle(color: Colors.black, fontSize: 16)),
+        ),
       ),
     );
   }
@@ -83,7 +92,7 @@ class _CreateNewPasswordScreenState extends State<CreateNewPasswordScreen> {
     return Row(
       children: <Widget>[
         Container(
-          margin: EdgeInsets.only(left: 30),
+          margin: EdgeInsets.only(left: 20),
           child: Text(
             'Reset Password',
             textAlign: TextAlign.left,
@@ -210,7 +219,7 @@ class _CreateNewPasswordScreenState extends State<CreateNewPasswordScreen> {
                 }
               }
             },
-            color: Colors.pinkAccent,
+            color: Color(0xFFFD6204),
             textColor: Colors.white,
             child: Text(
               "Reset Password",

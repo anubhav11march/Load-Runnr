@@ -95,481 +95,489 @@ class _SignUpPageState extends State<SignUpPage> {
       return Scaffold(
         resizeToAvoidBottomInset: true,
         body: SafeArea(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Container(
-                padding: EdgeInsets.fromLTRB(15, 20, 15, 10),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Phone Verification, For Sign Up',
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 22,
-                        letterSpacing: 1.0,
+          child: SingleChildScrollView(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Container(
+                  padding: EdgeInsets.fromLTRB(15, 20, 15, 10),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Phone Verification, For Sign Up',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 22,
+                          letterSpacing: 1.0,
+                        ),
                       ),
-                    ),
-                    SizedBox(height: 100),
-                    Text(
-                      'Enter Phone Number and Verify with OTP',
-                      style: TextStyle(
-                        fontWeight: FontWeight.w700,
-                        fontSize: 12,
-                        letterSpacing: 0.8,
+                      SizedBox(height: 100),
+                      Text(
+                        'Enter Phone Number and Verify with OTP',
+                        style: TextStyle(
+                          fontWeight: FontWeight.w700,
+                          fontSize: 12,
+                          letterSpacing: 0.8,
+                        ),
                       ),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.fromLTRB(10, 20, 10, 0),
-                      child: TextField(
-                        decoration: InputDecoration(
-                          focusedBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: Color(0xfffd6204)),
-                          ),
-                          prefixIcon: Padding(
-                            padding: const EdgeInsets.all(15.0),
-                            child: Text(
-                              '+91',
-                              style: TextStyle(
-                                fontSize: 20,
-                                color: Colors.black,
-                                fontWeight: FontWeight.bold,
+                      Padding(
+                        padding: EdgeInsets.fromLTRB(10, 20, 10, 0),
+                        child: TextField(
+                          decoration: InputDecoration(
+                            focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(color: Color(0xfffd6204)),
+                            ),
+                            prefixIcon: Padding(
+                              padding: const EdgeInsets.all(15.0),
+                              child: Text(
+                                '+91',
+                                style: TextStyle(
+                                  fontSize: 20,
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.bold,
+                                ),
                               ),
                             ),
+                            border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10),
+                                borderSide: BorderSide(
+                                  color: Colors.black54,
+                                  width: 2,
+                                  style: BorderStyle.solid,
+                                )),
+                            labelStyle: TextStyle(
+                              color: Color(0xff4a4a4a),
+                              fontWeight: FontWeight.w600,
+                              fontSize: 15,
+                              letterSpacing: 1.2,
+                            ),
+                            labelText: 'Mobile Number',
                           ),
-                          border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10),
-                              borderSide: BorderSide(
-                                color: Colors.black54,
-                                width: 2,
-                                style: BorderStyle.solid,
-                              )),
-                          labelStyle: TextStyle(
-                            color: Color(0xff4a4a4a),
-                            fontWeight: FontWeight.w600,
-                            fontSize: 15,
-                            letterSpacing: 1.2,
-                          ),
-                          labelText: 'Mobile Number',
-                        ),
-                        style: TextStyle(
-                          color: Colors.black,
-                        ),
-                        keyboardType: TextInputType.number,
-                        maxLength: 10,
-                        controller: phoneNumber,
-                      ),
-                    ),
-                    otpVerified
-                        ? otpSend
-                            ? Padding(
-                                padding: EdgeInsets.fromLTRB(20, 20, 20, 20),
-                                child: Center(
-                                  child: SizedBox(
-                                    child: ElevatedButton(
-                                      onPressed: () async {
-                                        checkPhone(phoneNumber.text);
-                                        if (phoneNumber.text.length == 10 &&
-                                            !confirmNew!) {
-                                          await _auth!.verifyPhoneNumber(
-                                            timeout:
-                                                Duration(milliseconds: 59000),
-                                            phoneNumber:
-                                                "+91" + phoneNumber.text,
-                                            verificationCompleted:
-                                                (phoneAuthCredential) async {
-                                              setState(() {
-                                                isLoading = false;
-                                              });
-                                            },
-                                            verificationFailed:
-                                                (verificationFailed) async {
-                                              setState(() {
-                                                isLoading = false;
-                                              });
-                                              _scaffoldKey.currentState!
-                                                  .showSnackBar(
-                                                SnackBar(
-                                                  content: Text(
-                                                      verificationFailed
-                                                          .message!),
-                                                ),
-                                              );
-                                            },
-                                            codeSent: (verificationId,
-                                                [resendingToken]) async {
-                                              setState(() {
-                                                isLoading = false;
-                                                this.verificationId =
-                                                    verificationId;
-                                              });
-                                            },
-                                            codeAutoRetrievalTimeout:
-                                                (verificationId) async {},
-                                          );
-                                        }
-                                      },
-                                      child: Text(
-                                        'Send OTP',
-                                        style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 20,
-                                        ),
-                                      ),
-                                      style: ElevatedButton.styleFrom(
-                                        primary: HexColor('#FD6204'),
-                                        padding:
-                                            EdgeInsets.fromLTRB(20, 10, 20, 10),
-                                        elevation: 2,
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(30),
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              )
-                            : Column(
-                                children: [
-                                  Padding(
-                                    padding: EdgeInsets.fromLTRB(10, 0, 10, 10),
-                                    child: TextField(
-                                      obscureText: !_otpVisible!,
-                                      decoration: InputDecoration(
-                                        focusedBorder: OutlineInputBorder(
-                                          borderSide: BorderSide(
-                                              color: Color(0xfffd6204)),
-                                        ),
-                                        suffixIcon: IconButton(
-                                          icon: Icon(
-                                            _otpVisible!
-                                                ? Icons.visibility
-                                                : Icons.visibility_off,
-                                          ),
-                                          onPressed: () {
-                                            setState(() {
-                                              _otpVisible = !_otpVisible!;
-                                            });
-                                          },
-                                          iconSize: 30,
-                                          color: Colors.black54,
-                                        ),
-                                        border: OutlineInputBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(10),
-                                            borderSide: BorderSide(
-                                              color: Colors.black54,
-                                              width: 2,
-                                              style: BorderStyle.solid,
-                                            )),
-                                        labelStyle: TextStyle(
-                                          color: Color(0xff4a4a4a),
-                                          fontWeight: FontWeight.w600,
-                                          fontSize: 15,
-                                          letterSpacing: 1.2,
-                                        ),
-                                        labelText: 'OTP',
-                                      ),
-                                      style: TextStyle(
-                                        color: Colors.black,
-                                      ),
-                                      keyboardType: TextInputType.number,
-                                      controller: otp,
-                                    ),
-                                  ),
-                                  Padding(
-                                    padding:
-                                        EdgeInsets.fromLTRB(20, 20, 20, 20),
-                                    child: Center(
-                                      child: SizedBox(
-                                        child: ElevatedButton(
-                                          onPressed: () async {
-                                            if (otp.text.isEmpty) {
-                                              showAlert(context, "Enter Otp");
-                                            } else {
-                                              AuthCredential
-                                                  phoneAuthCredential =
-                                                  PhoneAuthProvider.credential(
-                                                      verificationId:
-                                                          verificationId
-                                                              .toString(),
-                                                      smsCode: otp.text);
-
-                                              signInWithPhoneAuthCredential(
-                                                  phoneAuthCredential);
-                                            }
-                                          },
-                                          child: Text(
-                                            'Verify OTP',
-                                            style: TextStyle(
-                                              fontWeight: FontWeight.bold,
-                                              fontSize: 20,
-                                            ),
-                                          ),
-                                          style: ElevatedButton.styleFrom(
-                                            primary: HexColor('#FD6204'),
-                                            padding: EdgeInsets.fromLTRB(
-                                                20, 10, 20, 10),
-                                            elevation: 2,
-                                            shape: RoundedRectangleBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(30),
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              )
-                        : Column(
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Text(
-                                  'OTP Verification is successful',
-                                  style: TextStyle(
-                                    color: Colors.green,
-                                    fontSize: 20,
-                                  ),
-                                ),
-                              ),
-                              Padding(
-                                padding: EdgeInsets.fromLTRB(10, 0, 10, 10),
-                                child: TextFormField(
-                                  validator: (value) {
-                                    if (value!.isEmpty) {
-                                      return 'Please enter password';
-                                    }
-                                    if (value.length < 6) {
-                                      return 'Must be more than 6 charater';
-                                    }
-                                  },
-                                  obscureText: !_passwordVisible!,
-                                  decoration: InputDecoration(
-                                    focusedBorder: OutlineInputBorder(
-                                      borderSide:
-                                          BorderSide(color: Color(0xfffd6204)),
-                                    ),
-                                    suffixIcon: IconButton(
-                                      icon: Icon(
-                                        _passwordVisible!
-                                            ? Icons.visibility
-                                            : Icons.visibility_off,
-                                      ),
-                                      onPressed: () {
-                                        setState(() {
-                                          _passwordVisible = !_passwordVisible!;
-                                        });
-                                      },
-                                      iconSize: 30,
-                                      color: Colors.black54,
-                                    ),
-                                    border: OutlineInputBorder(
-                                        borderRadius: BorderRadius.circular(10),
-                                        borderSide: BorderSide(
-                                          color: Colors.black54,
-                                          width: 2,
-                                          style: BorderStyle.solid,
-                                        )),
-                                    labelStyle: TextStyle(
-                                      color: Color(0xff4a4a4a),
-                                      fontWeight: FontWeight.w600,
-                                      fontSize: 15,
-                                      letterSpacing: 1.2,
-                                    ),
-                                    labelText: 'Password',
-                                  ),
-                                  style: TextStyle(
-                                    color: Colors.black,
-                                  ),
-                                  keyboardType: TextInputType.text,
-                                  controller: password,
-                                ),
-                              ),
-                              Padding(
-                                padding: EdgeInsets.fromLTRB(10, 0, 10, 10),
-                                child: TextFormField(
-                                  validator: (value) {
-                                    if (value!.isEmpty) {
-                                      return 'Please enter password';
-                                    }
-                                    if (value.length < 6) {
-                                      return 'Must be more than 6 charater';
-                                    }
-                                  },
-                                  obscureText: !_confirmPasswordVisible!,
-                                  decoration: InputDecoration(
-                                    focusedBorder: OutlineInputBorder(
-                                      borderSide:
-                                          BorderSide(color: Color(0xfffd6204)),
-                                    ),
-                                    suffixIcon: IconButton(
-                                      icon: Icon(
-                                        _confirmPasswordVisible!
-                                            ? Icons.visibility
-                                            : Icons.visibility_off,
-                                      ),
-                                      onPressed: () {
-                                        setState(() {
-                                          _confirmPasswordVisible =
-                                              !_confirmPasswordVisible!;
-                                        });
-                                      },
-                                      iconSize: 30,
-                                      color: Colors.black54,
-                                    ),
-                                    border: OutlineInputBorder(
-                                        borderRadius: BorderRadius.circular(10),
-                                        borderSide: BorderSide(
-                                          color: Colors.black54,
-                                          width: 2,
-                                          style: BorderStyle.solid,
-                                        )),
-                                    labelStyle: TextStyle(
-                                      color: Color(0xff4a4a4a),
-                                      fontWeight: FontWeight.w600,
-                                      fontSize: 15,
-                                      letterSpacing: 1.2,
-                                    ),
-                                    labelText: 'Confirm Password',
-                                  ),
-                                  style: TextStyle(
-                                    color: Colors.black,
-                                  ),
-                                  keyboardType: TextInputType.text,
-                                  controller: confirmPassword,
-                                ),
-                              ),
-                              Padding(
-                                padding: EdgeInsets.fromLTRB(20, 20, 20, 20),
-                                child: Center(
-                                  child: SizedBox(
-                                    child: ElevatedButton(
-                                      onPressed: () {
-                                        password_Global = password.text;
-                                        phoneNumber_Global = phoneNumber.text;
-                                        if (password.text == "") {
-                                          showAlert(
-                                              context, "Password is empty");
-                                        }
-                                        if (password.text.length < 6 &&
-                                            password.text.isNotEmpty) {
-                                          showAlert(context,
-                                              "Password length should be more than 6");
-                                        }
-                                        if (password.text !=
-                                            confirmPassword.text) {
-                                          buildErrorSnackbar(context,
-                                              "Password and Confirm Password don't match");
-
-                                          // showAlert(context, "Password and Confirm Password don't match");
-                                        }
-                                        if (password.text.length >= 6 &&
-                                            password.text.isNotEmpty &&
-                                            password.text ==
-                                                confirmPassword.text) {
-                                          Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                  builder:
-                                                      (BuildContext context) =>
-                                                          DriverDetails()));
-                                        }
-                                      },
-                                      child: Text(
-                                        'Sign Up',
-                                        style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 20,
-                                        ),
-                                      ),
-                                      style: ElevatedButton.styleFrom(
-                                        primary: HexColor('#FD6204'),
-                                        padding:
-                                            EdgeInsets.fromLTRB(20, 10, 20, 10),
-                                        elevation: 2,
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(30),
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          'Already have an account?',
                           style: TextStyle(
-                            fontSize: sx(25),
+                            color: Colors.black,
                           ),
+                          keyboardType: TextInputType.number,
+                          maxLength: 10,
+                          controller: phoneNumber,
                         ),
-                        TextButton(
-                          onPressed: () {
-                            Navigator.of(context).pop();
-                          },
-                          child: Text(
-                            'Sign In',
+                      ),
+                      otpVerified
+                          ? otpSend
+                              ? Padding(
+                                  padding: EdgeInsets.fromLTRB(20, 20, 20, 20),
+                                  child: Center(
+                                    child: SizedBox(
+                                      child: ElevatedButton(
+                                        onPressed: () async {
+                                          checkPhone(phoneNumber.text);
+                                          if (phoneNumber.text.length == 10 &&
+                                              !confirmNew!) {
+                                            await _auth!.verifyPhoneNumber(
+                                              timeout:
+                                                  Duration(milliseconds: 59000),
+                                              phoneNumber:
+                                                  "+91" + phoneNumber.text,
+                                              verificationCompleted:
+                                                  (phoneAuthCredential) async {
+                                                setState(() {
+                                                  isLoading = false;
+                                                });
+                                              },
+                                              verificationFailed:
+                                                  (verificationFailed) async {
+                                                setState(() {
+                                                  isLoading = false;
+                                                });
+                                                _scaffoldKey.currentState!
+                                                    .showSnackBar(
+                                                  SnackBar(
+                                                    content: Text(
+                                                        verificationFailed
+                                                            .message!),
+                                                  ),
+                                                );
+                                              },
+                                              codeSent: (verificationId,
+                                                  [resendingToken]) async {
+                                                setState(() {
+                                                  isLoading = false;
+                                                  this.verificationId =
+                                                      verificationId;
+                                                });
+                                              },
+                                              codeAutoRetrievalTimeout:
+                                                  (verificationId) async {},
+                                            );
+                                          }
+                                        },
+                                        child: Text(
+                                          'Send OTP',
+                                          style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 20,
+                                          ),
+                                        ),
+                                        style: ElevatedButton.styleFrom(
+                                          primary: HexColor('#FD6204'),
+                                          padding: EdgeInsets.fromLTRB(
+                                              20, 10, 20, 10),
+                                          elevation: 2,
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(30),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                )
+                              : Column(
+                                  children: [
+                                    Padding(
+                                      padding:
+                                          EdgeInsets.fromLTRB(10, 0, 10, 10),
+                                      child: TextField(
+                                        obscureText: !_otpVisible!,
+                                        decoration: InputDecoration(
+                                          focusedBorder: OutlineInputBorder(
+                                            borderSide: BorderSide(
+                                                color: Color(0xfffd6204)),
+                                          ),
+                                          suffixIcon: IconButton(
+                                            icon: Icon(
+                                              _otpVisible!
+                                                  ? Icons.visibility
+                                                  : Icons.visibility_off,
+                                            ),
+                                            onPressed: () {
+                                              setState(() {
+                                                _otpVisible = !_otpVisible!;
+                                              });
+                                            },
+                                            iconSize: 30,
+                                            color: Colors.black54,
+                                          ),
+                                          border: OutlineInputBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(10),
+                                              borderSide: BorderSide(
+                                                color: Colors.black54,
+                                                width: 2,
+                                                style: BorderStyle.solid,
+                                              )),
+                                          labelStyle: TextStyle(
+                                            color: Color(0xff4a4a4a),
+                                            fontWeight: FontWeight.w600,
+                                            fontSize: 15,
+                                            letterSpacing: 1.2,
+                                          ),
+                                          labelText: 'OTP',
+                                        ),
+                                        style: TextStyle(
+                                          color: Colors.black,
+                                        ),
+                                        keyboardType: TextInputType.number,
+                                        controller: otp,
+                                      ),
+                                    ),
+                                    Padding(
+                                      padding:
+                                          EdgeInsets.fromLTRB(20, 20, 20, 20),
+                                      child: Center(
+                                        child: SizedBox(
+                                          child: ElevatedButton(
+                                            onPressed: () async {
+                                              if (otp.text.isEmpty) {
+                                                showAlert(context, "Enter Otp");
+                                              } else {
+                                                AuthCredential
+                                                    phoneAuthCredential =
+                                                    PhoneAuthProvider
+                                                        .credential(
+                                                            verificationId:
+                                                                verificationId
+                                                                    .toString(),
+                                                            smsCode: otp.text);
+
+                                                signInWithPhoneAuthCredential(
+                                                    phoneAuthCredential);
+                                              }
+                                            },
+                                            child: Text(
+                                              'Verify OTP',
+                                              style: TextStyle(
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 20,
+                                              ),
+                                            ),
+                                            style: ElevatedButton.styleFrom(
+                                              primary: HexColor('#FD6204'),
+                                              padding: EdgeInsets.fromLTRB(
+                                                  20, 10, 20, 10),
+                                              elevation: 2,
+                                              shape: RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(30),
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                )
+                          : Column(
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Text(
+                                    'OTP Verification is successful',
+                                    style: TextStyle(
+                                      color: Colors.green,
+                                      fontSize: 20,
+                                    ),
+                                  ),
+                                ),
+                                Padding(
+                                  padding: EdgeInsets.fromLTRB(10, 0, 10, 10),
+                                  child: TextFormField(
+                                    validator: (value) {
+                                      if (value!.isEmpty) {
+                                        return 'Please enter password';
+                                      }
+                                      if (value.length < 6) {
+                                        return 'Must be more than 6 charater';
+                                      }
+                                    },
+                                    obscureText: !_passwordVisible!,
+                                    decoration: InputDecoration(
+                                      focusedBorder: OutlineInputBorder(
+                                        borderSide: BorderSide(
+                                            color: Color(0xfffd6204)),
+                                      ),
+                                      suffixIcon: IconButton(
+                                        icon: Icon(
+                                          _passwordVisible!
+                                              ? Icons.visibility
+                                              : Icons.visibility_off,
+                                        ),
+                                        onPressed: () {
+                                          setState(() {
+                                            _passwordVisible =
+                                                !_passwordVisible!;
+                                          });
+                                        },
+                                        iconSize: 30,
+                                        color: Colors.black54,
+                                      ),
+                                      border: OutlineInputBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                          borderSide: BorderSide(
+                                            color: Colors.black54,
+                                            width: 2,
+                                            style: BorderStyle.solid,
+                                          )),
+                                      labelStyle: TextStyle(
+                                        color: Color(0xff4a4a4a),
+                                        fontWeight: FontWeight.w600,
+                                        fontSize: 15,
+                                        letterSpacing: 1.2,
+                                      ),
+                                      labelText: 'Password',
+                                    ),
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                    ),
+                                    keyboardType: TextInputType.text,
+                                    controller: password,
+                                  ),
+                                ),
+                                Padding(
+                                  padding: EdgeInsets.fromLTRB(10, 0, 10, 10),
+                                  child: TextFormField(
+                                    validator: (value) {
+                                      if (value!.isEmpty) {
+                                        return 'Please enter password';
+                                      }
+                                      if (value.length < 6) {
+                                        return 'Must be more than 6 charater';
+                                      }
+                                    },
+                                    obscureText: !_confirmPasswordVisible!,
+                                    decoration: InputDecoration(
+                                      focusedBorder: OutlineInputBorder(
+                                        borderSide: BorderSide(
+                                            color: Color(0xfffd6204)),
+                                      ),
+                                      suffixIcon: IconButton(
+                                        icon: Icon(
+                                          _confirmPasswordVisible!
+                                              ? Icons.visibility
+                                              : Icons.visibility_off,
+                                        ),
+                                        onPressed: () {
+                                          setState(() {
+                                            _confirmPasswordVisible =
+                                                !_confirmPasswordVisible!;
+                                          });
+                                        },
+                                        iconSize: 30,
+                                        color: Colors.black54,
+                                      ),
+                                      border: OutlineInputBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                          borderSide: BorderSide(
+                                            color: Colors.black54,
+                                            width: 2,
+                                            style: BorderStyle.solid,
+                                          )),
+                                      labelStyle: TextStyle(
+                                        color: Color(0xff4a4a4a),
+                                        fontWeight: FontWeight.w600,
+                                        fontSize: 15,
+                                        letterSpacing: 1.2,
+                                      ),
+                                      labelText: 'Confirm Password',
+                                    ),
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                    ),
+                                    keyboardType: TextInputType.text,
+                                    controller: confirmPassword,
+                                  ),
+                                ),
+                                Padding(
+                                  padding: EdgeInsets.fromLTRB(20, 20, 20, 20),
+                                  child: Center(
+                                    child: SizedBox(
+                                      child: ElevatedButton(
+                                        onPressed: () {
+                                          password_Global = password.text;
+                                          phoneNumber_Global = phoneNumber.text;
+                                          if (password.text == "") {
+                                            showAlert(
+                                                context, "Password is empty");
+                                          }
+                                          if (password.text.length < 6 &&
+                                              password.text.isNotEmpty) {
+                                            showAlert(context,
+                                                "Password length should be more than 6");
+                                          }
+                                          if (password.text !=
+                                              confirmPassword.text) {
+                                            buildErrorSnackbar(context,
+                                                "Password and Confirm Password don't match");
+
+                                            // showAlert(context, "Password and Confirm Password don't match");
+                                          }
+                                          if (password.text.length >= 6 &&
+                                              password.text.isNotEmpty &&
+                                              password.text ==
+                                                  confirmPassword.text) {
+                                            Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                    builder: (BuildContext
+                                                            context) =>
+                                                        DriverDetails()));
+                                          }
+                                        },
+                                        child: Text(
+                                          'Sign Up',
+                                          style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 20,
+                                          ),
+                                        ),
+                                        style: ElevatedButton.styleFrom(
+                                          primary: HexColor('#FD6204'),
+                                          padding: EdgeInsets.fromLTRB(
+                                              20, 10, 20, 10),
+                                          elevation: 2,
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(30),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            'Already have an account?',
                             style: TextStyle(
-                              color: HexColor('#FD6204'),
                               fontSize: sx(25),
                             ),
                           ),
-                        ),
-                      ],
-                    ),
-                    SizedBox(
-                      height: MediaQuery.of(context).size.height * 0.35,
-                    ),
-                    Column(
-                      children: [
-                        Text(
-                          "By Signing Up You Agree To Accept The",
-                          style: TextStyle(fontWeight: FontWeight.bold),
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            InkWell(
-                                onTap: () {
-                                  Navigator.of(context).push(
-                                    MaterialPageRoute(
-                                        builder: (_) => TermsAndPrivacy(
-                                            terms, "Terms and Conditions")),
-                                  );
-                                },
-                                child: Text(
-                                  "Terms & Conditions",
-                                  style: TextStyle(color: Color(0xfffd6206)),
-                                )),
-                            Text("\ And\ "),
-                            InkWell(
-                                onTap: () {
-                                  Navigator.of(context).push(
-                                    MaterialPageRoute(
-                                        builder: (_) => TermsAndPrivacy(
-                                            privacy, "Privacy and Policy")),
-                                  );
-                                },
-                                child: Text("Privacy Policy",
-                                    style: TextStyle(color: Color(0xfffd6206))))
-                          ],
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              )
-            ],
+                          TextButton(
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                            },
+                            child: Text(
+                              'Sign In',
+                              style: TextStyle(
+                                color: HexColor('#FD6204'),
+                                fontSize: sx(25),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      SizedBox(
+                        height: MediaQuery.of(context).size.height * 0.30,
+                      ),
+                      Column(
+                        children: [
+                          Text(
+                            "By Signing Up You Agree To Accept The",
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              InkWell(
+                                  onTap: () {
+                                    Navigator.of(context).push(
+                                      MaterialPageRoute(
+                                          builder: (_) => TermsAndPrivacy(
+                                              terms, "Terms and Conditions")),
+                                    );
+                                  },
+                                  child: Text(
+                                    "Terms & Conditions",
+                                    style: TextStyle(color: Color(0xfffd6206)),
+                                  )),
+                              Text("\ And\ "),
+                              InkWell(
+                                  onTap: () {
+                                    Navigator.of(context).push(
+                                      MaterialPageRoute(
+                                          builder: (_) => TermsAndPrivacy(
+                                              privacy, "Privacy and Policy")),
+                                    );
+                                  },
+                                  child: Text("Privacy Policy",
+                                      style:
+                                          TextStyle(color: Color(0xfffd6206))))
+                            ],
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                )
+              ],
+            ),
           ),
         ),
       );

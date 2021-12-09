@@ -9,6 +9,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:load_runner/invite_friends.dart';
 import 'package:load_runner/main.dart';
 import 'package:load_runner/order_screen.dart';
+import 'package:load_runner/screens/home_pages/reward_screen.dart';
 import 'package:load_runner/screens/home_pages/waller_screen.dart';
 import 'package:load_runner/screens/registration_pages/signin_page.dart';
 import 'package:load_runner/screens/support_page.dart';
@@ -186,17 +187,26 @@ class _MapScreenState extends State<MapScreen> {
                         widget.name!.toUpperCase() +
                             "\ " +
                             widget.lastname!.toUpperCase(),
+                        // "Saket Shetty",
                         style: TextStyle(color: Colors.white, fontSize: 20),
                       ),
                       SizedBox(
                         height: 3,
                       ),
-                      Text(
-                        widget.id!.substring(0, 10) +
-                            "\n" +
-                            widget.id!.substring(11, widget.id!.length),
-                        textAlign: TextAlign.left,
-                        style: TextStyle(color: Colors.white),
+                      Container(
+                        padding: EdgeInsets.all(5),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.all(Radius.circular(20)),
+                          color: Colors.white,
+                        ),
+                        child: Text(
+                          globalSharedPref.getString('driver_format_index') ??
+                              "Null",
+                          textAlign: TextAlign.left,
+                          style: TextStyle(
+                            color: Color(0xFFFD6204),
+                          ),
+                        ),
                       ),
                       SizedBox(
                         height: 3,
@@ -210,6 +220,11 @@ class _MapScreenState extends State<MapScreen> {
                       ),
                       Text(
                         vehicleNumber != null ? vehicleNumber! : "",
+                        // "MH 05 AB 1234",
+                        style: TextStyle(color: Colors.white),
+                      ),
+                      Text(
+                        globalSharedPref.getString('Phone_No')!,
                         style: TextStyle(color: Colors.white),
                       )
                     ],
@@ -288,12 +303,14 @@ class _MapScreenState extends State<MapScreen> {
               leading:
                   FaIcon(FontAwesomeIcons.trophy, color: Color(0xfffd6206)),
               title: Text(
-                'Rewards',
+                'Offers & Rewards',
                 style: TextStyle(color: Color(0xfffd6206)),
               ),
               onTap: () => {
-                // Navigator.push(
-                //   context, new MaterialPageRoute(builder: (context) => Wallet2(widget.name!,widget.number!,widget.token!)))
+                Navigator.push(
+                    context,
+                    new MaterialPageRoute(
+                        builder: (context) => OffersAndReward()))
               },
             ),
             ListTile(
@@ -790,14 +807,11 @@ class _MapScreenState extends State<MapScreen> {
     String url = "https://loadrunner12.herokuapp.com/api/payment/getBalance";
     try {
       var jsonResponse;
-      var response = await http.get(
-          Uri.parse(
-              "https://loadrunner12.herokuapp.com/api/payment/getBalance"),
-          headers: {
-            "Content-Type": "application/json",
-            'Accept': 'application/json',
-            'Cookie': "token2=${widget.token}"
-          });
+      var response = await http.get(Uri.parse(url), headers: {
+        "Content-Type": "application/json",
+        'Accept': 'application/json',
+        'Cookie': "token2=${widget.token}"
+      });
       if (response.statusCode == 200) {
         var cookies = response.headers['set-cookie'];
         jsonResponse = json.decode(response.body);
