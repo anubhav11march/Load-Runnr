@@ -59,7 +59,7 @@ class _InviteFriendsState extends State<InviteFriends> {
                 child: InkWell(
                   onTap: () {
                     Share.share(
-                        'Become "LoadRunnr Delivery Partner"\n*Earn Upto Rs.1000/Day\n*Earn Lifetime Refferal Income\nUse Referral Number ${globalSharedPref.getString("Phone_No")}\n\nInstall The App Now\nplay.google.com');
+                        'Become "LoadRunnr Delivery Partner"\n*Earn Upto Rs.1000/Day\n*Earn Lifetime Refferal Income\nUse Referral Number ${globalSharedPref.getString("Phone_No")}\n\nInstall The App Now\nplay.google.com/store/apps/details?id=com.driver.load_runner');
                   },
                   child: const ListTile(
                     leading: FaIcon(
@@ -86,7 +86,7 @@ class _InviteFriendsState extends State<InviteFriends> {
                 child: InkWell(
                   onTap: () {
                     Share.share(
-                        'Become "LoadRunnr Delivery Partner"\n*Earn Upto Rs.1000/Day\n*Earn Lifetime Refferal Income\nUse Referral Number ${globalSharedPref.getString("Phone_No")}\n\n Install The App Now\nplay.google.com)');
+                        'Become "LoadRunnr Delivery Partner"\n*Earn Upto Rs.1000/Day\n*Earn Lifetime Refferal Income\nUse Referral Number ${globalSharedPref.getString("Phone_No")}\n\nInstall The App Now\nplay.google.com/store/apps/details?id=com.driver.load_runner');
                   },
                   child: const ListTile(
                     leading: Icon(

@@ -320,9 +320,10 @@ class _MapScreenState extends State<MapScreen> {
                 'Refer & Earn',
                 style: TextStyle(color: Color(0xfffd6206)),
               ),
-              onTap: () => {
+              onTap: () async {
+                // localNotification.testNotification();
                 Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => InviteFriends()))
+                    MaterialPageRoute(builder: (context) => InviteFriends()));
               },
             ),
             ListTile(
