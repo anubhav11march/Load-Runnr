@@ -87,7 +87,7 @@ class _MapScreenState extends State<MapScreen> {
   @override
   void initState() {
     isStatus = widget.status;
-    timer = Timer.periodic(Duration(seconds: 1), (Timer t) => getStatus());
+    // timer = Timer.periodic(Duration(seconds: 1), (Timer t) => getStatus());
     getPayment();
     getDriverDetails();
 
@@ -321,7 +321,7 @@ class _MapScreenState extends State<MapScreen> {
                 style: TextStyle(color: Color(0xfffd6206)),
               ),
               onTap: () async {
-                // localNotification.testNotification();
+                localNotification.testNotification();
                 Navigator.push(context,
                     MaterialPageRoute(builder: (context) => InviteFriends()));
               },
