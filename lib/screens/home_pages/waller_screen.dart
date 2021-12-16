@@ -2,14 +2,11 @@
 
 import 'dart:async';
 import 'dart:convert';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:load_runner/main.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:load_runner/model/paymentHistoryModel.dart';
 import 'package:load_runner/screens/home_pages/pPay.dart';
-import 'package:load_runner/screens/ride_pages/pickup_page.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 import 'package:http/http.dart' as http;
 

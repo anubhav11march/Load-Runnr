@@ -1,14 +1,9 @@
-// ignore_for_file: prefer_const_constructors, unused_import
-
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:load_runner/Local_Notification/local_notification.dart';
-import 'package:load_runner/screens/home_pages/home_page.dart';
-import 'package:load_runner/screens/home_pages/s2.dart';
-
-import 'package:load_runner/screens/home_pages/waller_screen.dart';
 import 'package:load_runner/screens/ride_pages/pickup_page.dart';
+import 'package:notification_permissions/notification_permissions.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'screens/registration_pages/signin_page.dart';
 
@@ -28,7 +23,7 @@ void main() async {
   FirebaseMessaging.onBackgroundMessage(_messageHandler);
   SharedPreferences prefs = await SharedPreferences.getInstance();
   globalSharedPref = await SharedPreferences.getInstance();
-  localNotification.initializeLocalNotificationSettings();
+  await localNotification.initializeLocalNotificationSettings();
   _notificationHandler();
   var status = prefs.getString('status');
   var firstname = prefs.getString('firstname');
@@ -53,6 +48,15 @@ void main() async {
       debugShowCheckedModeBanner: false,
     ),
   );
+}
+
+Future NotificationPermissionMethod() async {
+  PermissionStatus permissionStatus =
+      await NotificationPermissions.requestNotificationPermissions(
+          openSettings: true);
+  if (permissionStatus.index == 1) {
+    debugPrint("Granted");
+  }
 }
 
 void _notificationHandler() {

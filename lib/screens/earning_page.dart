@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
 
-import '../bar_chart_graph.dart';
-
 class Earnings extends StatefulWidget {
   const Earnings({Key? key}) : super(key: key);
 

@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:load_runner/model/paymentHistoryModel.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 import 'package:http/http.dart' as http;
 
@@ -17,11 +16,9 @@ class pPay extends StatefulWidget {
 class _pPayState extends State<pPay> {
   String Url = "https://loadrunner12.herokuapp.com/api/payment/neworder/";
   WebViewController? _webViewController;
-  List<PaymentHistoryModel> _list = [];
   @override
   void initState() {
     _webViewController = null;
-    // TODO: implement initState
     super.initState();
   }
 

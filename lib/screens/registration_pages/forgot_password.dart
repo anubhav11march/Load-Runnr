@@ -1,7 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:load_runner/screens/registration_pages/create_new_password_screen.dart';
 import 'package:load_runner/screens/registration_pages/enter_otp_screen.dart';
 
 class ForgetPasswordScreen extends StatefulWidget {

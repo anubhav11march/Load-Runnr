@@ -32,11 +32,6 @@ class MapScreen extends StatefulWidget {
 }
 
 class _MapScreenState extends State<MapScreen> {
-  AndroidNotificationChannel channel = AndroidNotificationChannel(
-      'high_importance_channel', // id
-      'High Importance Notifications', // title
-      importance: Importance.high,
-      playSound: true);
   BitmapDescriptor? myIcon;
   final Set<Marker> _markers = {};
   late LocationData _currentPosition;
@@ -868,13 +863,5 @@ class _MapScreenState extends State<MapScreen> {
 
   Widget selT() {
     return Container();
-  }
-
-  _showBothDialogs() {
-    _showCupertinoDialog(
-        'Your Account is in Review will be approved within 24hrs');
-    Future.delayed(Duration(seconds: 3), () {
-      _showCupertinoDialog1("Your Account Has Been Approved");
-    });
   }
 }

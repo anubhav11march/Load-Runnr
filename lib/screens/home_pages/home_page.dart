@@ -2,7 +2,6 @@
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:load_runner/screens/registration_pages/signin_page.dart';
 import 'package:rolling_switch/rolling_switch.dart';
 
 class MyHomePageState extends StatefulWidget {
@@ -185,37 +184,7 @@ class _MyHomePageStateState extends State<MyHomePageState> {
       ),
     );
   }
-  void _showCupertinoDialog() {
-    showDialog(
-       barrierDismissible: false,
-        barrierColor: Colors.transparent,
-        context: context,
-        builder: (context) {
-          return CupertinoAlertDialog(
-            title: Text('ALERT'),
-            content: Text('Your Account is in Review Will be approved within 24hrs'
-                .toUpperCase(), textAlign: TextAlign.center,
-              style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.black.withOpacity(0.7)),),
-            actions: <Widget>[
-              TextButton(
-                  onPressed: () {
-                    Navigator.pushReplacement(
-                        context, new MaterialPageRoute(builder: (context) => SignInPage()));
-                  },
-                  child: Text('LOGOUT')),
-              // TextButton(
-              //   onPressed: () {
-              //     print('HelloWorld!');
-              //   },
-              //   child: Text('HelloWorld!'),
-              // )
-            ],
-          );
-        });
-  }
+
   void showAlert(BuildContext context) {
     showDialog(
         context: context,
