@@ -1,11 +1,13 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:load_runner/Local_Notification/local_notification.dart';
 import 'package:load_runner/screens/ride_pages/pickup_page.dart';
 import 'package:notification_permissions/notification_permissions.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'screens/registration_pages/signin_page.dart';
+import 'package:app_settings/app_settings.dart';
 
 Future<void> _messageHandler(RemoteMessage message) async {
   print('background message ${message.notification!.body}');
@@ -23,7 +25,9 @@ void main() async {
   FirebaseMessaging.onBackgroundMessage(_messageHandler);
   SharedPreferences prefs = await SharedPreferences.getInstance();
   globalSharedPref = await SharedPreferences.getInstance();
-  await localNotification.initializeLocalNotificationSettings();
+  Future.delayed(Duration(seconds: 5), () async {
+    await localNotification.initializeLocalNotificationSettings();
+  });
   _notificationHandler();
   var status = prefs.getString('status');
   var firstname = prefs.getString('firstname');

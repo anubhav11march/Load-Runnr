@@ -1,12 +1,11 @@
 import 'dart:async';
 import 'dart:convert';
+import 'package:app_settings/app_settings.dart';
 import 'package:http/http.dart' as http;
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:load_runner/invite_friends.dart';
 import 'package:load_runner/main.dart';
 import 'package:load_runner/order_screen.dart';
 import 'package:load_runner/screens/home_pages/reward_screen.dart';
@@ -67,18 +66,6 @@ class _MapScreenState extends State<MapScreen> {
   final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
       FlutterLocalNotificationsPlugin();
 
-  Future<void> _firebaseMessagingBackgroundHandler(
-      RemoteMessage message) async {
-    await Firebase.initializeApp();
-    print('A bg message just showed up :  ${message.messageId}');
-  }
-
-  late FirebaseMessaging messaging;
-
-  Future<void> _messageHandler(RemoteMessage message) async {
-    print('background message ${message.notification!.body}');
-  }
-
   @override
   void initState() {
     isStatus = widget.status;
@@ -86,16 +73,6 @@ class _MapScreenState extends State<MapScreen> {
     getPayment();
     getDriverDetails();
 
-    FirebaseMessaging.onBackgroundMessage(_messageHandler);
-    messaging = FirebaseMessaging.instance;
-    messaging.getToken().then((value) {});
-    FirebaseMessaging.onMessage.listen((RemoteMessage event) {
-      print("message recieved");
-      print(event.notification!.body);
-    });
-    FirebaseMessaging.onMessageOpenedApp.listen((message) {
-      print('Message clicked!');
-    }); // getLocation();
     getLoc();
     setcustomMarket();
     showPendingDialog();
@@ -317,8 +294,9 @@ class _MapScreenState extends State<MapScreen> {
               ),
               onTap: () async {
                 localNotification.testNotification();
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => InviteFriends()));
+                AppSettings.openAppSettings();
+                // Navigator.push(context,
+                //     MaterialPageRoute(builder: (context) => InviteFriends()));
               },
             ),
             ListTile(
@@ -846,9 +824,6 @@ class _MapScreenState extends State<MapScreen> {
             _showCupertinoDialog1("Your Account Has Been Approved");
             // Navigator.of(context, rootNavigator: true).pop();
             timer!.cancel();
-            FirebaseMessaging.onMessage.listen((RemoteMessage event) {
-              print(event.notification!.body);
-            });
             setState(() {
               prefs.setString('status', "Active");
               isStatus = "Active";
