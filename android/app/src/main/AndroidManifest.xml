@@ -59,7 +59,7 @@
            android:value="AIzaSyBLGf4rIdHXqJ9I1LJZKGu0PDfRwXdoXa4"/>
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_channel_id"
-            android:value="@string/default_notification_channel_id"/>
+            android:value="high_importance_channel"/>
         <receiver android:name="com.dexterous.flutterlocalnotifications.ScheduledNotificationReceiver" />
     </application>
 </manifest>

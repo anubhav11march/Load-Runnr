@@ -1,7 +1,10 @@
 // ignore_for_file: avoid_print, prefer_const_constructors
 
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:load_runner/Local_Notification/local_notification.dart';
 import 'package:rolling_switch/rolling_switch.dart';
 
 class MyHomePageState extends StatefulWidget {
@@ -13,6 +16,34 @@ class MyHomePageState extends StatefulWidget {
 
 class _MyHomePageStateState extends State<MyHomePageState> {
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+      RemoteNotification? notification = message.notification;
+      AndroidNotification? android = message.notification?.android;
+      if (notification != null && android != null) {
+        flutterLocalNotificationsPlugin.show(
+           notification.hashCode,
+           notification.title,
+           notification.body,
+           NotificationDetails(
+             android: AndroidNotificationDetails(
+                 "channel id",
+                "channel name",
+                "channel description",
+               sound: RawResourceAndroidNotificationSound('whistlesound'),
+                playSound: true,
+               importance: Importance.high,
+                 priority: Priority.high,
+             ),
+           ));
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     // WidgetsBinding.instance!.addPostFrameCallback((_){
@@ -82,18 +113,15 @@ class _MyHomePageStateState extends State<MyHomePageState> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-
               Padding(
                 padding: const EdgeInsets.all(18.0),
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-
                     InkWell(
-                      onTap: (){
+                      onTap: () {
                         _scaffoldKey.currentState!.openDrawer();
-
                       },
                       child: Icon(
                         Icons.widgets_outlined,
@@ -189,13 +217,13 @@ class _MyHomePageStateState extends State<MyHomePageState> {
     showDialog(
         context: context,
         builder: (context) => AlertDialog(
-          content: Text("hi"),
-        ));
+              content: Text("hi"),
+            ));
   }
 
-   drawerMenu(){
+  drawerMenu() {
     return Drawer(
-      child:ListView(
+      child: ListView(
         padding: EdgeInsets.zero,
         children: <Widget>[
           DrawerHeader(
@@ -237,6 +265,5 @@ class _MyHomePageStateState extends State<MyHomePageState> {
         ],
       ),
     );
-   }
-
+  }
 }

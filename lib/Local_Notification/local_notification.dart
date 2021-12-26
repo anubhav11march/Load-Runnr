@@ -19,6 +19,8 @@ final IOSInitializationSettings initializationSettingsIOS =
           return await true;
         });
 
+
+
 const AndroidNotificationDetails firstNotificationAndroidSpecifics =
     AndroidNotificationDetails(
   "channel id",
@@ -26,8 +28,8 @@ const AndroidNotificationDetails firstNotificationAndroidSpecifics =
   "channel description",
   sound: RawResourceAndroidNotificationSound('whistlesound'),
   playSound: true,
-  importance: Importance.max,
-  priority: Priority.max,
+  importance: Importance.high,
+  priority: Priority.high,
 );
 const NotificationDetails firstNotificationPlatformSpecifics =
     NotificationDetails(android: firstNotificationAndroidSpecifics);
@@ -54,7 +56,11 @@ class LocalNotification {
         _notification.body, firstNotificationPlatformSpecifics,
         payload: jsonEncode({"Data": "Got it."}));
   }
-
+   show()async{
+   await flutterLocalNotificationsPlugin.show(0, '',
+        '', firstNotificationPlatformSpecifics,
+        payload: jsonEncode({"Data": "Got it."}));
+   }
   testNotification() async {
     await flutterLocalNotificationsPlugin.show(
         1, "Test", "Sound", firstNotificationPlatformSpecifics,
