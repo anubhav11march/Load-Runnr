@@ -9,6 +9,7 @@ import 'package:load_runner/model/paymentHistoryModel.dart';
 import 'package:load_runner/screens/home_pages/pPay.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 import 'package:http/http.dart' as http;
+import 'package:paytm_allinonesdk/paytm_allinonesdk.dart';
 
 class Wallet2 extends StatefulWidget {
   final String name, number, token;
@@ -94,28 +95,36 @@ class _Wallet2State extends State<Wallet2> {
                             borderRadius:
                                 BorderRadius.all(Radius.circular(30))),
                         child: InkWell(
-                          onTap: () {
+                          onTap: () async {
                             setState(() {
                               walletRecharge =
                                   int.parse(_textEditingController.text);
                               walletWithdraw =
                                   int.parse(_textEditingController.text);
                             });
-
+                            //  _resetPasswordMeth();
                             if (title == "Recharge") {
-                              if (int.parse(_textEditingController.text) >
-                                  299) {
-                                setState(() {
-                                  Navigator.of(context)
-                                      .push(
-                                        MaterialPageRoute(
-                                            builder: (_) => pPay(
-                                                _textEditingController.text,
-                                                widget.name,
-                                                widget.number)),
-                                      )
-                                      .then((val) => val ? getPayment() : null);
-                                });
+                              if (int.parse(_textEditingController.text) > 0) {
+                                var res = await _resetPasswordMeth();
+                                print('rress$res');
+                                print('dfdf${res['txnToken']}');
+
+                                Future.delayed(Duration(seconds: 3));
+
+                                await _startTransaction(res['txnToken'],
+                                    res['mid'], res['orderId']);
+                                //  };
+                                // setState(() {
+                                //   Navigator.of(context)
+                                //       .push(
+                                //         MaterialPageRoute(
+                                //             builder: (_) => pPay(
+                                //                 _textEditingController.text,
+                                //                 widget.name,
+                                //                 widget.number)),
+                                //       )
+                                //       .then((val) => val ? getPayment() : null);
+                                // });
                               } else {
                                 _showCupertinoDialog1(
                                     'Please make a minimum recharge of ₹300');
@@ -143,6 +152,83 @@ class _Wallet2State extends State<Wallet2> {
             ),
           );
         });
+  }
+
+  String mid = "", orderId = "", amount = "", txnToken = "";
+  String result = "";
+  bool isStaging = false;
+  bool isApiCallInprogress = false;
+  String callbackUrl = "";
+  bool restrictAppInvoke = false;
+  bool enableAssist = true;
+  Future<void> _startTransaction(t, m, o) async {
+    if (t.isEmpty) {
+      print('hjvh');
+      return;
+    }
+    var sendMap = <String, dynamic>{
+      "mid": m,
+      "orderId": o,
+      "amount": _textEditingController.text,
+      "txnToken": t,
+      "callbackUrl": callbackUrl,
+      "isStaging": isStaging,
+      "restrictAppInvoke": restrictAppInvoke,
+      "enableAssist": enableAssist
+    };
+    print('kk$sendMap');
+    try {
+      var response = AllInOneSdk.startTransaction(
+          m,
+          o,
+          _textEditingController.text,
+          t,
+          "",
+          isStaging,
+          restrictAppInvoke,
+          enableAssist);
+      response.then((value) {
+          _verifysdk(value);
+        print('testing$value');
+        setState(() {
+          result = value.toString();
+        });
+      
+        print('ttyy$result');
+        print('res1$response');
+        Future.delayed(Duration(seconds: 3));
+        Navigator.pop(context);
+      }).catchError((onError) {
+        if (onError is PlatformException) {
+          print('llkvv');
+          _verifysdk(onError.details);
+          setState(() {
+            result = onError.message.toString() +
+                " \n  " +
+                onError.details.toString();
+          });
+
+          print('yuyu${onError.details}');
+          print('ttyyy$result');
+          print('res2$response');
+          print('ressss%result');
+        } else {
+               _verifysdk(onError.details);
+          print('iio');
+          setState(() {
+            result = onError.toString();
+          });
+     
+          print('ttyyyy$result');
+          print('res3$response');
+        }
+      });
+      Future.delayed(Duration(seconds: 3));
+      Navigator.pop(context);
+    } catch (err) {
+      result = err.toString();
+      _verifysdk(err);
+    }
   }
 
   @override
@@ -216,6 +302,7 @@ class _Wallet2State extends State<Wallet2> {
                       children: [
                         GestureDetector(
                           onTap: () {
+                            // _resetPasswordMeth();
                             showDialog1(context: context, title: "Recharge");
                           },
                           child: Container(
@@ -465,5 +552,81 @@ class _Wallet2State extends State<Wallet2> {
             ],
           );
         });
+  }
+
+  _resetPasswordMeth() async {
+    String api = "https://loadrunner12.herokuapp.com/api/payment/paytm";
+
+    http.Response _response = await http.post(Uri.parse(api),
+        body: json.encode({
+          "amount": _textEditingController.text,
+          "name": widget.name,
+          "phone": widget.number
+        }),
+        headers: {
+          "Content-Type": "application/json",
+        });
+    var jsonResponse = json.decode(_response.body);
+    if (_response.statusCode == 200 || _response.statusCode == 201) {
+      print('ppp${_response.body}');
+      print('ppqp${jsonResponse['txnToken']}');
+      return jsonResponse;
+      // ScaffoldMessenger.of(context).showSnackBar(
+      // SnackBar(
+      //   content: Text(jsonResponse["message"]),
+      // ),
+      // );
+      // Future.delayed(Duration(seconds: 1), () {
+      //   Navigator.pushAndRemoveUntil(
+      //       context,
+      //       MaterialPageRoute(
+      //         builder: (BuildContext context) => SignInPage(),
+      //       ),
+      //       (Route<dynamic> route) => false);
+      // });
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(jsonResponse["message"]),
+        ),
+      );
+    }
+  }
+
+  _verifysdk(results) async {
+  //  print('ffgg');
+    String api = "https://loadrunner12.herokuapp.com/api/payment/verify";
+
+    http.Response _response =
+        await http.post(Uri.parse(api), body: json.encode(results), headers: {
+      "Content-Type": "application/json",
+    });
+    print('78944');
+    var jsonResponse = json.decode(_response.body);
+    if (_response.statusCode == 200 || _response.statusCode == 201) {
+      print('qqp${_response.body}');
+      //  print('ppqp${jsonResponse['txnToken']}');
+      return jsonResponse;
+      // ScaffoldMessenger.of(context).showSnackBar(
+      // SnackBar(
+      //   content: Text(jsonResponse["message"]),
+      // ),
+      // );
+      // Future.delayed(Duration(seconds: 1), () {
+      //   Navigator.pushAndRemoveUntil(
+      //       context,
+      //       MaterialPageRoute(
+      //         builder: (BuildContext context) => SignInPage(),
+      //       ),
+      //       (Route<dynamic> route) => false);
+      // });
+    } else {
+      print('4894');
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(jsonResponse["message"]),
+        ),
+      );
+    }
   }
 }

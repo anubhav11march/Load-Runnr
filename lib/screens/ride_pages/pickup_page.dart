@@ -65,11 +65,21 @@ class _MapScreenState extends State<MapScreen> {
   String? isStatus;
   final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
       FlutterLocalNotificationsPlugin();
-
+  bool? rrtt;
   @override
   void initState() {
+    // super.initState();
     isStatus = widget.status;
-    // timer = Timer.periodic(Duration(seconds: 1), (Timer t) => getStatus());
+    print('isso$isStatus');
+
+    timer = Timer.periodic(Duration(seconds: 1), (Timer t) {
+      //   if (rrtt == false) {
+      print('uiuiui');
+      getStatus();
+      // } else {
+      //   timer?.cancel();
+      // }
+    });
     getPayment();
     getDriverDetails();
 
@@ -556,13 +566,26 @@ class _MapScreenState extends State<MapScreen> {
                   onPressed: () async {
                     final prefs = await SharedPreferences.getInstance();
                     Navigator.of(context).pop();
-                    Navigator.of(context).pop();
+                    //  Navigator.of(context).pop();
                     setState(() {
                       isStatus = "Active";
                       prefs.setString('status', "Active");
                     });
-                    Navigator.pushNamedAndRemoveUntil(
-                        context, '/', (_) => false);
+                       Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => MapScreen(
+                              isStatus,
+                              widget.name,
+                              widget.number,
+                              widget.token,
+                              widget.lastname,
+                              widget.id,
+                              widget.profilePic),
+                        ),
+                      );
+                    //   Navigator.pushNamedAndRemoveUntil(
+                    //       context, '/', (_) => false);
                   },
                   child: Text(
                     'OK',
@@ -804,7 +827,10 @@ class _MapScreenState extends State<MapScreen> {
   }
 
   Future getStatus() async {
+    print('yy');
     final prefs = await SharedPreferences.getInstance();
+    prefs.getString('status');
+    print('preef${prefs.getString('status')}');
     try {
       var jsonResponse;
       final msg = jsonEncode({"Phone_No": widget.number});

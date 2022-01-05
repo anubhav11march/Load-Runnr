@@ -56,11 +56,11 @@ class LocalNotification {
         _notification.body, firstNotificationPlatformSpecifics,
         payload: jsonEncode({"Data": "Got it."}));
   }
-   show()async{
-   await flutterLocalNotificationsPlugin.show(0, '',
-        '', firstNotificationPlatformSpecifics,
-        payload: jsonEncode({"Data": "Got it."}));
-   }
+  //  show()async{
+  //  await flutterLocalNotificationsPlugin.show(0, '',
+  //       '', firstNotificationPlatformSpecifics,
+  //       payload: jsonEncode({"Data": "Got it."}));
+  //  }
   testNotification() async {
     await flutterLocalNotificationsPlugin.show(
         1, "Test", "Sound", firstNotificationPlatformSpecifics,

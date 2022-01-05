@@ -1,15 +1,18 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+
 import 'package:load_runner/Local_Notification/local_notification.dart';
 import 'package:load_runner/screens/ride_pages/pickup_page.dart';
 import 'package:notification_permissions/notification_permissions.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'screens/registration_pages/signin_page.dart';
 import 'package:app_settings/app_settings.dart';
+import 'package:flutter/src/widgets/framework.dart';
 
 final FirebaseMessaging firebaseMessaging = FirebaseMessaging.instance;
 
@@ -21,7 +24,7 @@ const AndroidNotificationChannel channel = AndroidNotificationChannel(
     'high_importance_channel', // id
     'High Importance Notifications', // title
     'This channel is used for important notifications.', // description
-    importance: Importance.max,
+    importance: Importance.high,
     playSound: true,
     sound: RawResourceAndroidNotificationSound('whistlesound'));
 
@@ -41,14 +44,31 @@ const NotificationDetails firstNotificationPlatformSpecifics =
 
 final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
     FlutterLocalNotificationsPlugin();
-
+//  Timer? timer;
 // await flutterLocalNotificationsPlugin
 //   .resolvePlatformSpecificImplementation<AndroidFlutterLocalNotificationsPlugin>()
 //   ?.createNotificationChannel(channel);
+// @override
+// void initState() {
+// //  super.initState();
+
+//     timer = Timer.periodic(Duration(seconds: 1), (Timer t) {
+//    //   if (rrtt == false) {
+//         print('uiuppiui');
+
+//       // } else {
+//       //   timer?.cancel();
+//       // }
+//     });
+// }
 
 Future<void> _messageHandler(RemoteMessage message) async {
   await Firebase.initializeApp();
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  // // setState()
 
+  // //  sets
+  // prefs.setString('status', "Pending");
   flutterLocalNotificationsPlugin.show(
       message.hashCode,
       message.notification?.title,
@@ -64,10 +84,20 @@ Future<void> _messageHandler(RemoteMessage message) async {
         priority: Priority.high,
       )),
       payload: jsonEncode({"Data": "Got it."}));
- // localNotification.showNotification(message.notification);
-  print('background message ${message.notification!.body}');
-}
 
+  // localNotification.showNotification(message.notification);
+  print('background message ${message.notification!.body}');
+  if (message.notification!.body == "You Can Now Accept The Orders") {
+    FirebaseMessaging.onMessageOpenedApp.listen((snapshot) async {
+      // print('ppoopopp');
+
+      prefs.setString('status', "Pending");
+      //Calls when the notification is been clicked.
+      // localNotification.notificationRoute(snapshot.data);
+      //  localNotification.showNotification(snapshot.notification);
+    });
+  }
+}
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -93,16 +123,20 @@ void main() async {
     await localNotification.initializeLocalNotificationSettings();
   });
 
-  FirebaseMessaging.onBackgroundMessage(_messageHandler);
   // _notificationHandler();
   FirebaseMessaging.onMessage.listen((event) async {
+    prefs.setString('status', "Pending");
     localNotification.showNotification(event.notification);
   });
-  FirebaseMessaging.onMessageOpenedApp.listen((snapshot) {
+  FirebaseMessaging.onMessageOpenedApp.listen((snapshot) async {
+    print('ppoopopp');
+
+    prefs.setString('status', "Pending");
     //Calls when the notification is been clicked.
     // localNotification.notificationRoute(snapshot.data);
-    localNotification.showNotification(snapshot.notification);
+    //  localNotification.showNotification(snapshot.notification);
   });
+  FirebaseMessaging.onBackgroundMessage(_messageHandler);
   var status = prefs.getString('status');
   var firstname = prefs.getString('firstname');
   var Phone_No = prefs.getString('Phone_No');
@@ -110,6 +144,7 @@ void main() async {
   var lastname = prefs.getString('lastname');
   var _id = prefs.getString('_id');
   var Profile_Photo = prefs.getString('Profile_Photo');
+
   runApp(
     MaterialApp(
       home: _id == null
