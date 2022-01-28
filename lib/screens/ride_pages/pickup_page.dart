@@ -6,6 +6,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:load_runner/invite_friends.dart';
 import 'package:load_runner/main.dart';
 import 'package:load_runner/order_screen.dart';
 import 'package:load_runner/screens/home_pages/reward_screen.dart';
@@ -303,10 +304,10 @@ class _MapScreenState extends State<MapScreen> {
                 style: TextStyle(color: Color(0xfffd6206)),
               ),
               onTap: () async {
-                localNotification.testNotification();
-                AppSettings.openAppSettings();
-                // Navigator.push(context,
-                //     MaterialPageRoute(builder: (context) => InviteFriends()));
+                //  localNotification.testNotification();
+                //  AppSettings.openAppSettings();
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => InviteFriends()));
               },
             ),
             ListTile(
@@ -571,19 +572,19 @@ class _MapScreenState extends State<MapScreen> {
                       isStatus = "Active";
                       prefs.setString('status', "Active");
                     });
-                       Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => MapScreen(
-                              isStatus,
-                              widget.name,
-                              widget.number,
-                              widget.token,
-                              widget.lastname,
-                              widget.id,
-                              widget.profilePic),
-                        ),
-                      );
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => MapScreen(
+                            isStatus,
+                            widget.name,
+                            widget.number,
+                            widget.token,
+                            widget.lastname,
+                            widget.id,
+                            widget.profilePic),
+                      ),
+                    );
                     //   Navigator.pushNamedAndRemoveUntil(
                     //       context, '/', (_) => false);
                   },

@@ -24,7 +24,7 @@ class _SignUpPageState extends State<SignUpPage> {
   FirebaseAuth? _auth;
   var errorMsg;
   bool isNotPresent = false;
-  bool? isLoading = false;
+  bool isLoading = false;
   String? verificationId;
   bool? _passwordVisible = false,
       _confirmPasswordVisible = false,
@@ -89,6 +89,7 @@ class _SignUpPageState extends State<SignUpPage> {
     _auth = FirebaseAuth.instance;
   }
 
+  bool isLoading1 = false;
   @override
   Widget build(BuildContext context) {
     return RelativeBuilder(builder: (context, height, wdith, sy, sx) {
@@ -172,6 +173,11 @@ class _SignUpPageState extends State<SignUpPage> {
                                     child: SizedBox(
                                       child: ElevatedButton(
                                         onPressed: () async {
+                                          if (isLoading1) return;
+                                          setState(() {
+                                            isLoading1 = true;
+                                          });
+
                                           checkPhone(phoneNumber.text);
                                           if (phoneNumber.text.length == 10 &&
                                               !confirmNew!) {
@@ -204,6 +210,7 @@ class _SignUpPageState extends State<SignUpPage> {
                                                   [resendingToken]) async {
                                                 setState(() {
                                                   isLoading = false;
+                                                  isLoading1 = false;
                                                   this.verificationId =
                                                       verificationId;
                                                 });
@@ -212,14 +219,21 @@ class _SignUpPageState extends State<SignUpPage> {
                                                   (verificationId) async {},
                                             );
                                           }
+                                          // setState(() {
+                                          //   isLoading1 = false;
+                                          // });
                                         },
-                                        child: Text(
-                                          'Send OTP',
-                                          style: TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 20,
-                                          ),
-                                        ),
+                                        child: isLoading1
+                                            ? CircularProgressIndicator(
+                                                color: Colors.white,
+                                              )
+                                            : Text(
+                                                'Send OTP',
+                                                style: TextStyle(
+                                                  fontWeight: FontWeight.bold,
+                                                  fontSize: 20,
+                                                ),
+                                              ),
                                         style: ElevatedButton.styleFrom(
                                           primary: HexColor('#FD6204'),
                                           padding: EdgeInsets.fromLTRB(

@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:load_runner/model/otp_timer.dart';
 import 'package:load_runner/screens/registration_pages/create_new_password_screen.dart';
 import 'package:otp_text_field/otp_text_field.dart';
 
@@ -20,6 +21,7 @@ class _OTPScreenForgotPasswordState extends State<OTPScreenForgotPassword> {
   FirebaseAuth _auth = FirebaseAuth.instance;
 
   String _enteredOTP = "";
+  bool isLoading = false;
 
   @override
   Widget build(BuildContext context) {
@@ -101,19 +103,45 @@ class _OTPScreenForgotPasswordState extends State<OTPScreenForgotPassword> {
                       color: Colors.grey,
                     ),
                   ),
-                  InkWell(
-                    onTap: () {
+                   TimeButton(
+                  buttonType: ButtonTyp.FlatButton,
+                  label: "Resend OTP",
+                  timeOutInSeconds: 59,
+                  onPressed: () {
+                      setState(() {
+                        isLoading = true;
+                      });
                       _getOtp();
                     },
-                    child: Text(
-                      " Resend",
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                        color: Color(0xFFFD6204),
-                      ),
-                    ),
+                  disabledColor:  Color(0xFFF6F6F6),
+                  color:Color(0xFFF6F6F6),
+                  disabledTextStyle: GoogleFonts.poppins(
+                    textStyle: TextStyle(
+                        fontSize: 13 ,
+                        color: Colors.grey,
+                        fontWeight: FontWeight.w500),
                   ),
+                  activeTextStyle: TextStyle(
+                      fontSize: 13 ,
+                      color: Colors.orange,
+                      fontWeight: FontWeight.w500),
+                ),
+                  // InkWell(
+                  //   onTap: () {
+                  //     setState(() {
+                  //       isLoading = true;
+                  //     });
+                  //     _getOtp();
+                  //   },
+                  //   child: Text(
+                  //     " Resend",
+                  //     style: TextStyle(
+                  //       fontSize: 18,
+                  //       fontWeight: FontWeight.bold,
+                  //       color: Color(0xFFFD6204),
+                  //     ),
+                  //   ),
+                  // ),
                 ],
               ),
               Padding(
@@ -200,12 +228,12 @@ class _OTPScreenForgotPasswordState extends State<OTPScreenForgotPassword> {
       phoneNumber: "+91" + widget.phoneNumber,
       verificationCompleted: (phoneAuthCredential) async {
         setState(() {
-          // isLoading = false;
+          isLoading = false;
         });
       },
       verificationFailed: (verificationFailed) async {
         setState(() {
-          // isLoading = false;
+          isLoading = false;
         });
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
@@ -213,8 +241,18 @@ class _OTPScreenForgotPasswordState extends State<OTPScreenForgotPassword> {
           ),
         );
       },
+      
       codeSent: (verificationId, [resendingToken]) async {
-        setState(() {});
+        print('code sent');
+        setState(() {
+          isLoading = false;
+        });
+        // Navigator.push(
+        //     context,
+        //     MaterialPageRoute(
+        //         builder: (context) => OTPScreenForgotPassword(
+        //             phoneNumber: _phoneNumberController.text,
+        //             verificationId: verificationId.toString())));
       },
       codeAutoRetrievalTimeout: (verificationId) async {},
     );

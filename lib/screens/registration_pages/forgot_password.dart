@@ -15,7 +15,7 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
   String? verificationId;
 
   bool _showCreateNewPassFields = false;
-
+  bool isLoading = false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -55,7 +55,9 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
                 SizedBox(
                   height: 30,
                 ),
-                _loginButton(),
+                isLoading ? CircularProgressIndicator(
+                  color: Color(0xFFFD6204),
+                ) : _loginButton(),
               ],
             ),
           ),
@@ -196,7 +198,13 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
                   color: Color(0xFFFD6204),
                 )),
             onPressed: () {
+              setState(() {
+                isLoading = true;
+              });
               getOtp();
+              // setState(() {
+            //    isLoading = false;
+              // });
             },
             color: Color(0xFFFD6204),
             textColor: Colors.white,
@@ -213,18 +221,21 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
   }
 
   getOtp() async {
+    // setState(() {
+    //   isLoading = true;
+    // });
     await _auth.verifyPhoneNumber(
       timeout: Duration(milliseconds: 59000),
       phoneNumber: "+91" + _phoneNumberController.text,
       verificationCompleted: (phoneAuthCredential) async {
-        setState(() {
-          // isLoading = false;
-        });
+       setState(() {
+             isLoading = false;
+       });
       },
       verificationFailed: (verificationFailed) async {
-        setState(() {
-          // isLoading = false;
-        });
+       setState(() {
+           isLoading = false;
+       });
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text(verificationFailed.message!),
@@ -232,10 +243,10 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
         );
       },
       codeSent: (verificationId, [resendingToken]) async {
-        setState(() {
-          // isLoading = false;
-          // this.verificationId = verificationId;
-        });
+       setState(() {
+            isLoading = false;
+         // this.verificationId = verificationId;
+       });
         Navigator.push(
             context,
             MaterialPageRoute(

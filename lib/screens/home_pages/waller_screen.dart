@@ -23,18 +23,22 @@ class Wallet2 extends StatefulWidget {
 class _Wallet2State extends State<Wallet2> {
   int minBalance = 300;
   late int withdrawBalance = 100;
-  late int walletBalance = 0;
+  // late int walletBalance = 0;
+  int? walletBalance;
   late int walletRecharge;
   late int walletWithdraw;
   List<PaymentHistoryModel> _list = [];
 
   TextEditingController _textEditingController = TextEditingController();
 
+  bool isLoading = false;
   @override
   void initState() {
     getPayment();
     test();
     super.initState();
+
+    // isLoading = false;
     // Future.delayed(Duration.zero, () => showDialog1(context: context));
   }
 
@@ -94,8 +98,11 @@ class _Wallet2State extends State<Wallet2> {
                             color: Colors.deepOrange,
                             borderRadius:
                                 BorderRadius.all(Radius.circular(30))),
-                        child: InkWell(
-                          onTap: () async {
+                        child: TextButton(
+                          // style: ButtonStyle(
+                          //   textStyle:
+                          // ),
+                          onPressed: () async {
                             setState(() {
                               walletRecharge =
                                   int.parse(_textEditingController.text);
@@ -104,15 +111,17 @@ class _Wallet2State extends State<Wallet2> {
                             });
                             //  _resetPasswordMeth();
                             if (title == "Recharge") {
-                              if (int.parse(_textEditingController.text) > 0) {
+                              if (int.parse(_textEditingController.text) >
+                                  299) {
                                 var res = await _resetPasswordMeth();
                                 print('rress$res');
                                 print('dfdf${res['txnToken']}');
 
-                                Future.delayed(Duration(seconds: 3));
+                                // Future.delayed(Duration(seconds: 3));
 
                                 await _startTransaction(res['txnToken'],
                                     res['mid'], res['orderId']);
+
                                 //  };
                                 // setState(() {
                                 //   Navigator.of(context)
@@ -135,13 +144,18 @@ class _Wallet2State extends State<Wallet2> {
                                   'Withdraw Request has been Submitted');
                             }
                           },
-                          child: Text(
-                            title == "Withdraw" ? 'SUBMIT' : "NEXT",
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                                fontSize: 20,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.white),
+                          child:
+                              //  isLoading == true ? CircularProgressIndicator():
+                              Padding(
+                            padding: EdgeInsets.symmetric(vertical: 1),
+                            child: Text(
+                              title == "Withdraw" ? 'SUBMIT' : "NEXT",
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white),
+                            ),
                           ),
                         ),
                       ),
@@ -188,12 +202,12 @@ class _Wallet2State extends State<Wallet2> {
           restrictAppInvoke,
           enableAssist);
       response.then((value) {
-          _verifysdk(value);
+        _verifysdk(value);
         print('testing$value');
         setState(() {
           result = value.toString();
         });
-      
+
         print('ttyy$result');
         print('res1$response');
         Future.delayed(Duration(seconds: 3));
@@ -213,12 +227,12 @@ class _Wallet2State extends State<Wallet2> {
           print('res2$response');
           print('ressss%result');
         } else {
-               _verifysdk(onError.details);
+          _verifysdk(onError.details);
           print('iio');
           setState(() {
             result = onError.toString();
           });
-     
+
           print('ttyyyy$result');
           print('res3$response');
         }
@@ -279,16 +293,21 @@ class _Wallet2State extends State<Wallet2> {
                 const SizedBox(
                   height: 6,
                 ),
-                Center(
-                  child: Text(
-                    '₹ ' + walletBalance.toString(),
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 60,
-                        fontWeight: FontWeight.bold),
-                  ),
-                ),
+                walletBalance == null
+                    ? Center(
+                        child: CircularProgressIndicator(
+                        color: Colors.deepOrange,
+                      ))
+                    : Center(
+                        child: Text(
+                          '₹ ' + walletBalance.toString(),
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                              color: Colors.black,
+                              fontSize: 60,
+                              fontWeight: FontWeight.bold),
+                        ),
+                      ),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -323,7 +342,7 @@ class _Wallet2State extends State<Wallet2> {
                         ),
                         GestureDetector(
                           onTap: () {
-                            if (walletBalance > 299) {
+                            if (walletBalance! > 299) {
                               showDialog1(context: context, title: "Withdraw");
                             } else
                               _showCupertinoDialog1(
@@ -594,7 +613,7 @@ class _Wallet2State extends State<Wallet2> {
   }
 
   _verifysdk(results) async {
-  //  print('ffgg');
+    //  print('ffgg');
     String api = "https://loadrunner12.herokuapp.com/api/payment/verify";
 
     http.Response _response =
