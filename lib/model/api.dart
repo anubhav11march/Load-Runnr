@@ -7,7 +7,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:load_runner/model/global_data.dart';
 
-const String urlDriver = 'https://loadrunner12.herokuapp.com/api/driver';
+const String urlDriver = 'http://3.110.215.131:4000/api/driver';
 UploadTask? s;
 Future getUrl(File image) async {
   UploadTask s =

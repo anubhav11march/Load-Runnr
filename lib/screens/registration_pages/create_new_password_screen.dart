@@ -234,7 +234,7 @@ class _CreateNewPasswordScreenState extends State<CreateNewPasswordScreen> {
   }
 
   _resetPasswordMethod() async {
-    String api = "https://loadrunner12.herokuapp.com/api/driver/updatePassword";
+    String api = "http://3.110.215.131:4000/api/driver/updatePassword";
 
     http.Response _response = await http.post(Uri.parse(api),
         body: json.encode(

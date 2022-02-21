@@ -608,7 +608,7 @@ class _SignUpPageState extends State<SignUpPage> {
 
   Future checkPhone(String Number) async {
     print(Number);
-    String url = "https://loadrunner12.herokuapp.com/api/checkNumber";
+    String url = "http://3.110.215.131:4000/api/checkNumber";
     var jsonResponse;
     final msg = jsonEncode({"Phone_no": Number});
     var response = await http.get(Uri.parse(url + "/" + Number), headers: {

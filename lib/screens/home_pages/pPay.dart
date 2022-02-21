@@ -14,7 +14,7 @@ class pPay extends StatefulWidget {
 }
 
 class _pPayState extends State<pPay> {
-  String Url = "https://loadrunner12.herokuapp.com/api/payment/neworder/";
+  String Url = "http://3.110.215.131:4000/api/payment/neworder/";
   WebViewController? _webViewController;
   @override
   void initState() {
@@ -65,12 +65,12 @@ class _pPayState extends State<pPay> {
   }
 
   Future test() async {
-    String url = "https://loadrunner12.herokuapp.com/api/payment/getBalance";
+    String url = "http://3.110.215.131:4000/api/payment/getBalance";
     try {
       var jsonResponse;
       var response = await http.get(
           Uri.parse(
-              "https://loadrunner12.herokuapp.com/api/payment/getBalance"),
+              "http://3.110.215.131:4000/api/payment/getBalance"),
           headers: {
             "Content-Type": "application/json",
             'Accept': 'application/json',
@@ -95,11 +95,11 @@ class _pPayState extends State<pPay> {
   }
 
   Future getHistory() async {
-    String url = "https://loadrunner12.herokuapp.com/api/payment/history";
+    String url = "http://3.110.215.131:4000/api/payment/history";
     try {
       var jsonResponse;
       var response = await http.get(
-          Uri.parse("https://loadrunner12.herokuapp.com/api/payment/history"),
+          Uri.parse("http://3.110.215.131:4000/api/payment/history"),
           headers: {
             "Content-Type": "application/json",
             'Accept': 'application/json',

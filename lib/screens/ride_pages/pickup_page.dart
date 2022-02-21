@@ -777,12 +777,12 @@ class _MapScreenState extends State<MapScreen> {
   }
 
   Future getDriverDetails() async {
-    String url = "https://loadrunner12.herokuapp.com/api/payment/getBalance";
+    String url = "http://3.110.215.131:4000/api/payment/getBalance";
     try {
       var jsonResponse;
       var response = await http.get(
           Uri.parse(
-              "https://loadrunner12.herokuapp.com/api/driver/vechile-info"),
+              "http://3.110.215.131:4000/api/driver/vechile-info"),
           headers: {
             "Content-Type": "application/json",
             'Accept': 'application/json',
@@ -802,7 +802,7 @@ class _MapScreenState extends State<MapScreen> {
 
   Future getPayment() async {
     final prefs = await SharedPreferences.getInstance();
-    String url = "https://loadrunner12.herokuapp.com/api/payment/getBalance";
+    String url = "http://3.110.215.131:4000/api/payment/getBalance";
     try {
       var jsonResponse;
       var response = await http.get(Uri.parse(url), headers: {
@@ -838,7 +838,7 @@ class _MapScreenState extends State<MapScreen> {
 
       var response = await http.post(
           Uri.parse(
-              "https://loadrunner12.herokuapp.com/api/checkApproved/driver/"),
+              "http://3.110.215.131:4000/api/checkApproved/driver/"),
           body: msg,
           headers: {
             "Content-Type": "application/json",

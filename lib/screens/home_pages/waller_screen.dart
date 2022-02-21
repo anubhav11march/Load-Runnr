@@ -35,7 +35,7 @@ class _Wallet2State extends State<Wallet2> {
   @override
   void initState() {
     getPayment();
-    test();
+   // test();
     super.initState();
 
     // isLoading = false;
@@ -427,55 +427,55 @@ class _Wallet2State extends State<Wallet2> {
     );
   }
 
-  Future test() async {
-    try {
-      var jsonResponse;
-      var response = await http.get(
-          Uri.parse(
-              "https://loadrunner12.herokuapp.com/api/payment/getBalance"),
-          headers: {
-            "Content-Type": "application/json",
-            'Accept': 'application/json',
-          });
-      print("jsonResponse20");
-      print(response.statusCode);
-      if (response.statusCode == 200) {
-        print("jsonResponse3");
-        print(response.body);
-        print("jsonResponse14");
+  // Future test() async {
+  //   try {
+  //     var jsonResponse;
+  //     var response = await http.get(
+  //         Uri.parse(
+  //             "https://loadrunner12.herokuapp.com/api/payment/getBalance"),
+  //         headers: {
+  //           "Content-Type": "application/json",
+  //           'Accept': 'application/json',
+  //         });
+  //     print("jsonResponse20");
+  //     print(response.statusCode);
+  //     if (response.statusCode == 200) {
+  //       print("jsonResponse3");
+  //       print(response.body);
+  //       print("jsonResponse14");
 
-        var cookies = response.headers['set-cookie'];
-        if (cookies != null) {
-          print("helloworld");
-          print(cookies);
-          jsonResponse = json.decode(response.body);
-          setState(() {
-            walletBalance = jsonResponse['balance'];
-          });
-          print("jsonResponse4");
-          print(jsonResponse);
-        }
-      } else {
-        return null;
-      }
-    } on TimeoutException catch (_) {
-      // print("Hello");
-    }
-  }
+  //       var cookies = response.headers['set-cookie'];
+  //       if (cookies != null) {
+  //         print("helloworld");
+  //         print(cookies);
+  //         jsonResponse = json.decode(response.body);
+  //         setState(() {
+  //           walletBalance = jsonResponse['balance'];
+  //         });
+  //         print("jsonResponse4");
+  //         print(jsonResponse);
+  //       }
+  //     } else {
+  //       return null;
+  //     }
+  //   } on TimeoutException catch (_) {
+  //     // print("Hello");
+  //   }
+  // }
 
   Future getPayment() async {
-    String url = "https://loadrunner12.herokuapp.com/api/payment/getBalance";
+    String url = "http://3.110.215.131:4000/api/payment/getBalance";
     try {
       var balanceResponse = await http.get(
           Uri.parse(
-              "https://loadrunner12.herokuapp.com/api/payment/getBalance"),
+              "http://3.110.215.131:4000/api/payment/getBalance"),
           headers: {
             "Content-Type": "application/json",
             'Accept': 'application/json',
             'Cookie': "token2=${widget.token}"
           });
       var paymentHistoryResponse = await http.get(
-          Uri.parse("https://loadrunner12.herokuapp.com/api/payment/history"),
+          Uri.parse("http://3.110.215.131:4000/api/payment/history"),
           headers: {
             "Content-Type": "application/json",
             'Accept': 'application/json',
@@ -483,6 +483,7 @@ class _Wallet2State extends State<Wallet2> {
           });
 
       if (balanceResponse.statusCode == 200) {
+        print('[][][][][]');
         print(balanceResponse.body);
         var cookies = balanceResponse.headers['set-cookie'];
         if (cookies != null) {
@@ -493,6 +494,7 @@ class _Wallet2State extends State<Wallet2> {
           walletBalance = jsonResponse['balance'];
         });
       } else {
+             print('[][][][][ffff]');
         return null;
       }
       if (paymentHistoryResponse.statusCode == 200) {
@@ -574,7 +576,7 @@ class _Wallet2State extends State<Wallet2> {
   }
 
   _resetPasswordMeth() async {
-    String api = "https://loadrunner12.herokuapp.com/api/payment/paytm";
+    String api = "http://3.110.215.131:4000/api/payment/paytm";
 
     http.Response _response = await http.post(Uri.parse(api),
         body: json.encode({
@@ -614,7 +616,7 @@ class _Wallet2State extends State<Wallet2> {
 
   _verifysdk(results) async {
     //  print('ffgg');
-    String api = "https://loadrunner12.herokuapp.com/api/payment/verify";
+    String api = "http://3.110.215.131:4000/api/payment/verify";
 
     http.Response _response =
         await http.post(Uri.parse(api), body: json.encode(results), headers: {
